@@ -1,4 +1,4 @@
-{"searches": [
+const searches = [
     {
         "search": "Bosnia \u0026 Herzegovina and Rest of Europe",
         "region": "Europe",
@@ -24844,4 +24844,4 @@
     "newlyAdded": false,
     "active": true
 }
-        ]}
+        ]
