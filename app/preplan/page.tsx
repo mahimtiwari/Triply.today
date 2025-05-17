@@ -3,6 +3,9 @@ import React, { useEffect, useRef } from 'react'
 import { useSearchParams } from 'next/navigation'
 import Header from '../components/header';
 import StepsStatusBar from '../components/progressSlideBar';
+import RangeCalendar from '../components/RangeCalendar'; // Adjust the path as needed
+import BudgetOption from '../components/BudgetOption';
+import TypeOfPeople from '../components/typeOfPeople'; // Adjust the path as needed
 
 
 const PrePlanTrip = () => {
@@ -34,30 +37,17 @@ const PrePlanTrip = () => {
                 </span>
             </div>
             <StepsStatusBar totalProgress={totalProcess} currentProgress={processNum.current.toString()} className="mt-[10px]"/>
-            <div className="mt-6">
-                <label htmlFor="travel-dates-start" className="block text-sm font-medium text-gray-700">
-                    Choose your travel dates:
-                </label>
-                <div className="flex space-x-2 mt-1">
-                    <input
-                        type="date"
-                        id="travel-dates-start"
-                        name="travel-dates-start"
-                        className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                        placeholder="Start date"
-                    />
-                    <span className="text-gray-500">to</span>
-                    <input
-                        type="date"
-                        id="travel-dates-end"
-                        name="travel-dates-end"
-                        className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                        placeholder="End date"
-                    />
-                </div>
-            </div>
-                
             
+                {/* <RangeCalendar
+                    className="mt-6"
+                    onDateSelected={(date) => {
+                        console.log(date);
+                    }}/> */}
+            
+            {/* <BudgetOption onBudgetSelected={(budget: string) => {
+                console.log(`Selected budget: ${budget}`);
+            }}/> */}
+            <TypeOfPeople />
 
         </div>
     
