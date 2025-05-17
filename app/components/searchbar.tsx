@@ -57,7 +57,7 @@ const SearchBarAutocomplete = (parameters: any) => {
     }
 
     return (
-        <form className="w-full max-w-[500px] mt-[70px] mx-[10px]">
+        <form action="/preplan" className="w-full max-w-[500px] mt-[70px] mx-[10px]">
             <label htmlFor="default-search" className="mb-2 text-sm font-medium text-gray-900 sr-only">Search</label>
             <div className="relative">
                 <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
@@ -67,6 +67,7 @@ const SearchBarAutocomplete = (parameters: any) => {
                 </div>
                 <input
                     type="search"
+                    name='destination'
                     autoComplete='off'
                     id="default-search"
                     className="block bg-white w-full font-bold text-[18px] p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-2xl bg-gray-50 focus:ring-blue-300 focus:ring-3 outline-none transition-all duration-300"

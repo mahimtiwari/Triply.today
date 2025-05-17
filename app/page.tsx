@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Header from "./components/header";
 import SearchBarAutocomplete from "./components/searchbar";
 import "../public/css/home.css";
