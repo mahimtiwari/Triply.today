@@ -6,7 +6,7 @@ interface suggestion_Type {
     region: string;
 }
 
-const SearchBarAutocomplete = () => {
+const SearchBarAutocomplete = (parameters: any) => {
     const [query, setQuery] = useState('');
     const [boolSuggestions, setBoolSuggestions] = useState(false);
     const [filteredSuggestions, setFilteredSuggestions] = useState<suggestion_Type[]>([]);
@@ -69,8 +69,8 @@ const SearchBarAutocomplete = () => {
                     type="search"
                     autoComplete='off'
                     id="default-search"
-                    className="block w-full font-bold text-[18px] p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-2xl bg-gray-50 focus:ring-blue-300 focus:ring-3 outline-none transition-all duration-300"
-                    placeholder="Search Countries or Cities"
+                    className="block bg-white w-full font-bold text-[18px] p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-2xl bg-gray-50 focus:ring-blue-300 focus:ring-3 outline-none transition-all duration-300"
+                    placeholder={parameters.placeholder}
                     onChange={(e) => {
                         setQuery(e.target.value);
                         lastSelectedSuggestion.current = null; // Reset when typing
@@ -85,8 +85,9 @@ const SearchBarAutocomplete = () => {
                 {boolSuggestions && (
                     <>
                     <ul
-                        className="absolute z-10 w-[100%] mt-2 bg-white border border-gray-300 rounded-2xl shadow-lg  overflow-y-auto divide-y divide-gray-200 transition-all duration-300 transform "
+                        className="absolute z-10 w-[100%] mt-2  backdrop-blur-md border border-gray-300 rounded-2xl shadow-lg  overflow-y-auto divide-y divide-gray-200 transition-all duration-300 transform "
                         style={{
+                            backgroundColor: 'rgb(255 255 255 / 50%)',
                             animation: boolSuggestions
                                 ? 'fadeInScale 0.3s ease-out forwards'
                                 : 'fadeOutScale 0.2s ease-in forwards',
@@ -115,7 +116,7 @@ const SearchBarAutocomplete = () => {
                                 </svg>
                                 <div>
                                     <p className="font-medium text-gray-900">{suggestion.search}</p>
-                                    <p className="text-sm text-gray-500">{suggestion.region}</p>
+                                    <p className="text-sm text-left text-gray-500">{suggestion.region}</p>
                                 </div>
                             </li>
                         ))}
