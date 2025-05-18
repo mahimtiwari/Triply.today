@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Header from "../components/header";
 import StepsStatusBar from "../components/progressSlideBar";
@@ -101,6 +101,7 @@ const PrePlanTrip = () => {
     return (
         <>
             <Header />
+            <Suspense fallback={<div>Loading...</div>}>
             <div className="p-6 max-w-[500px] mx-auto mt-[10px]">
                 <div className="text-[16px] text-gray-800 leading-tight font-[geist]">
                     <span>Your Trip to</span>
@@ -210,6 +211,7 @@ const PrePlanTrip = () => {
                     />
                 )}
             </div>
+            </Suspense>
         </>
     );
 };
