@@ -22,7 +22,7 @@ const BudgetOption: React.FC<BudgetOptionProps> = ({ onBudgetSelected, className
                         <button
                             key={option}
                             onClick={() => handleSelect(option)}
-                            className={`w-[90%] h-[120px] sm:h-[150px] mx-2 my-2 text-lg rounded-lg border cursor-pointer transition-transform duration-300 box-border shadow-md ${
+                            className={`w-[100%] h-[120px] sm:h-[150px] mx-2 my-2 text-lg rounded-lg border cursor-pointer transition-transform duration-300 box-border shadow-md ${
                                 selected === option || defaultSelected === option
                                     ? 'border-blue-500 bg-blue-100 scale-105'
                                     : 'border-gray-300 bg-white hover:scale-105'

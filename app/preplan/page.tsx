@@ -52,6 +52,40 @@ const PrePlanTrip = () => {
         setProcessNum((prev) => Math.max(prev - 1, 0));
     };
 
+
+    function sendAPIstoreRedirect(peopleTy:{selc: string, adls: number, chls: number}) {
+        const sDate = dateRng.startDate?.toISOString().split("T")[0];
+        const eDate = dateRng.endDate?.toISOString().split("T")[0];
+        fetch("/api/planstore", {
+            method: "POST",
+            headers: {
+            "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+            destination,
+            startDate: sDate,
+            endDate: eDate,
+            budget: budgetOpt,
+            peopleType: peopleTy.selc,
+            adults: peopleTy.adls,
+            children: peopleTy.chls,
+            }),
+        })
+            .then((response) => {
+                
+            // if (response.ok) {
+            //     window.location.href = `/plan/`;
+            // } else {
+            //     console.error("Failed to save trip details");
+            // }
+            })
+            .catch((error) => {
+            console.error("Error:", error);
+            });
+
+    }
+
+
     if (!destination) {
         return null;
     }
@@ -146,17 +180,16 @@ const PrePlanTrip = () => {
                             adultsNum: adults,
                             childrenNum: children,
                         }) => {
-                            setTimeout(() => {
-                                setPeopleOpt({
-                                    selectedStr: selected,
-                                    adultsNum: adults,
-                                    childrenNum: children,
-                                });
-                                handleNextStep();
-                            }, ms);
-                            // if (processNum === totalProcess - 1) {
-                            //     window.location.href = `/plan?destination=${destination}&startDate=${dateRng.startDate?.toISOString()}&endDate=${dateRng.endDate?.toISOString()}&budget=${budgetOpt}&adults=${adults}&children=${children}`;
-                            // }
+
+                            setPeopleOpt({
+                                selectedStr: selected,
+                                adultsNum: adults,
+                                childrenNum: children,
+                            });
+                            handleNextStep();
+
+                            sendAPIstoreRedirect({selc: selected, adls: adults, chls: children}); // Send data to API
+
                         }}
                     />
                 )}
