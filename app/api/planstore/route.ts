@@ -57,6 +57,6 @@ export async function POST(req: Request) {
     return NextResponse.json({ id: plan.id }, { status: 200 });
   } catch (error) {
     console.error('Error in /api/planstore POST:', error);
-    return NextResponse.json({ msg: 'Internal Server Error' }, { status: 500 });
+    return NextResponse.json({ msg: 'Internal Server Error', error: error }, { status: 500 });
   }
 }
