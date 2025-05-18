@@ -36,7 +36,6 @@ const RangeCalendar: React.FC<RangeCalendarProps> = ({
   const today = dayjs();
 
   const startOfMonth = currentMonth.startOf("month");
-  // Removed unused endOfMonth variable
   const startDay = startOfMonth.day();
   const daysInMonth = currentMonth.daysInMonth();
 

@@ -1,5 +1,3 @@
-import type { NextApiRequest, NextApiResponse } from 'next'
-
 const searches = [
     {
         "search": "Bosnia \u0026 Herzegovina and Rest of Europe",
