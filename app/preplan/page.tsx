@@ -73,11 +73,19 @@ const PrePlanTrip = () => {
         })
             .then((response) => {
                 
-            // if (response.ok) {
-            //     window.location.href = `/plan/`;
-            // } else {
-            //     console.error("Failed to save trip details");
-            // }
+            if (response.ok) {
+                response.json().then((data) => {
+                    console.log("Response data:", data);
+                    const { id } = data;
+                    if (id) {
+                        window.location.href = `/plan/${id}`;
+                    } else {
+                        console.error("ID not found in response");
+                    }
+                });
+            } else {
+                console.error("Failed to save trip details");
+            }
             })
             .catch((error) => {
             console.error("Error:", error);
@@ -144,13 +152,21 @@ const PrePlanTrip = () => {
                     ms={ms}
                     totalProgress={totalProcess}
                     currentProgress={processNum.toString()}
-                    className="mt-[10px] mb-10"
+                    className="mt-[10px] mb-5"
                 />
+                <div className="text-[14px] mb-5 text-gray-500 leading-tight font-[geist] mt-2">
+                    {currentStep === "date" && "Select your travel dates"}
+                    {currentStep === "budget" && "Select your budget type"}
+                    {currentStep === "people" && "Select the type of people traveling"}
+                </div>
+
+
                 {currentStep === "date" && (
                     <RangeCalendar
                         preselectedRange={{ start: dateRng.startDate, end: dateRng.endDate }}
                         onDateSelected={(date) => {
                             setTimeout(() => {
+                                console.log(date);
                                 setDateRng({
                                     startDate: date.start,
                                     endDate: date.end,

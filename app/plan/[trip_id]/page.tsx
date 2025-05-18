@@ -7,9 +7,8 @@ const PlanTrip = () => {
   return (
     <>
     <div>{id}</div>
-    <div>Working onj this page :)</div>
+    <div>Working on this page :)</div>
     </>
   )
 }
 export default PlanTrip
-

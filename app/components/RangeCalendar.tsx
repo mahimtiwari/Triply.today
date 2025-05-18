@@ -36,7 +36,7 @@ const RangeCalendar: React.FC<RangeCalendarProps> = ({
   const today = dayjs();
 
   const startOfMonth = currentMonth.startOf("month");
-  const endOfMonth = currentMonth.endOf("month");
+  // Removed unused endOfMonth variable
   const startDay = startOfMonth.day();
   const daysInMonth = currentMonth.daysInMonth();
 
@@ -51,14 +51,16 @@ const RangeCalendar: React.FC<RangeCalendarProps> = ({
     } else if (selectedRange.start && !selectedRange.end) {
       if (date.isBefore(selectedRange.start, "day")) {
         setSelectedRange({ start: date, end: selectedRange.start });
-      } else {
-        const newRange = { ...selectedRange, end: date };
-        setSelectedRange(newRange);
-        onDateSelected({
-          start: newRange.start?.toDate() || null,
-          end: newRange.end?.toDate(),
-        });
       }
+      const newRange = {
+        start: date.isBefore(selectedRange.start, "day") ? date : selectedRange.start,
+        end: date.isAfter(selectedRange.start, "day") ? date : selectedRange.start,
+      };
+      setSelectedRange(newRange);
+      onDateSelected({
+        start: newRange.start?.toDate() || null,
+        end: newRange.end?.toDate() || null,
+      });
     }
   };
 

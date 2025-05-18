@@ -42,13 +42,13 @@ export default function Header() {
     <header className="backdrop-blur-md sticky top-0 z-100" style={{backgroundColor: 'rgb(255 255 255 / 70%)',}}>
       <nav aria-label="Global" className="mx-auto flex items-center justify-between p-6 lg:px-8">
         <div className="flex lg:flex-1">
-          <a href="#" className="-m-1.5 p-1.5">
-            <span className="sr-only">Triply.today</span>
-            <img
+          <a href="/" className="-m-1.5 p-1.5">
+            <span className="text-xl font-bold text-indigo-600">Triply<span className="text-gray-800">.today</span></span>
+            {/* <img
               alt=""
               src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=600"
               className="h-8 w-auto"
-            />
+            /> */}
           </a>
         </div>
         <div className="flex lg:hidden">
