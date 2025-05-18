@@ -60,6 +60,7 @@ function PrePlanTripContent() {
             .then((response) => {
                 if (response.ok) {
                     response.json().then((data) => {
+                        console.log("Response data:", data);
                         const { id } = data;
                         if (id) {
                             window.location.href = `/plan/${id}`;
@@ -69,6 +70,8 @@ function PrePlanTripContent() {
                     });
                 } else {
                     console.error("Failed to save trip details");
+                                        response.json().then((data) => {
+                        console.log("Response data:", data);})
                 }
             })
             .catch((error) => console.error("Error:", error));
