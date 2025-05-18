@@ -23,7 +23,6 @@ export async function POST(req: Request) {
       return NextResponse.json({ id: "no-id-for-you" }, { status: 400 });
     }
 
-    
     const existingPlan = await prisma.travelPlan.findFirst({
       where: {
         destination,
