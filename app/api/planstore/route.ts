@@ -57,6 +57,6 @@ export async function POST(req: Request) {
 
   } catch (error) {
     console.error('Error in /api/planstore POST:', error);
-    return NextResponse.json({ msg: 'Error' }, { status: 500 });
+    return NextResponse.json({ msg: 'Error' , error:error}, { status: 500 });
   }
 }
