@@ -24850,7 +24850,7 @@ const searches = [
 
 
 import { NextRequest } from 'next/server';
- 
+ export const dynamic = 'force-dynamic';
 export function GET(request: NextRequest) {
     const searchParams = request.nextUrl.searchParams;
     const query = searchParams.get('query');

@@ -4,7 +4,7 @@ import { GoogleGenAI, Type } from "@google/genai";
 import { prisma } from '@/lib/prisma';
 import { ms } from 'date-fns/locale';
 
-
+export const dynamic = 'force-dynamic';
 export async function GET(request: NextRequest) {
 
     const searchParams = request.nextUrl.searchParams;
