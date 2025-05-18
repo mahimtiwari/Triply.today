@@ -1,4 +1,5 @@
 "use client";
+import { form } from '@heroui/react';
 import React, { useEffect, useRef, useState } from 'react';
 
 interface suggestion_Type {
@@ -11,7 +12,7 @@ const SearchBarAutocomplete = (parameters: any) => {
     const [boolSuggestions, setBoolSuggestions] = useState(false);
     const [filteredSuggestions, setFilteredSuggestions] = useState<suggestion_Type[]>([]);
     const lastSelectedSuggestion = useRef<string | null>(null);
-
+    const formRef = useRef<HTMLFormElement | null>(null);
     useEffect(() => {
         if (query.trim() === '' || query === lastSelectedSuggestion.current) {
             setFilteredSuggestions([]);
@@ -54,10 +55,15 @@ const SearchBarAutocomplete = (parameters: any) => {
         setQuery(suggestion);
         lastSelectedSuggestion.current = suggestion;
         setBoolSuggestions(false);
+        setTimeout(() => {
+        if (formRef.current) {
+            formRef.current.submit(); // Submit the form when a suggestion is clicked
+        }
+    }, 0);
     }
 
     return (
-        <form action="/preplan" className="w-full max-w-[500px] mt-[70px] mx-[10px]">
+        <form ref={formRef} action="/preplan" className="w-full max-w-[500px] mt-[70px] mx-[10px]">
             <label htmlFor="default-search" className="mb-2 text-sm font-medium text-gray-900 sr-only">Search</label>
             <div className="relative">
                 <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">

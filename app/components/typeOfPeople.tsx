@@ -2,7 +2,17 @@ import { set } from 'date-fns';
 import { tr } from 'date-fns/locale';
 import React, { useState, useRef } from 'react'
 
-const TypeOfPeople = () => {
+interface peopleType {
+  className?: string;
+    onPeopletSelected: (params: {
+        adultsNum: number;
+        childrenNum: number;
+        selectedStr: string;
+    }) => void;
+    
+}
+
+const TypeOfPeople: React.FC<peopleType> = ({ onPeopletSelected  , className} ) => {
     const [selected, setSelected] = useState<string | null>(null);
 
     const besideSolo = useRef(false);
@@ -10,8 +20,16 @@ const TypeOfPeople = () => {
         besideSolo.current = value;
     }
 
+
+
+    const numberOfPeopleInput = useRef<HTMLDivElement | null>(null);
+
     const [ adults, setAdults ] = useState(1);
     const [ children, setChildren ] = useState(0);
+
+    const scrollToDiv = () => {
+      numberOfPeopleInput.current?.scrollIntoView({ behavior: 'smooth' });
+    };
 
     const changeAdults = (value: number, hardchange?:boolean) => {
 
@@ -43,14 +61,24 @@ const TypeOfPeople = () => {
             if (option === 'Family') {
                 changeAdults(2, true);
                 changeChildren(2, true);
+
             } else if (option === 'Custom') {
                 changeAdults(1, true);
                 changeChildren(0, true);
             }
+            setTimeout(() => {
+              scrollToDiv();
+            }, 0);
 
         } else {
             setBesideSolo(false);
             changeAdults(option === 'Solo' ? 1 : 2, true);
+            changeChildren(0, true);
+            onPeopletSelected({
+                adultsNum: option === 'Solo' ? 1 : 2,
+                childrenNum: 0,
+                selectedStr: option,
+            });
         }
         setSelected(option);
 
@@ -58,9 +86,8 @@ const TypeOfPeople = () => {
 
     return (
         <>
-            <div>
-                <span className="">Select the type of people for your trip:</span>
-                <div className='flex flex-wrap sm:flex-wrap mt-4 justify-between gap-5 sm:gap-10'>
+            <div className={className}>
+                <div className='flex flex-wrap sm:flex-wrap justify-between gap-5 sm:gap-10'>
                     {['Solo', 'Family', 'Couple', 'Custom'].map((option) => (
                         <button
                             key={option}
@@ -87,7 +114,7 @@ const TypeOfPeople = () => {
             </div>
             {besideSolo.current && (
                 <>
-                <div id="change-anc" className="mt-6 mb-50 p-6 border border-gray-300 rounded-lg shadow-lg bg-white">
+                <div ref={numberOfPeopleInput} id="change-anc" className="mt-6 mb-50 p-6 border border-gray-300 rounded-lg shadow-lg bg-white">
                     <div className="flex items-center justify-between">
         <div className="text-gray-700 font-medium text-lg">
           Adults
@@ -176,6 +203,20 @@ const TypeOfPeople = () => {
           </button>
         </div>
       </div>
+                    <button
+                  className="w-full mt-6 py-3 text-lg font-semibold text-white rounded-full bg-blue-500 hover:bg-blue-600 transition-all shadow-lg hover:shadow-xl"
+                  onClick={() => {
+
+                    onPeopletSelected({
+                      adultsNum: adults,
+                      childrenNum: children,
+                      selectedStr: selected || '',
+                    });
+
+                  }}
+                  >
+                  Done
+                  </button>
     </div>
                 </>
             )}
