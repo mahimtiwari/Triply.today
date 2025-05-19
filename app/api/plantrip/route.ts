@@ -51,24 +51,20 @@ export async function GET(request: NextRequest) {
 
     const response = await ai.models.generateContent({
         model: "gemini-2.0-flash",
-        contents: prompt,
+        contents: "search and tell me price of igi to sfo ticket price",
         config: {
             tools: [{googleSearch: {}}],
-            responseMimeType: "application/json",
-            responseSchema:{
-
-            },
         },
     });
     console.log(response.text);
 
-
-
     return new Response(
-        JSON.stringify({ trip: JSON.parse(String(response.text).replace("```json", "").replace(/```/g, '')) }),
+        // JSON.stringify({ trip: JSON.parse(String(response.text).replace("```json", "").replace(/```/g, '')) }),
+        JSON.stringify({ trip: String(response.text) }),
         {
+            status: 200,
             headers: { 'Content-Type': 'application/json' },
-        },
+        }
         );
 
 }
