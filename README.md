@@ -1,12 +1,12 @@
-# Setting Up `.env.local`
+# Setting Up `.env`
 
-Follow these steps to create and configure a `.env.local` file in the root directory of your project:
+Follow these steps to create and configure a `.env` file in the root directory of your project:
 
 1. **Create the File**  
-    Create a new file named `.env.local` in the root directory where `package.json` is located.
+    Create a new file named `.env` in the root directory where `package.json` is located.
 
 2. **Edit the File**  
-    Open the `.env.local` file in a text editor or VS Code.
+    Open the `.env` file in a text editor or VS Code.
 
 3. **Add the API Key**  
     Add the following line to the file:
@@ -16,7 +16,7 @@ Follow these steps to create and configure a `.env.local` file in the root direc
     Replace `YOUR_API_KEY_HERE` with your actual Gemini API key, which you can obtain for free from [Google AI Studio](https://ai.google/studio).
 
 4. **Save the File**  
-    Save the `.env.local` file after making the changes.
+    Save the `.env` file after making the changes.
 
 ---
 
@@ -41,4 +41,4 @@ To perform a development build:
     ```
     This will create an optimized build of your application for development purposes.
 
-**Reminder:** Ensure your `.env.local` file is correctly configured before building.
+**Reminder:** Ensure your `.env` file is correctly configured before building.
