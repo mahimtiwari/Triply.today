@@ -87,6 +87,9 @@ Prisma.NullTypes = {
  * Enums
  */
 exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
+  ReadUncommitted: 'ReadUncommitted',
+  ReadCommitted: 'ReadCommitted',
+  RepeatableRead: 'RepeatableRead',
   Serializable: 'Serializable'
 });
 
@@ -106,6 +109,11 @@ exports.Prisma.TravelPlanScalarFieldEnum = {
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
+};
+
+exports.Prisma.QueryMode = {
+  default: 'default',
+  insensitive: 'insensitive'
 };
 
 
@@ -141,7 +149,8 @@ const config = {
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
-    "rootEnvPath": null
+    "rootEnvPath": null,
+    "schemaEnvPath": "../../../.env"
   },
   "relativePath": "../../../prisma",
   "clientVersion": "6.8.2",
@@ -149,17 +158,17 @@ const config = {
   "datasourceNames": [
     "db"
   ],
-  "activeProvider": "sqlite",
+  "activeProvider": "postgresql",
   "inlineDatasources": {
     "db": {
       "url": {
-        "fromEnvVar": null,
-        "value": "file:../db/dev.db"
+        "fromEnvVar": "POSTGRES_URL",
+        "value": null
       }
     }
   },
-  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../app/generated/prisma\"\n}\n\ndatasource db {\n  provider = \"sqlite\"\n  url      = \"file:../db/dev.db\"\n}\n\nmodel TravelPlan {\n  id          String   @id @default(cuid())\n  destination String\n  startDate   String\n  endDate     String\n  budget      String\n  peopleType  String\n  adults      Int\n  children    Int\n  createdAt   DateTime @default(now())\n  expiresAt   DateTime\n}\n",
-  "inlineSchemaHash": "ccca8f8be11974f58dba7cdacbc3f072fd4c427a2f5c281c98b0eb25851f910a",
+  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../app/generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"POSTGRES_URL\")\n}\n\nmodel TravelPlan {\n  id          String   @id @default(cuid())\n  destination String\n  startDate   String\n  endDate     String\n  budget      String\n  peopleType  String\n  adults      Int\n  children    Int\n  createdAt   DateTime @default(now())\n  expiresAt   DateTime\n}\n",
+  "inlineSchemaHash": "916adb2c4a9e3f7b13589cb05606abc7ae756d74722276dd6d1a314fdbd6de68",
   "copyEngine": true
 }
 
