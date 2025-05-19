@@ -1,31 +1,44 @@
 # Setting Up `.env.local`
 
-To ensure the code works correctly, follow these steps to create and configure a `.env.local` file where `package.json` is present:
+Follow these steps to create and configure a `.env.local` file in the root directory of your project:
 
-1. In the root directory of your project, create a new file named `.env.local`.
-2. Open the `.env.local` file in a text editor or VScode...
-3. Add the following line to the file:
-    ```
+1. **Create the File**  
+    Create a new file named `.env.local` in the root directory where `package.json` is located.
+
+2. **Edit the File**  
+    Open the `.env.local` file in a text editor or VS Code.
+
+3. **Add the API Key**  
+    Add the following line to the file:
+    ```env
     GEMINI_API=YOUR_API_KEY_HERE
     ```
-4. Replace `YOUR_API_KEY_HERE` with your actual Gemini API key, which you can obtain for free from [Google AI Studio](https://ai.google/studio).
+    Replace `YOUR_API_KEY_HERE` with your actual Gemini API key, which you can obtain for free from [Google AI Studio](https://ai.google/studio).
 
-Save the file, and you're all set!
+4. **Save the File**  
+    Save the `.env.local` file after making the changes.
 
-## Running the Development Server
+---
 
-Once your `.env.local` file is set up, you can start the development server by running the following command in your terminal:
+# Performing a Development Build
 
-```bash
-npm run dev
-```
+To perform a development build:
 
-This will start the application in development mode. You can access it by navigating to `http://localhost:3000` or on your own LAN server in your web browser.
+1. **Update the Prisma Configuration**  
+    Navigate to the `/prisma/schema.prisma` file and update the `datasource db` configuration as follows:
+    ```prisma
+    datasource db {
+      provider = "sqlite"
+      url      = "file:../db/dev.db"
+    }
+    ```
+    Save the file after making the changes.
 
-If you encounter any issues, ensure that all dependencies are installed by running:
+2. **Build the Project**  
+    Run the following command in your terminal:
+    ```bash
+    npm run dev
+    ```
+    This will create an optimized build of your application for development purposes.
 
-```bash
-npm install
-```
-
-Happy coding!
+**Reminder:** Ensure your `.env.local` file is correctly configured before building.
