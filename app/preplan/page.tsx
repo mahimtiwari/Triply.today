@@ -43,38 +43,8 @@ function PrePlanTripContent() {
     function sendAPIstoreRedirect(peopleTy: { selc: string; adls: number; chls: number }) {
         const sDate = dateRng.startDate?.toISOString().split("T")[0];
         const eDate = dateRng.endDate?.toISOString().split("T")[0];
-
-        fetch("/api/planstore", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                destination,
-                startDate: sDate,
-                endDate: eDate,
-                budget: budgetOpt,
-                peopleType: peopleTy.selc,
-                adults: peopleTy.adls,
-                children: peopleTy.chls,
-            }),
-        })
-            .then((response) => {
-                if (response.ok) {
-                    response.json().then((data) => {
-                        console.log("Response data:", data);
-                        const { id } = data;
-                        if (id) {
-                            window.location.href = `/plan/${id}`;
-                        } else {
-                            console.error("ID not found in response");
-                        }
-                    });
-                } else {
-                    console.error("Failed to save trip details");
-                                        response.json().then((data) => {
-                        console.log("Response data:", data);})
-                }
-            })
-            .catch((error) => console.error("Error:", error));
+        const url = `/plan?destination=${destination}&startDate=${sDate}&endDate=${eDate}&budget=${budgetOpt}&peopleType=${peopleTy.selc}&adults=${peopleTy.adls}&children=${peopleTy.chls}`;
+        return url;
     }
 
     if (!destination) return null;
@@ -177,11 +147,14 @@ function PrePlanTripContent() {
                                 childrenNum,
                             });
                             handleNextStep();
-                            sendAPIstoreRedirect({
-                                selc: selectedStr,
-                                adls: adultsNum,
-                                chls: childrenNum,
-                            });
+                            window.location.href = `${
+                                sendAPIstoreRedirect({
+                                    selc: selectedStr,
+                                    adls: adultsNum,
+                                    chls: childrenNum,
+                                })
+                            }`;
+
                         }}
                     />
                 )}

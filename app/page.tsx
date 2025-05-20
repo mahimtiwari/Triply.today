@@ -1,6 +1,7 @@
 import Header from "./components/header";
 import SearchBarAutocomplete from "./components/searchbar";
 import "../public/css/home.css";
+import PopularDestinationComponent from "./components/PopularDestination";
 
 export default function Home() {
   return (
@@ -19,7 +20,15 @@ export default function Home() {
           <SearchBarAutocomplete placeholder="Search destination" />
 
         </div>
+
+        
+
+
       </main>
+
+      <PopularDestinationComponent />
+
+
     </>
   );
 }
