@@ -1,9 +1,8 @@
 import React from 'react'
-import Image from 'next/image'
 
 
 const PopularDestination = [
-    {destination: "Los Angles", src: "/img/thailand.jpg"},
+    {destination: "San Fransisco", src: "/img/thailand.jpg"},
     {destination: "Thailand", src: "/img/thailand.jpg"},
     {destination: "Japan", src: "/img/thailand.jpg"},
 ];
@@ -20,30 +19,36 @@ const PopularDestinationComponent = () => {
             Explore the most sought-after travel spots around the world.
             </p>
 
-            {/* <div>
+
+
+
+            <div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-5">
 
-                    {PopularDestination.map((item, index) => (
 
-                        <div 
-                        key={index}
-                        className="h-[250px] w-[250px] rounded-xl overflow-hidden bg-center bg-cover relative group cursor-pointer transform transition duration-500 hover:scale-105 shadow-xl"
-                        style={{ backgroundImage: `url('${item.src}')` }}>
+                        <div className="group h-[250px] w-[250px] rounded-2xl overflow-hidden bg-center bg-cover relative group cursor-pointer shadow-2xl transition-transform duration-300 hover:scale-105"
+  style={{ backgroundImage: `url('/img/thailand.jpg')` }}>
 
-                            
-                            <div className="absolute inset-0 flex items-center justify-center text-white font-extrabold text-[38px] transition duration-500 group-hover:scale-105 group-hover:rotate-[1deg] drop-shadow-[0_4px_4px_rgba(0,0,0,0.4)]">
-                                {item.destination}
-                            </div>
-                        </div>
+  <div 
+    className="absolute flex bottom-4 left-1/2 -translate-x-1/2 w-[90%] px-4 py-2 text-lg font-semibold text-white rounded-xl backdrop-blur-md bg-white/10 border border-white/20 shadow-md"
+  >
+    
+    <span className="text-center">Thailand</span>
+    <span className="ml-auto text-center text-transparent  bg-white group-hover:bg-gradient-to-r group-hover:from-blue-500 group-hover:via-purple-500 group-hover:to-pink-500 bg-clip-text">❤️</span>
+  
+  </div>
+
+  <div className="absolute bottom-2 left-1/2 -translate-x-1/2 h-[2px] w-0 bg-white transition-all duration-300 group-hover:w-[60%]"></div>
+</div>
+
                 
      
-                    )
-                    )}
+
 
                 </div>
                     
 
-            </div> */}
+            </div>
 
         </div>
 
