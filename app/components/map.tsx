@@ -16,7 +16,7 @@ export default function Map() {
         const map = new maplibregl.Map({
             container: mapContainerRef.current,
             style: MAP_STYLE,
-            center: [77.5946, 12.9716],
+            center: [-122.4194, 37.7749],
             zoom: 10,
         });
 
