@@ -507,12 +507,8 @@ const [dayExpanded, setDayExpanded] = useState<null | string>(null);
           
           )}
 
-
-
           {sideSelected === "plan" && (
-            
             <div className='h-full w-full bg-white'>
-
               { !dataJSON && (
                 <>
                 {Array.from({ length: 7 }, (_, index) => (
@@ -562,9 +558,7 @@ const [dayExpanded, setDayExpanded] = useState<null | string>(null);
                             /> {place.time}</p>
                             </div>
                           </div>
-
                           </div>
-
                           {/* Timing Section */}
                           <div className="mt-4 border-t-[2px] border-gray-300 pt-4">
                           <div className="flex items-center justify-between font-semibold">

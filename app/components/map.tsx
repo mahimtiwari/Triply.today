@@ -4,7 +4,7 @@ import { useEffect, useRef } from 'react';
 import maplibregl, { Map as MapLibreMap } from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 
-const MAP_STYLE = 'https://tiles.stadiamaps.com/styles/alidade_smooth.json';
+const MAP_STYLE = '/alidade_smooth.json';
 
 export default function Map() {
     const mapContainerRef = useRef<HTMLDivElement>(null);
