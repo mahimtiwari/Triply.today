@@ -4,8 +4,6 @@ import { useEffect, useRef } from 'react';
 import maplibregl, { Map as MapLibreMap } from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 
-const MAP_STYLE = '/alidade_smooth.json';
-
 export default function Map() {
     const mapContainerRef = useRef<HTMLDivElement>(null);
     const mapRef = useRef<MapLibreMap | null>(null);
@@ -15,38 +13,34 @@ export default function Map() {
 
         const map = new maplibregl.Map({
             container: mapContainerRef.current,
-            style: MAP_STYLE,
+            style: {
+                version: 8,
+                sources: {
+                    'osm-tiles': {
+                        type: 'raster',
+                        tiles: [
+                            'https://tile.openstreetmap.org/{z}/{x}/{y}.png'
+                        ],
+                        tileSize: 256,
+                        attribution:
+                            '© OpenStreetMap contributors',
+                    },
+                },
+                layers: [
+                    {
+                        id: 'osm-tiles',
+                        type: 'raster',
+                        source: 'osm-tiles',
+                        minzoom: 0,
+                        maxzoom: 19,
+                    },
+                ],
+            },
             center: [-122.4194, 37.7749],
             zoom: 10,
         });
 
         mapRef.current = map;
-
-        map.on('load', () => {
-            // Add a custom color layer for water
-            map.addLayer({
-                id: 'custom-water',
-                type: 'fill',
-                source: 'openmaptiles',
-                'source-layer': 'water',
-                paint: {
-                    'fill-color': '#85d7ff', // Light blue for water
-                    'fill-opacity': 0.6,
-                },
-            });
-
-            // Add a custom color layer for land
-            map.addLayer({
-                id: 'custom-land',
-                type: 'fill',
-                source: 'openmaptiles',
-                'source-layer': 'land',
-                paint: {
-                    'fill-color': '#a7f3d0', // Light green for land
-                    'fill-opacity': 0.4,
-                },
-            });
-        });
 
         const handleResize = () => {
             if (map) {
@@ -63,10 +57,9 @@ export default function Map() {
     }, []);
 
     return (
-            <div
-                ref={mapContainerRef}
-                className="w-full h-full max-h-[100vh]"
-            />
-
+        <div
+            ref={mapContainerRef}
+            className="w-full h-full max-h-[100vh]"
+        />
     );
 }
