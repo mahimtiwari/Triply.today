@@ -6,6 +6,10 @@ import { set } from 'date-fns';
 import Image from 'next/image';
 import countryToCurrency from 'country-to-currency';
 import MiscComponent from '../components/miscComponent';
+import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, LineChart, XAxis, CartesianGrid, YAxis, Legend, Line, BarChart, Bar } from 'recharts';
+import { get } from 'http';
+
+
 const PlanTrip = () => {
 
 
@@ -96,11 +100,53 @@ interface CostDetailsType {
   other?: number;
 }
 
+interface GraphicalCostData {
+  expByCategory: {name: string, value: number}[],
+  stackedDayData: {name: string, transportation: number, hotel: number, food: number, sightseeing: number}[],
+  miscCosts: {name: string, value: number}[]
+}
 
+const graphicalCostDataRef = useRef<GraphicalCostData | null>(null);
+
+const updateGraphicalCostData = (costDetails: CostDetailsType) => {
+  const expByCategory = [
+    { name: 'Transportation', value: costDetails.totaltransportation },
+    { name: 'Hotel', value: costDetails.totalhotel },
+    { name: 'Food', value: costDetails.totalfood },
+    { name: 'Sightseeing', value: costDetails.totalsightseeing },
+    { name: 'Shopping', value: costDetails.shopping || 0 },
+    { name: 'Insurance', value: costDetails.insurance || 0 },
+    { name: 'Visa', value: costDetails.visa || 0 },
+    { name: 'Other', value: costDetails.other || 0 },
+  ].filter(item => item.value !== 0);
+
+  const stackedDayData = Object.entries(costDetails.days).map(([day, details]) => ({
+    name: `Day ${day.replace("day", "")}`,
+    transportation: details.subcosts.transportation,
+    hotel: details.subcosts.hotel,
+    food: details.subcosts.food,
+    sightseeing: details.subcosts.sightseeing,
+  }));
+  const miscCosts = [
+    { name: 'Shopping', value: costDetails.shopping || 0 },
+    { name: 'Insurance', value: costDetails.insurance || 0 },
+    { name: 'Visa', value: costDetails.visa || 0 },
+    { name: 'Other', value: costDetails.other || 0 },
+  ].filter(item => item.value !== 0);
+
+  graphicalCostDataRef.current = {
+    expByCategory,
+    stackedDayData,
+    miscCosts: miscCosts,
+  };
+}
 
 const updateTotalCostDetails = (costDetails: CostDetailsType) => {
   costDetails.totalcost = costDetails.totaltransportation + costDetails.totalhotel + costDetails.totalfood + costDetails.totalsightseeing;
   costDetails.totalcost = costDetails.totalcost + (costDetails.shopping || 0) + (costDetails.insurance || 0) + (costDetails.visa || 0) + (costDetails.other || 0);
+  
+  
+  updateGraphicalCostData(costDetails);
   setTotalCost(costDetails.totalcost);
 }
 const getTransportationCost = (transportation: Transportation[], from:string, to:string, prefOption:string): number => {
@@ -117,6 +163,11 @@ const getTransportationCost = (transportation: Transportation[], from:string, to
   return 0;
 
 }  
+
+
+
+
+
 
 const costProcessor = (data: Trip): CostDetailsType => {
   // Implementation goes here
@@ -220,18 +271,18 @@ const [currencySymbol, setCurrencySymbol] = useState<string | null>(null);
         
         const countryCode:string = locationData.country;
         const currencyCode: string = countryToCurrency[countryCode as keyof typeof countryToCurrency];
-        // setCurrencySymbol(new Intl.NumberFormat('en-US', {
-        //   style: 'currency',
-        //   currency: currencyCode,
-        // }).format(0).replace(/\d/g, '').trim().replace('.', ''));
-        setCurrencySymbol("$")
-
-        fetch(`/api/plantrip?${params.toString()}&clientLocation=${locData}`)
+        setCurrencySymbol(new Intl.NumberFormat('en-US', {
+          style: 'currency',
+          currency: currencyCode,
+        }).format(0).replace(/\d/g, '').trim().replace('.', ''));
+        // setCurrencySymbol("$")
+        console.log("Currency Code:", currencyCode);
+        fetch(`/api/plantrip?${params.toString()}&clientLocation=${locData}&curcode=${currencyCode}`)
           .then((response) => response.json())
           .then((data) => {
             costDetailsRef.current = costProcessor(data);
             setTotalCost(costDetailsRef.current.totalcost);
-
+            updateGraphicalCostData(costDetailsRef.current);
             setDataJSON(data);
           })
           .catch((error) => {
@@ -293,6 +344,32 @@ const startDrag = () => {
     setDragDirection(null);
   };
 const [dayExpanded, setDayExpanded] = useState<null | string>(null);
+
+
+const buildGmapUrl = (places: Place[]): string => {
+
+
+  const bUrl: string = "https://www.google.com/maps/dir/?api=1&";
+
+  var waypoints:string = "";
+  for (let i =0; i < places.length; i++) {
+
+    waypoints += i!== 0 ? `${places[i].from}|` : '';
+  }
+  
+  return `${bUrl}origin=${places[0].from}&destination=${places[places.length - 1].to}&waypoints=${waypoints}`;
+}
+const COLORS = [
+  '#ff6b6b',
+  '#feca57', 
+  '#48dbfb', 
+  '#1dd1a1', 
+  '#5f27cd', 
+  '#ff9ff3',
+  '#54a0ff',
+  '#00d2d3', 
+];
+
 
   return (
     <>
@@ -485,16 +562,22 @@ const [dayExpanded, setDayExpanded] = useState<null | string>(null);
                     <td className="px-6 py-4 text-gray-700">{tripInfo.destination}</td>
                     <td className="px-6 py-4 text-green-600 font-semibold">{currencySymbol}{costDetailsRef.current?.days[day].daytotalcost}</td>
                     <td className="p-3 select-none">
-                      <a className='flex cursor-pointer flex-row gap-2 text-green-600 font-semibold items-center justify-center p-3 rounded-4xl hover:bg-green-100 transition duration-200 ease-in-out border-1 border-green-400'>
+
+
+                        <a 
+                        href={buildGmapUrl(tripInfo.places)} 
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        className='flex cursor-pointer flex-row gap-2 text-green-600 font-semibold items-center justify-center p-3 rounded-4xl hover:bg-green-100 transition duration-200 ease-in-out border-1 border-green-400'
+                        >
                         <Image
                           src={`/img/gmap.png`}
                           width={13}
                           height={13}
                           alt="gmap"
-                          
                         />
                         View
-                      </a>
+                        </a>
                     </td>
                   </tr>
 
@@ -682,7 +765,6 @@ const [dayExpanded, setDayExpanded] = useState<null | string>(null);
                             </div>
                           </div>
                           </div>
-                          {/* Transport Section */}
                           <div className="mt-4 flex items-center justify-between">
                           <div className="flex items-center gap-2">
                             <span className="bg-gradient-to-r from-blue-300 to-blue-600 text-white px-3 py-1 rounded-full text-sm font-medium">
@@ -691,7 +773,7 @@ const [dayExpanded, setDayExpanded] = useState<null | string>(null);
                           </div>
                           <div className="flex items-center gap-2">
                             <span className="bg-gradient-to-r from-green-300 via-green-500 to-green-600 text-white px-3 py-1 rounded-full text-sm font-semibold">
-                            ${getTransportationCost(dataJSON.trip.transportation, place.from, place.to, place.preffered_transport)}
+                            {currencySymbol}{getTransportationCost(dataJSON.trip.transportation, place.from, place.to, place.preffered_transport)}
                             </span>
                           </div>
                           </div>
@@ -837,22 +919,151 @@ const [dayExpanded, setDayExpanded] = useState<null | string>(null);
 
         {/* Map DIV */}
 
-          <div className={`flex-grow ${ sideSelected !== "cost" ? "block" : "hidden" }`}>
-            <Map />
-          </div>
-          <div className={`flex-grow ${ sideSelected === "cost" ? "block" : "hidden" }`}>
-            Graphs Here!!!
-            
-          </div>
+            <div className={`flex-grow ${ sideSelected !== "cost" ? "block" : "hidden" }`}>
+            <Map 
+              placesNames={React.useMemo(() => ['San Francisco', 'Mountain View', 'Los Angeles'], [])} 
+              onClick={React.useCallback(
+              (placeName: string) => {
+                console.log("place:", placeName);
+              }, 
+              []
+              )} 
+            />
+            </div>
+          <div className={`flex-grow overflow-y-hidden ${ sideSelected === "cost" ? "block" : "hidden" }`}>
+            { graphicalCostDataRef.current && (      
+              <div className=" h-[100vh]">
 
+
+                {costType === "day" && (
+                <div className='p-5 flex flex-col gap-7 text-gray-700 h-full font-[geist] text-sm'>
+
+                <span className='text-xl'>Daily Spend by Category</span>
+
+                <ResponsiveContainer width="100%" height={400} className="my-auto">
+                    <BarChart data={graphicalCostDataRef.current.stackedDayData}>
+                      <XAxis dataKey="name" />
+                      <YAxis tickFormatter={(value) => `${currencySymbol}${value}`}/>
+                      <CartesianGrid strokeDasharray="3 3" />
+    <Tooltip
+      content={({ active, payload, label }) => {
+        if (active && payload && payload.length) {
+          const total = payload.reduce((sum, entry) => sum + (entry.value ? Number(entry.value) : 0), 0);
+          return (
+            <div className="bg-white p-3 rounded-lg shadow border border-gray-200">
+              <p className="text-sm font-semibold text-gray-800">{label}</p>
+              {payload.map((entry, index) => (
+                <div key={index} className={`flex justify-between text-sm gap-1 font-semibold`}
+                style={{ color: COLORS[index % COLORS.length] }}
+                >
+                  <span>{entry.name}</span>
+                  <span>{currencySymbol}{entry.value}</span>
+                </div>
+              ))}
+              <div className="mt-2 border-t pt-2 flex justify-between text-sm font-semibold text-gray-900">
+                <span>Total</span>
+                <span>{currencySymbol}{total}</span>
+              </div>
+            </div>
+          );
+        }
+        return null;
+      }}
+    />
+    <Legend iconType="circle" height={36} />
+
+                      {Object.keys(graphicalCostDataRef.current.stackedDayData[0] || {}).filter(key => key !== 'name').map((key, index) => (
+                      <Bar key={index} dataKey={key} stackId="a" fill={COLORS[index % COLORS.length]} />
+                      ))}
+                    </BarChart>
+                </ResponsiveContainer>
+                </div>
+                )}
+                {costType === "misc" && (
+                <div className='p-5 flex flex-col gap-7 text-gray-700 h-full font-[geist] text-sm'>
+                <span className='text-xl'>Miscellaneous Costs</span>
+                <ResponsiveContainer>
+        <PieChart>
+          <Pie
+            data={graphicalCostDataRef.current.miscCosts}
+            dataKey="value"
+            nameKey="name"
+            cx="50%"
+            cy="50%"
+            outerRadius={80}
+            innerRadius={50}
+            fill="#8884d8"
+            label
+            isAnimationActive={true}
+          >
+            {graphicalCostDataRef.current.miscCosts.map((_, index) => (
+              <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+            ))}
+          </Pie>
+          <Tooltip 
+            content={({ active, payload }) => {
+              if (active && payload && payload.length) {
+                return (
+                  <div className="bg-white p-3 rounded-lg shadow border border-gray-200">
+                    <p className="text-sm font-semibold text-gray-800">{payload[0].name}</p>
+                    <p className="text-sm font-semibold text-gray-900">{currencySymbol}{payload[0].value}</p>
+                  </div>
+                );
+              }
+              return null;
+            }}
+          />
+        </PieChart>
+                </ResponsiveContainer>
+                </div>
+                  
+                )}
+                {costType === "total" && (
+                <div className='p-5 flex flex-col gap-7 text-gray-700 h-full font-[geist] text-sm'>
+
+                <span className='text-xl'>Daily Spend by Category</span>
+                <ResponsiveContainer>
+        <PieChart>
+          <Pie
+            data={graphicalCostDataRef.current.expByCategory}
+            dataKey="value"
+            nameKey="name"
+            cx="50%"
+            cy="50%"
+            outerRadius={80}
+            innerRadius={50}
+            fill="#8884d8"
+            label
+            isAnimationActive={true}
+          >
+            {graphicalCostDataRef.current.expByCategory.map((_, index) => (
+              <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+            ))}
+          </Pie>
+          <Tooltip 
+            content={({ active, payload }) => {
+              if (active && payload && payload.length) {
+                return (
+                  <div className="bg-white p-3 rounded-lg shadow border border-gray-200">
+                    <p className="text-sm font-semibold text-gray-800">{payload[0].name}</p>
+                    <p className="text-sm font-semibold text-gray-900">{currencySymbol}{payload[0].value}</p>
+                  </div>
+                );
+              }
+              return null;
+            }}
+          />
+        </PieChart>
+                </ResponsiveContainer>
+
+                </div>
+                )}
+              </div>
+            )}     
+          </div>
 
       </div>
 </div>
-
-
-
-
-
 
     </>
   )
