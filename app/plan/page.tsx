@@ -8,6 +8,7 @@ import countryToCurrency from 'country-to-currency';
 import MiscComponent from '../components/miscComponent';
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, LineChart, XAxis, CartesianGrid, YAxis, Legend, Line, BarChart, Bar } from 'recharts';
 import { get } from 'http';
+import PackingCard from '../components/packingCard';
 
 
 const PlanTrip = () => {
@@ -370,13 +371,48 @@ const COLORS = [
   '#00d2d3', 
 ];
 
+const pckList = useRef<{name: string, values: {name: string, checked: boolean}[]}[]>([
+  {
+    name: 'Electronics',
+    values: [
+      { name: 'Phone charger', checked: false },
+      { name: 'Laptop charger', checked: false },
+      { name: 'Camera', checked: false },
+      { name: 'Headphones', checked: false },
+    ],
+  },{
+    name: 'Clothing',
+    values: [
+      { name: 'T-shirts', checked: false },
+      { name: 'Jeans', checked: false },
+      { name: 'Jacket', checked: false },
+      { name: 'Shoes', checked: false },
+      { name: 'Socks', checked: false },
+      { name: 'Underwear', checked: false },
+    ],
+  },
+  {
+    name: 'Toiletries',
+    values: [
+      { name: 'Toothbrush', checked: false },
+      { name: 'Toothpaste', checked: false },
+      { name: 'Shampoo', checked: false },
+      { name: 'Conditioner', checked: false },
+      { name: 'Soap', checked: false },
+      { name: 'Deodorant', checked: false },
+    ],
+  },
+  
+]);
+
+const [sumCards, setSumCards] = useState<{name: string, values: {name: string, checked: boolean}[]}[]>(pckList.current);
 
   return (
     <>
 <div className='flex flex-col h-screen'>
 <div className="flex flex-row flex-grow ">
 
-      <div className="h-[100vh] flex min-w-[600px]" style={{ width: `${leftWidth}%`}}>
+      <div className="h-[100vh] flex min-w-[600px]" style={{ width: `${["play", "bag"].includes(sideSelected) ? 100 : leftWidth}%`}}>
         
         <div className='h-full w-[90px] font-[geist] flex items-center flex-col justify-start bg-white border-r-[1px] border-gray-300'>
           <div className='text-3xl font-semibold mt-[20px] text-gray-400'><a href='/'>t</a></div>
@@ -671,8 +707,6 @@ const COLORS = [
 
           )}
 
-
-
           {sideSelected === "cost"  && (
             <div className='h-full w-full bg-white'>
 
@@ -876,25 +910,52 @@ const COLORS = [
             </div>
 
           )}
-
           
           {sideSelected === "play" && (
             <div>Animation Here</div>
           )}
-
           {sideSelected === "bag" && (
-            <div>Thing to carry here</div>
-          )}
+            <div className='h-full w-full bg-white p-5 flex flex-col gap-5'>
+            <div className='flex justify-between items-center'>
+            <span className='text-xl text-gray-700 font-semibold'>Packing List</span>
+            <button
+              className="flex items-center gap-2 text-green-600 cursor-pointer hover:text-green-800 font-medium rounded-lg px-2 py-1 transition-colors duration-200"
+              onClick={() => {
+                
+                setSumCards([...pckList.current, { name: "New Item", values: [] }]);
 
+                pckList.current.push({ name: "New Item", values: [] });
+                
+              }}
+            >
+              <span className="text-xl leading-none ml-auto">+</span>
+              <span className='mr-auto'>Add</span>
+            </button>
+            </div>
+            <div className='flex flex-row gap-3 flex-wrap mx-auto'>
+            { pckList.current.map((itm, idx) => (
+              <PackingCard name={itm.name} values={ itm.values } key={idx}
+              onChange={(values, cardN) => {
+                pckList.current[idx].name = cardN;
+                if (!pckList.current.some(item => item.name === itm.name)) {
+                  pckList.current.push({ name: itm.name, values });
+                }else {
+                  pckList.current[idx].values = values;
+                }
+              }}
+              />
+          ))}
           </div>
-
+            </div>
+          )}
+          </div>
 
 
         </div>
 
       </div>
 
-{/* Divider Scroller */}
+{!["play", "bag"].includes(sideSelected) && (
 <div
   className="relative w-[1px] bg-gray-300 cursor-grab z-20 group"
   onMouseDown={startDrag}
@@ -915,11 +976,10 @@ const COLORS = [
     {drag_direction === "right" ? ">" : drag_direction === "left" ? "<" : ""}
   </span>
 </div>
-
-
-        {/* Map DIV */}
-
-            <div className={`flex-grow ${ sideSelected !== "cost" ? "block" : "hidden" }`}>
+)}
+        
+            
+            <div className={`flex-grow ${ sideSelected === "itin" || sideSelected === "plan" ? "block" : "hidden" }`}>
             <Map 
               placesNames={React.useMemo(() => ['San Francisco', 'Mountain View', 'Los Angeles'], [])} 
               onClick={React.useCallback(
@@ -934,13 +994,12 @@ const COLORS = [
             { graphicalCostDataRef.current && (      
               <div className=" h-[100vh]">
 
-
                 {costType === "day" && (
                 <div className='p-5 flex flex-col gap-7 text-gray-700 h-full font-[geist] text-sm'>
 
                 <span className='text-xl'>Daily Spend by Category</span>
 
-                <ResponsiveContainer width="100%" height={400} className="my-auto">
+                <ResponsiveContainer width="100%" height={400} className="my-auto mx-auto">
                     <BarChart data={graphicalCostDataRef.current.stackedDayData}>
                       <XAxis dataKey="name" />
                       <YAxis tickFormatter={(value) => `${currencySymbol}${value}`}/>
@@ -1058,6 +1117,7 @@ const COLORS = [
 
                 </div>
                 )}
+
               </div>
             )}     
           </div>
