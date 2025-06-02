@@ -4,7 +4,6 @@ import { useEffect, useRef } from 'react';
 import maplibregl, { Map as MapLibreMap, MapOptions } from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 
-// Geocode place name to coordinates via Nominatim
 async function geocodePlace(name: string): Promise<[number, number] | null> {
   try {
     const res = await fetch(
@@ -20,7 +19,7 @@ async function geocodePlace(name: string): Promise<[number, number] | null> {
   return null;
 }
 
-// Props type
+
 interface MapProps {
   placesNames: string[];
   onClick: (name: string) => void;
@@ -29,42 +28,40 @@ interface MapProps {
 const Map: React.FC<MapProps> = ({ placesNames, onClick }) => {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<MapLibreMap | null>(null);
-
+  const gji56jc7 = "3b9GgU5VpXSJd2RNtN0t";
+  
   useEffect(() => {
     if (!mapContainerRef.current) return;
 
-    const mapOptions: MapOptions = {
-      container: mapContainerRef.current,
-      style: {
-        version: 8,
-        glyphs: 'https://demotiles.maplibre.org/font/{fontstack}/{range}.pbf',
-        sources: {
-          'osm-tiles': {
-            type: 'raster',
-            tiles: ['https://tile.openstreetmap.org/{z}/{x}/{y}.png'],
-            tileSize: 256,
-            attribution: '© OpenStreetMap contributors',
-          },
-        },
-        layers: [
-          {
-            id: 'osm-tiles',
-            type: 'raster',
-            source: 'osm-tiles',
-            minzoom: 0,
-            maxzoom: 19,
-          },
-        ],
-      },
-      center: [-122.4194, 37.7749], // fallback
-      zoom: 5,
-      // renderWorldCopies: false,
-      pitchWithRotate: false,
-      dragRotate: false,
-    };
+const mapOptions: MapOptions = {
+  container: mapContainerRef.current,
+  style: `https://api.maptiler.com/maps/basic-v2/style.json?key=${gji56jc7}`,
+  center: [-122.4194, 37.7749],
+  zoom: 5,
+  pitchWithRotate: false,
+  dragRotate: false,
+};
 
     const mapInstance = new maplibregl.Map(mapOptions);
     mapRef.current = mapInstance;
+
+    // Add GlobeControl
+    mapInstance.addControl(new maplibregl.GlobeControl(), 'top-right');
+    mapInstance.addControl(
+      new maplibregl.NavigationControl({
+        visualizePitch: true,
+        visualizeRoll: true,
+        showZoom: true,
+        showCompass: true,
+      })
+    );
+
+    // projection of the map on globe
+    mapInstance.on('style.load', () => {
+      mapInstance.setProjection({
+        type: 'globe',
+      });
+    });
 
     const handleResize = () => mapInstance.resize();
     window.addEventListener('resize', handleResize);
@@ -146,7 +143,6 @@ const Map: React.FC<MapProps> = ({ placesNames, onClick }) => {
 
     setupPlaces();
 
-    // Cleanup
     return () => {
       window.removeEventListener('resize', handleResize);
       mapInstance.remove();
@@ -154,7 +150,13 @@ const Map: React.FC<MapProps> = ({ placesNames, onClick }) => {
   }, [placesNames, onClick]);
 
   return (
-    <div ref={mapContainerRef} className="w-full h-full max-h-[100vh]" />
+    <div
+      ref={mapContainerRef}
+      className="w-full h-full max-h-[100vh]"
+      style={{
+        background: 'radial-gradient(circle, rgb(255, 255, 255) 0%, rgb(179 217 255) 100%)',
+      }}
+    />
   );
 };
 

@@ -924,7 +924,7 @@ const [sumCards, setSumCards] = useState<{name: string, values: {data: { name: s
             <div className='flex justify-between items-center'>
             <span className='text-xl text-gray-700 font-semibold'>Packing List</span>
             <button
-              className="flex items-center gap-2 text-green-600 cursor-pointer hover:text-green-800 font-medium rounded-lg px-2 py-1 transition-colors duration-200"
+              className="flex select-none items-center gap-2 text-green-600 cursor-pointer hover:text-green-800 font-medium rounded-lg px-2 py-1 transition-colors duration-200"
               onClick={() => {
                 pckList.current = [...pckList.current, { name: "New Category", values: {data:[]} }];
                 setSumCards([...pckList.current]);
@@ -934,21 +934,23 @@ const [sumCards, setSumCards] = useState<{name: string, values: {data: { name: s
               <span className='mr-auto'>Add</span>
             </button>
             </div>
-            <div className='flex flex-row gap-3 flex-wrap mx-auto'>
-            { pckList.current.map((itm, idx) => (
-              <PackingCard name={itm.name} values={ itm.values } key={idx}
-              onChange={(values, cardN) => {
-                pckList.current[idx].name = cardN;
-                if (!pckList.current.some(item => item.name === itm.name)) {
-                  pckList.current.push({ name: itm.name, values });
-                }else {
-                  pckList.current[idx].values = values;
-                }
-                console.log("Updated Packing List:", pckList.current);
-              }}
-              />
-          ))}
-          </div>
+            <div className='flex justify-center'>
+              <div className='flex flex-row gap-3 justify-evenly flex-wrap mx-auto w-fit'>
+              { pckList.current.map((itm, idx) => (
+                <PackingCard name={itm.name} values={ itm.values } key={idx}
+                onChange={(values, cardN) => {
+                  pckList.current[idx].name = cardN;
+                  if (!pckList.current.some(item => item.name === itm.name)) {
+                    pckList.current.push({ name: itm.name, values });
+                  }else {
+                    pckList.current[idx].values = values;
+                  }
+                  console.log("Updated Packing List:", pckList.current);
+                }}
+                />
+            ))}
+              </div>
+            </div>
             </div>
           )}
           </div>

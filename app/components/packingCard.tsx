@@ -57,37 +57,12 @@ const PackingCard: React.FC<PackingCardInterface> = ({ name, values, onChange })
   };
 
   return (
-<div className="relative group h-fit w-fit flex flex-col gap-2 border border-gray-500 rounded-lg items-center">
-  
-  {/* tools menu above the card */}
-    {/* <div className="absolute -top-8 right-2 flex gap-2 opacity-0 group-hover:opacity-100 transition pointer-events-none group-hover:pointer-events-auto bg-white shadow-md rounded-md p-1">
-      <button
-        className="flex items-center gap-1 px-2 py-1 rounded-md bg-red-500 text-white hover:bg-red-600 transition-colors"
-        onClick={() => {
-          const newValues = { ...vals };
-          newValues.data = [{ name: '', checked: false }];
-          setValues(newValues);
-          onChange(newValues, cardName);
-        }}
-      >
-        <span className="text-sm">🗑️</span>
-      </button>
-      <button
-        className="flex items-center gap-1 px-2 py-1 rounded-md bg-blue-500 text-white hover:bg-blue-600 transition-colors"
-        onClick={() => {
-          const newColor = cardTopColors[Math.floor(Math.random() * cardTopColors.length)];
-          color.current = newColor;
-          setValues({ ...vals, color: newColor });
-          onChange({ ...vals, color: newColor }, cardName);
-        }}
-      >
-        <span className="text-sm">🎨</span>
-      </button>
-    </div> */}
+<div className="relative group h-fit w-fit flex flex-col gap-2 border border-gray-500 rounded-lg items-center ">
+
 
       <span className={`p-2 w-full text-center rounded-t-lg border-b-1 border-gray-500 ${vals.color}`}>
         <input
-          className="outline-0 text-center"
+          className="outline-0 text-center "
           type="text"
           value={cardName}
           onChange={(e) => {setCardName(e.target.value)
@@ -97,7 +72,7 @@ const PackingCard: React.FC<PackingCardInterface> = ({ name, values, onChange })
       </span>
       <div className="p-3 flex flex-col gap-2 ">
         {vals.data.map((item, index) => (
-          <div key={index} className="flex items-center gap-2 group/item">
+          <div key={index} className="select-none flex items-center gap-2 group/item">
 <div
   className={`w-4 h-4 flex items-center justify-center rounded-full cursor-pointer transition-all duration-200 ease-in-out
     ${item.checked ? 'bg-green-100 shadow-lg scale-105 border-1 border-green-600' : 'border-1 border-gray-300 group-hover/item:bg-gray-100 group-hover/item:border-green-400'}`}
@@ -121,7 +96,7 @@ const PackingCard: React.FC<PackingCardInterface> = ({ name, values, onChange })
 </div>
   <div className="relative">
     <input
-      className="outline-0 pr-2"
+      className="outline-0 pr-2 select-none"
       style={{color: item.checked ? 'gray' : 'black'}}
       type="text"
       value={item.name}
