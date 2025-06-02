@@ -60,10 +60,30 @@ const PackingCard: React.FC<PackingCardInterface> = ({ name, values, onChange })
 <div className="relative group h-fit w-fit flex flex-col gap-2 border border-gray-500 rounded-lg items-center">
   
   {/* tools menu above the card */}
-  <div className="absolute -top-8 right-0 flex gap-2 opacity-0 group-hover:opacity-100 transition pointer-events-none group-hover:pointer-events-auto">
-    <button className="p-1 rounded bg-white border border-gray-300 hover:bg-gray-100 text-sm">✏️</button>
-    <button className="p-1 rounded bg-white border border-gray-300 hover:bg-gray-100 text-sm">🗑️</button>
-  </div>
+    {/* <div className="absolute -top-8 right-2 flex gap-2 opacity-0 group-hover:opacity-100 transition pointer-events-none group-hover:pointer-events-auto bg-white shadow-md rounded-md p-1">
+      <button
+        className="flex items-center gap-1 px-2 py-1 rounded-md bg-red-500 text-white hover:bg-red-600 transition-colors"
+        onClick={() => {
+          const newValues = { ...vals };
+          newValues.data = [{ name: '', checked: false }];
+          setValues(newValues);
+          onChange(newValues, cardName);
+        }}
+      >
+        <span className="text-sm">🗑️</span>
+      </button>
+      <button
+        className="flex items-center gap-1 px-2 py-1 rounded-md bg-blue-500 text-white hover:bg-blue-600 transition-colors"
+        onClick={() => {
+          const newColor = cardTopColors[Math.floor(Math.random() * cardTopColors.length)];
+          color.current = newColor;
+          setValues({ ...vals, color: newColor });
+          onChange({ ...vals, color: newColor }, cardName);
+        }}
+      >
+        <span className="text-sm">🎨</span>
+      </button>
+    </div> */}
 
       <span className={`p-2 w-full text-center rounded-t-lg border-b-1 border-gray-500 ${vals.color}`}>
         <input
@@ -75,25 +95,56 @@ const PackingCard: React.FC<PackingCardInterface> = ({ name, values, onChange })
           }}
         />
       </span>
-      <div className="p-3 flex flex-col gap-2">
+      <div className="p-3 flex flex-col gap-2 ">
         {vals.data.map((item, index) => (
-          <div key={index} className="flex items-center gap-2">
-            <input
-              className="outline-0"
-              type="text"
-              value={item.name}
-              placeholder='Item Name'
-              onChange={(e) =>
-                handleItemChange(index, { ...item, name: e.target.value })
-              }
-            />
-            <input
-              type="checkbox"
-              checked={item.checked}
-              onChange={(e) =>
-                handleItemChange(index, { ...item, checked: e.target.checked })
-              }
-            />
+          <div key={index} className="flex items-center gap-2 group/item">
+<div
+  className={`w-4 h-4 flex items-center justify-center rounded-full cursor-pointer transition-all duration-200 ease-in-out
+    ${item.checked ? 'bg-green-100 shadow-lg scale-105 border-1 border-green-600' : 'border-1 border-gray-300 group-hover/item:bg-gray-100 group-hover/item:border-green-400'}`}
+  onClick={() =>
+    handleItemChange(index, { ...item, checked: !item.checked })
+  }
+>
+
+    <svg
+      className={`w-3.5 h-3.5  transition-opacity duration-200 ease-in-out ${
+      item.checked ? 'opacity-100 text-green-600' : 'opacity-0 group-hover/item:opacity-100  text-green-400'
+      }`}
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="3"
+      viewBox="0 0 24 24"
+    >
+      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+    </svg>
+
+</div>
+  <div className="relative">
+    <input
+      className="outline-0 pr-2"
+      style={{color: item.checked ? 'gray' : 'black'}}
+      type="text"
+      value={item.name}
+      disabled={item.checked}
+      placeholder="Item Name"
+      onChange={(e) =>
+        handleItemChange(index, { ...item, name: e.target.value })
+      }
+    />
+
+  </div>
+            
+            <button
+              className="flex items-center cursor-pointer justify-center w-4 h-4 text-white bg-red-400 rounded-full hover:bg-red-500 transition-colors duration-200"
+              onClick={() => {
+              const newValues = { ...vals };
+              newValues.data.splice(index, 1);
+              setValues(newValues);
+              onChange(newValues, cardName);
+              }}
+            >
+              <span className="text-[8px] font-bold">✕</span>
+            </button>
           </div>
         ))}
         <div>

@@ -926,7 +926,7 @@ const [sumCards, setSumCards] = useState<{name: string, values: {data: { name: s
             <button
               className="flex items-center gap-2 text-green-600 cursor-pointer hover:text-green-800 font-medium rounded-lg px-2 py-1 transition-colors duration-200"
               onClick={() => {
-                pckList.current = [...pckList.current, { name: "New Item", values: {data:[]} }];
+                pckList.current = [...pckList.current, { name: "New Category", values: {data:[]} }];
                 setSumCards([...pckList.current]);
               }}
             >
