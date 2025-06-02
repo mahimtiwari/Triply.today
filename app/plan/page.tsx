@@ -11,6 +11,7 @@ import { get } from 'http';
 import PackingCard from '../components/packingCard';
 
 
+
 const PlanTrip = () => {
 
 
@@ -59,6 +60,7 @@ interface Trip {
     transportation: Transportation[];
   };
 }
+
 
 
 
@@ -371,41 +373,44 @@ const COLORS = [
   '#00d2d3', 
 ];
 
-const pckList = useRef<{name: string, values: {name: string, checked: boolean}[]}[]>([
-  {
-    name: 'Electronics',
-    values: [
-      { name: 'Phone charger', checked: false },
-      { name: 'Laptop charger', checked: false },
-      { name: 'Camera', checked: false },
-      { name: 'Headphones', checked: false },
-    ],
-  },{
-    name: 'Clothing',
-    values: [
-      { name: 'T-shirts', checked: false },
-      { name: 'Jeans', checked: false },
-      { name: 'Jacket', checked: false },
-      { name: 'Shoes', checked: false },
-      { name: 'Socks', checked: false },
-      { name: 'Underwear', checked: false },
-    ],
-  },
-  {
-    name: 'Toiletries',
-    values: [
-      { name: 'Toothbrush', checked: false },
-      { name: 'Toothpaste', checked: false },
-      { name: 'Shampoo', checked: false },
-      { name: 'Conditioner', checked: false },
-      { name: 'Soap', checked: false },
-      { name: 'Deodorant', checked: false },
-    ],
-  },
+const pckList = useRef<{name: string, values: {data: { name: string; checked: boolean }[], color?: string}}[]>([
+
   
+    {
+      name: "Essentials",
+      values: {
+        data: [
+          { name: "Passport", checked: false },
+          { name: "Tickets", checked: false },
+          { name: "Wallet", checked: false },
+        ],
+      },
+    },
+    {
+      name: "Clothing",
+      values: {
+        data: [
+          { name: "Shirts", checked: false },
+          { name: "Pants", checked: false },
+          { name: "Shoes", checked: false },
+        ],
+      },
+    },
+    {
+      name: "Toiletries",
+      values: {
+        data: [
+          { name: "Toothbrush", checked: false },
+          { name: "Shampoo", checked: false },
+          { name: "Soap", checked: false },
+        ],
+      },
+    },
+  
+
 ]);
 
-const [sumCards, setSumCards] = useState<{name: string, values: {name: string, checked: boolean}[]}[]>(pckList.current);
+const [sumCards, setSumCards] = useState<{name: string, values: {data: { name: string; checked: boolean }[], color?: string}}[]>(pckList.current);
 
   return (
     <>
@@ -921,11 +926,8 @@ const [sumCards, setSumCards] = useState<{name: string, values: {name: string, c
             <button
               className="flex items-center gap-2 text-green-600 cursor-pointer hover:text-green-800 font-medium rounded-lg px-2 py-1 transition-colors duration-200"
               onClick={() => {
-                
-                setSumCards([...pckList.current, { name: "New Item", values: [] }]);
-
-                pckList.current.push({ name: "New Item", values: [] });
-                
+                pckList.current = [...pckList.current, { name: "New Item", values: {data:[]} }];
+                setSumCards([...pckList.current]);
               }}
             >
               <span className="text-xl leading-none ml-auto">+</span>
@@ -942,6 +944,7 @@ const [sumCards, setSumCards] = useState<{name: string, values: {name: string, c
                 }else {
                   pckList.current[idx].values = values;
                 }
+                console.log("Updated Packing List:", pckList.current);
               }}
               />
           ))}

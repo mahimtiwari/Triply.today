@@ -39,7 +39,6 @@ function PrePlanTripContent() {
 
     const handleNextStep = () => setProcessNum((prev) => Math.min(prev + 1, totalProcess));
     const handlePreviousStep = () => setProcessNum((prev) => Math.max(prev - 1, 0));
-
     function sendAPIstoreRedirect(peopleTy: { selc: string; adls: number; chls: number }) {
         const sDate = dateRng.startDate?.toISOString().split("T")[0];
         const eDate = dateRng.endDate?.toISOString().split("T")[0];
@@ -59,6 +58,7 @@ function PrePlanTripContent() {
                         {destination}
                     </span>
                 </div>
+
 
                 <div className="gap-1 flex">
                     {dateRng.startDate && dateRng.endDate && (
