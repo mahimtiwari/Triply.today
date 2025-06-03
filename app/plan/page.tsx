@@ -29,6 +29,7 @@ interface Place {
 interface ArrivingOrDeparting {
   from: string;
   to: string;
+  preffered_transport: string;
 }
 
 interface Day {
@@ -203,14 +204,14 @@ const costProcessor = (data: Trip): CostDetailsType => {
 
     for (const place of trip[day].places) {
 
-      if (place.category.toLocaleLowerCase() === "hotel" && hNumber === 0) {
+      if (place.category.toLowerCase() === "hotel" && hNumber === 0) {
         hotelCost = parseInt(place.cost.replace(/[^0-9.-]+/g, ""));
         hNumber++;
       }
-      if (place.category.toLocaleLowerCase() === "restaurant") {
+      if (place.category.toLowerCase() === "restaurant") {
         foodCost += parseInt(place.cost.replace(/[^0-9.-]+/g, ""));
       }
-      if (place.category.toLocaleLowerCase() === "sightseeing") {
+      if (place.category.toLowerCase() === "sightseeing") {
         sightseeingCost += parseInt(place.cost.replace(/[^0-9.-]+/g, ""));
       }
       transportCost += getTransportationCost(transportation, place.from, place.to, place.preffered_transport);
@@ -649,10 +650,43 @@ const [sumCards, setSumCards] = useState<{name: string, values: {data: { name: s
                     <span className="text-sm font-medium text-gray-500">{dayExpanded === day ? "Hide Details" : "Show Details"}</span>
                   </div>
                   {dayExpanded === day && (
-                    <div className="mt-4">
+                    <div className="mt-4 flex flex-col gap-4">
+                      {tripInfo.arriving && (
+                        <div className="flex flex-col bg-gray-100 rounded-lg shadow-md p-4">
+                          <div className="flex items-center justify-between">
+                          <h3 className="text-lg font-semibold text-gray-700">Arriving</h3>
+                          <span className="bg-gradient-to-r from-blue-300 to-blue-600 text-white px-3 py-1 rounded-full text-sm font-medium">
+                            {tripInfo.arriving.preffered_transport}
+                          </span>
+                          </div>
+                          <div className="mt-4">
+                          <div className="flex items-center justify-between font-semibold">
+                            <div className="flex items-center gap-2">
+                        
+                            <span className="text-sm text-gray-500">{`From: ${tripInfo.arriving.from}`}</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+
+                            <span className="text-sm text-gray-500">{`To: ${tripInfo.arriving.to}`}</span>
+                            </div>
+                          </div>
+                          </div>
+
+                          <div className="mt-4 flex items-center justify-between">
+                          <span className="text-sm text-gray-500 font-medium ">{tripInfo.arriving.preffered_transport} Cost:</span>
+                          <span className="bg-gradient-to-r from-green-300 via-green-500 to-green-600 text-white px-3 py-1 rounded-full text-sm font-semibold">
+                            {currencySymbol}{getTransportationCost(dataJSON.trip.transportation, tripInfo.arriving.from, tripInfo.arriving.to, tripInfo.arriving.preffered_transport)}
+                          </span>
+                          </div>
+
+                        </div>
+                      )}
+
                       {tripInfo.places.map((place, index) => (
-                        <div key={index} className="flex flex-col bg-[#e1e1e148] rounded-lg shadow-md p-4 mb-4">
+                        <div key={index} className="flex flex-col bg-gray-100 rounded-lg shadow-md p-4">
+                          
                           {/* Header Section */}
+                          {place.category.toLowerCase() !== "intermediate_transport" && (
                           <div className="flex items-center justify-between">
                           <div className="flex items-center gap-4">
                             <Image
@@ -683,8 +717,8 @@ const [sumCards, setSumCards] = useState<{name: string, values: {data: { name: s
                             </div>
                           </div>
                           </div>
-                          {/* Timing Section */}
-                          <div className="mt-4 border-t-[2px] border-gray-300 pt-4">
+                          )}
+                          <div className={` ${place.category.toLowerCase() == "intermediate_transport" ? "" : "mt-4 border-t-[2px] pt-4"} border-gray-300 `}>
                           <div className="flex items-center justify-between font-semibold">
                             <div className="flex items-center gap-2">
 
@@ -696,13 +730,40 @@ const [sumCards, setSumCards] = useState<{name: string, values: {data: { name: s
                             </div>
                           </div>
                           </div>
+                          
 
-                          {/* Transport Section */}
-                          <div className="mt-4 flex items-center justify-between">
-
-                          </div>
                         </div>
                       ))}
+                      {tripInfo.departing && (
+                        <div className="flex flex-col bg-gray-100 rounded-lg shadow-md p-4">
+                          <div className="flex items-center justify-between">
+                          <h3 className="text-lg font-semibold text-gray-700">Departing</h3>
+                          <span className="bg-gradient-to-r from-blue-300 to-blue-600 text-white px-3 py-1 rounded-full text-sm font-medium">
+                            {tripInfo.departing.preffered_transport}
+                          </span>
+                          </div>
+                          <div className="mt-4">
+                          <div className="flex items-center justify-between font-semibold">
+                            <div className="flex items-center gap-2">
+                        
+                            <span className="text-sm text-gray-500">{`From: ${tripInfo.departing.from}`}</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+
+                            <span className="text-sm text-gray-500">{`To: ${tripInfo.departing.to}`}</span>
+                            </div>
+                          </div>
+                          </div>
+
+                          <div className="mt-4 flex items-center justify-between">
+                          <span className="text-sm text-gray-500 font-medium ">{tripInfo.departing.preffered_transport} Cost:</span>
+                          <span className="bg-gradient-to-r from-green-300 via-green-500 to-green-600 text-white px-3 py-1 rounded-full text-sm font-semibold">
+                            {currencySymbol}{getTransportationCost(dataJSON.trip.transportation, tripInfo.departing.from, tripInfo.departing.to, tripInfo.departing.preffered_transport)}
+                          </span>
+                          </div>
+
+                        </div>
+                      )}
                     </div>
                   )}
                 </div>
@@ -756,6 +817,8 @@ const [sumCards, setSumCards] = useState<{name: string, values: {data: { name: s
                       {tripInfo.places.map((place, index) => (
                         <div key={index} className="flex flex-col bg-gray-100 rounded-lg shadow-md p-4 mb-4">
                           {/* Header Section */}
+                          
+                          { place.category.toLowerCase() !== "intermediate_transport" && (
                           <div className="flex items-center justify-between">
                           <div className="flex items-center gap-4">
                             <Image
@@ -791,8 +854,10 @@ const [sumCards, setSumCards] = useState<{name: string, values: {data: { name: s
                             </span>
                           </div>
                           </div>
-                          {/* Timing Section */}
-                          <div className="mt-4 border-t-[2px] border-gray-300 pt-4">
+                          )}
+
+                          {/* Transportation Section */}
+                          <div className={`${ place.category.toLowerCase() !== "intermediate_transport" ? "mt-4 border-t-[2px] border-gray-300 pt-4" : "pt-1"} `}>
                           <div className="flex items-center justify-between font-semibold">
                             <div className="flex items-center gap-2">
 
