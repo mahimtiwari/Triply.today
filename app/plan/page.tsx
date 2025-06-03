@@ -201,7 +201,9 @@ const costProcessor = (data: Trip): CostDetailsType => {
     var foodCost = 0;
     var sightseeingCost = 0;
     var transportCost = 0;
-
+    if (trip[day].arriving) transportCost += getTransportationCost(transportation, trip[day].arriving.from, trip[day].arriving.to, trip[day].arriving.preffered_transport);
+    if (trip[day].departing) transportCost += getTransportationCost(transportation, trip[day].departing.from, trip[day].departing.to, trip[day].departing.preffered_transport);
+    
     for (const place of trip[day].places) {
 
       if (place.category.toLowerCase() === "hotel" && hNumber === 0) {
@@ -413,6 +415,30 @@ const pckList = useRef<{name: string, values: {data: { name: string; checked: bo
 
 const [sumCards, setSumCards] = useState<{name: string, values: {data: { name: string; checked: boolean }[], color?: string}}[]>(pckList.current);
 
+
+// Dragability for Packing Cards
+
+const packCardRef = useRef<HTMLDivElement[]>([]);
+function drag_packCard(e: React.MouseEvent<HTMLDivElement>, idx: number) {
+  if (packCardRef.current && packCardRef.current[idx]) {
+    const card = packCardRef.current[idx];
+    const offsetX = e.clientX - card.getBoundingClientRect().left;
+    const offsetY = e.clientY - card.getBoundingClientRect().top;
+
+    const onMouseMove = (moveEvent: MouseEvent) => {
+      card.style.left = `${moveEvent.clientX - offsetX}px`;
+      card.style.top = `${moveEvent.clientY - offsetY}px`;
+    };
+
+    const onMouseUp = () => {
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
+    };
+
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
+  }
+}
   return (
     <>
 <div className='flex flex-col h-screen'>
@@ -518,9 +544,7 @@ const [sumCards, setSumCards] = useState<{name: string, values: {data: { name: s
               )}
 </div>
           {/* Itenary DIV */}
-
             <div className='bg-[#f9fcfd] w-full h-full'>
-          
 
           {sideSelected === "itin" && (
           <div className='h-full w-full bg-white'>
@@ -672,12 +696,7 @@ const [sumCards, setSumCards] = useState<{name: string, values: {data: { name: s
                           </div>
                           </div>
 
-                          <div className="mt-4 flex items-center justify-between">
-                          <span className="text-sm text-gray-500 font-medium ">{tripInfo.arriving.preffered_transport} Cost:</span>
-                          <span className="bg-gradient-to-r from-green-300 via-green-500 to-green-600 text-white px-3 py-1 rounded-full text-sm font-semibold">
-                            {currencySymbol}{getTransportationCost(dataJSON.trip.transportation, tripInfo.arriving.from, tripInfo.arriving.to, tripInfo.arriving.preffered_transport)}
-                          </span>
-                          </div>
+
 
                         </div>
                       )}
@@ -755,12 +774,6 @@ const [sumCards, setSumCards] = useState<{name: string, values: {data: { name: s
                           </div>
                           </div>
 
-                          <div className="mt-4 flex items-center justify-between">
-                          <span className="text-sm text-gray-500 font-medium ">{tripInfo.departing.preffered_transport} Cost:</span>
-                          <span className="bg-gradient-to-r from-green-300 via-green-500 to-green-600 text-white px-3 py-1 rounded-full text-sm font-semibold">
-                            {currencySymbol}{getTransportationCost(dataJSON.trip.transportation, tripInfo.departing.from, tripInfo.departing.to, tripInfo.departing.preffered_transport)}
-                          </span>
-                          </div>
 
                         </div>
                       )}
@@ -794,7 +807,6 @@ const [sumCards, setSumCards] = useState<{name: string, values: {data: { name: s
               </button>
               </div>
 
-
               { !dataJSON && (
                 <>
                 {Array.from({ length: 7 }, (_, index) => (
@@ -813,11 +825,41 @@ const [sumCards, setSumCards] = useState<{name: string, values: {data: { name: s
                     <span className="text-sm font-medium text-gray-500">{dayExpanded === day ? "Hide Details" : "Show Details"}</span>
                   </div>
                   {dayExpanded === day && (
-                    <div className="mt-4">
+                    <div className="mt-4 flex flex-col gap-4">
+                      {tripInfo.arriving && (
+                        <div className="flex flex-col bg-gray-100 rounded-lg shadow-md p-4">
+                          <div className="flex items-center justify-between">
+                          <h3 className="text-lg font-semibold text-gray-700">Arriving</h3>
+                          <span className="bg-gradient-to-r from-blue-300 to-blue-600 text-white px-3 py-1 rounded-full text-sm font-medium">
+                            {tripInfo.arriving.preffered_transport}
+                          </span>
+                          </div>
+                          <div className="mt-4">
+                          <div className="flex items-center justify-between font-semibold">
+                            <div className="flex items-center gap-2">
+                        
+                            <span className="text-sm text-gray-500">{`From: ${tripInfo.arriving.from}`}</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+
+                            <span className="text-sm text-gray-500">{`To: ${tripInfo.arriving.to}`}</span>
+                            </div>
+                          </div>
+                          </div>
+
+                          <div className="mt-4 flex items-center justify-between">
+                          <span className="text-sm text-gray-500 font-medium ">{tripInfo.arriving.preffered_transport} Cost:</span>
+                          <span className="bg-gradient-to-r from-green-300 via-green-500 to-green-600 text-white px-3 py-1 rounded-full text-sm font-semibold">
+                            {currencySymbol}{getTransportationCost(dataJSON.trip.transportation, tripInfo.arriving.from, tripInfo.arriving.to, tripInfo.arriving.preffered_transport)}
+                          </span>
+                          </div>
+
+                        </div>
+                      )}
                       {tripInfo.places.map((place, index) => (
-                        <div key={index} className="flex flex-col bg-gray-100 rounded-lg shadow-md p-4 mb-4">
+                        <div key={index} className="flex flex-col bg-gray-100 rounded-lg shadow-md p-4">
                           {/* Header Section */}
-                          
+
                           { place.category.toLowerCase() !== "intermediate_transport" && (
                           <div className="flex items-center justify-between">
                           <div className="flex items-center gap-4">
@@ -883,6 +925,36 @@ const [sumCards, setSumCards] = useState<{name: string, values: {data: { name: s
                           </div>
                         </div>
                       ))}
+                      {tripInfo.departing && (
+                        <div className="flex flex-col bg-gray-100 rounded-lg shadow-md p-4">
+                          <div className="flex items-center justify-between">
+                          <h3 className="text-lg font-semibold text-gray-700">Departing</h3>
+                          <span className="bg-gradient-to-r from-blue-300 to-blue-600 text-white px-3 py-1 rounded-full text-sm font-medium">
+                            {tripInfo.departing.preffered_transport}
+                          </span>
+                          </div>
+                          <div className="mt-4">
+                          <div className="flex items-center justify-between font-semibold">
+                            <div className="flex items-center gap-2">
+                        
+                            <span className="text-sm text-gray-500">{`From: ${tripInfo.departing.from}`}</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+
+                            <span className="text-sm text-gray-500">{`To: ${tripInfo.departing.to}`}</span>
+                            </div>
+                          </div>
+                          </div>
+
+                          <div className="mt-4 flex items-center justify-between">
+                          <span className="text-sm text-gray-500 font-medium ">{tripInfo.departing.preffered_transport} Cost:</span>
+                          <span className="bg-gradient-to-r from-green-300 via-green-500 to-green-600 text-white px-3 py-1 rounded-full text-sm font-semibold">
+                            {currencySymbol}{getTransportationCost(dataJSON.trip.transportation, tripInfo.departing.from, tripInfo.departing.to, tripInfo.departing.preffered_transport)}
+                          </span>
+                          </div>
+
+                        </div>
+                      )}
                     </div>
                   )}
                 </div>
@@ -1002,7 +1074,10 @@ const [sumCards, setSumCards] = useState<{name: string, values: {data: { name: s
             <div className='flex justify-center'>
               <div className='flex flex-row gap-3 justify-evenly flex-wrap mx-auto w-fit'>
               { pckList.current.map((itm, idx) => (
-                <PackingCard name={itm.name} values={ itm.values } key={idx}
+                <div key={idx} ref={(elem) => {if(packCardRef.current && elem) packCardRef.current[idx]=elem}} className='absolute' onMouseDown={(e) => {
+                  drag_packCard(e, idx);
+                }}>
+                <PackingCard name={itm.name} values={ itm.values } 
                 onChange={(values, cardN) => {
                   pckList.current[idx].name = cardN;
                   if (!pckList.current.some(item => item.name === itm.name)) {
@@ -1013,6 +1088,7 @@ const [sumCards, setSumCards] = useState<{name: string, values: {data: { name: s
                   console.log("Updated Packing List:", pckList.current);
                 }}
                 />
+                </div>
             ))}
               </div>
             </div>

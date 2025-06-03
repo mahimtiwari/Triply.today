@@ -57,7 +57,7 @@ const PackingCard: React.FC<PackingCardInterface> = ({ name, values, onChange })
   };
 
   return (
-<div className="relative group h-fit w-fit flex flex-col gap-2 border border-gray-500 rounded-lg items-center ">
+<div className="relative group h-fit w-fit flex flex-col gap-2 border bg-white border-gray-500 rounded-lg items-center ">
 
 
       <span className={`p-2 w-full text-center rounded-t-lg border-b-1 border-gray-500 ${vals.color}`}>
