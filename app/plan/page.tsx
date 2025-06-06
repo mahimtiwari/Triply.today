@@ -10,7 +10,8 @@ import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, LineChart, XAxis, Ca
 import { get } from 'http';
 import PackingCard from '../components/packingCard';
 import { off } from 'process';
-
+import BufferComponent from '../components/planpageLoader';
+import { time } from 'console';
 
 
 const PlanTrip = () => {
@@ -190,6 +191,7 @@ const costProcessor = (data: Trip): CostDetailsType => {
   const transportation = data.trip.transportation;
   
 
+
   var totalTransportation = 0;
   var totalHotel = 0;
   var totalFood = 0;
@@ -265,6 +267,10 @@ const monthNames = [
   "Nov",
   "Dec",
 ];
+
+const [bufferBool, setBufferBool] = useState(false);
+
+
 const [currencySymbol, setCurrencySymbol] = useState<string | null>(null);
   useEffect(() => {
     // Getting the data from /plantrip api
@@ -291,6 +297,7 @@ const [currencySymbol, setCurrencySymbol] = useState<string | null>(null);
             setTotalCost(costDetailsRef.current.totalcost);
             updateGraphicalCostData(costDetailsRef.current);
             setDataJSON(data);
+            setBufferBool(true);
           })
           .catch((error) => {
             console.error('Error fetching trip data:', error);
@@ -323,6 +330,9 @@ const [currencySymbol, setCurrencySymbol] = useState<string | null>(null);
     };
 
   }, []);
+
+
+
 
   const [leftWidth, setLeftWidth] = useState(50); // in percentage
   const [drag_direction, setDragDirection] = useState<string | null>(null);
@@ -470,8 +480,6 @@ function drag_packCard(e: React.MouseEvent<HTMLDivElement>, idx: number) {
           x = containerRect.right- Cardrect.width;
         }
 
-        
-
         var y = mevent.clientY;
         
         if (mevent.clientY <= containerRect.top) {
@@ -488,7 +496,7 @@ function drag_packCard(e: React.MouseEvent<HTMLDivElement>, idx: number) {
         card.style.userSelect = 'none';
         card.style.opacity = '0.6';
         determineNewListPos(x, y);
- // Center the card under the cursor
+
       }
 
     }
@@ -516,8 +524,20 @@ function drag_packCard(e: React.MouseEvent<HTMLDivElement>, idx: number) {
     document.addEventListener('mouseup', onMouseUp);
   }
 }
+const [bufSate, setBufState] = useState<boolean>(false);
+// here the order matters sooooo dont forget that-------------------------
+const dayTimeBufferT = [{days:14, time:60000}, {days:10, time:50000}, {days: 7, time:35000} ,{days:3, time:15000}];
+// here the order matters sooooo dont forget that----------------------------------
+
+const startDate = new Date(tripDetails.startDate);
+const endDate = new Date(tripDetails.endDate);
+const diffTime = Math.abs(endDate.getTime() - startDate.getTime());
+const tripDayLen = Math.ceil(diffTime / (1000 * 60 * 60 * 24))+1;
+console.log("Trip Day Length:", tripDayLen);
   return (
     <>
+
+
 <div className='flex flex-col h-screen'>
 <div className="flex flex-row flex-grow ">
 
@@ -623,7 +643,16 @@ function drag_packCard(e: React.MouseEvent<HTMLDivElement>, idx: number) {
           {/* Itenary DIV */}
             <div className='bg-[#f9fcfd] w-full h-full'>
 
-          {sideSelected === "itin" && (
+<div>
+</div>
+          {!bufSate && sideSelected !== "bag" && (
+            <BufferComponent onComplete={() => {
+              setBufState(true)
+            }} 
+            defaultTime={dayTimeBufferT.find((day) => day.days <= tripDayLen)?.time || 60000} dataStatus={bufferBool}/>
+
+          )}
+          {sideSelected === "itin" && bufSate && (
           <div className='h-full w-full bg-white'>
             <div>
                 <table className="w-full table-auto">
@@ -733,7 +762,7 @@ function drag_packCard(e: React.MouseEvent<HTMLDivElement>, idx: number) {
           
           )}
 
-          {sideSelected === "plan" && (
+          {sideSelected === "plan" && bufSate && (
             <div className='h-full w-full bg-white'>
               { !dataJSON && (
                 <>
@@ -863,7 +892,7 @@ function drag_packCard(e: React.MouseEvent<HTMLDivElement>, idx: number) {
 
           )}
 
-          {sideSelected === "cost"  && (
+          {sideSelected === "cost"  && bufSate && (
             <div className='h-full w-full bg-white'>
 
               <div className='w-full flex pl-4 border-b-[1px] border-gray-300'>
@@ -1130,7 +1159,7 @@ function drag_packCard(e: React.MouseEvent<HTMLDivElement>, idx: number) {
 
           )}
           
-          {sideSelected === "play" && (
+          {sideSelected === "play" && bufSate && (
             <div>Animation Here</div>
           )}
           {sideSelected === "bag" && (

@@ -39,6 +39,7 @@
     "@types/react": "^19.1.4",
     "@types/react-date-range": "^1.4.10",
     "@types/react-dom": "^19",
+    "@types/vara": "^1.1.4",
     "eslint": "^9",
     "eslint-config-next": "15.3.2",
     "prisma": "^6.8.2",
