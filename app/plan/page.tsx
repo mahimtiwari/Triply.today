@@ -421,22 +421,47 @@ const [sumCards, setSumCards] = useState<{name: string, values: {data: { name: s
 const packingCardContRef = useRef<HTMLDivElement | null>(null);
 const packCardRef = useRef<HTMLDivElement[]>([]);
 function drag_packCard(e: React.MouseEvent<HTMLDivElement>, idx: number) {
-
+  
   if(packCardRef.current && packCardRef.current[idx] && packingCardContRef.current) {
     const card = packCardRef.current[idx];
-
     const containerRect = packingCardContRef.current.getBoundingClientRect();
     
 
+      const determineNewListPos = (x: number, y: number) => {
+        const draggableElements = packCardRef.current.filter((card) => card !== null);
+        let closestElement: HTMLDivElement | null = null;
+        let closestDistance = Number.POSITIVE_INFINITY;
+
+        draggableElements.forEach((element) => {
+          const rect = element.getBoundingClientRect();
+          const distance = Math.sqrt(
+            Math.pow(x - (rect.left + rect.width / 2), 2) +
+            Math.pow(y - (rect.top + rect.height / 2), 2)
+          );
+
+          if (distance < closestDistance) {
+            closestDistance = distance;
+            closestElement = element;
+          }
+        });
+
+        if (closestElement && packingCardContRef.current) {
+          packingCardContRef.current.insertBefore(card, closestElement);
+        } else if (packingCardContRef.current) {
+          packingCardContRef.current.appendChild(card);
+        }
+      };
+
+
+
 
     const PackingCardOrderProcessor = (list: HTMLDivElement[], mevent:MouseEvent) => {
+      
       const Cardrect = card.getBoundingClientRect();
 
 
 
       if (packingCardContRef.current) {
-        // console.log(Cardrect.width === Math.abs(Cardrect.left - Cardrect.right))
-        
          var x = mevent.clientX;
         if (mevent.clientX <= containerRect.left) {
           x = containerRect.left; 
@@ -458,17 +483,33 @@ function drag_packCard(e: React.MouseEvent<HTMLDivElement>, idx: number) {
         card.style.position = 'absolute';
         card.style.left = `${x}px`;
         card.style.top = `${y}px`;
+        card.style.zIndex = '10';
+        card.style.cursor = 'grabbing';
+        card.style.userSelect = 'none';
+        card.style.opacity = '0.6';
+        determineNewListPos(x, y);
+ // Center the card under the cursor
       }
 
     }
     const onMouseMove = (moveEvent: MouseEvent) => {
+      
       PackingCardOrderProcessor(packCardRef.current, moveEvent);
     };
 
     const onMouseUp = () => {
+      
       card.style.position = 'static';
+      card.style.cursor = 'pointer';
+      card.style.userSelect = 'auto';
+      card.style.opacity = '1';
+      card.style.zIndex = '1';
+
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseup', onMouseUp);
+
+
+
     };
 
     document.addEventListener('mousemove', onMouseMove);
