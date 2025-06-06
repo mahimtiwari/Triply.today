@@ -9,6 +9,7 @@ import MiscComponent from '../components/miscComponent';
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, LineChart, XAxis, CartesianGrid, YAxis, Legend, Line, BarChart, Bar } from 'recharts';
 import { get } from 'http';
 import PackingCard from '../components/packingCard';
+import { off } from 'process';
 
 
 
@@ -417,20 +418,32 @@ const [sumCards, setSumCards] = useState<{name: string, values: {data: { name: s
 
 
 // Dragability for Packing Cards
-
+const packingCardContRef = useRef<HTMLDivElement | null>(null);
 const packCardRef = useRef<HTMLDivElement[]>([]);
 function drag_packCard(e: React.MouseEvent<HTMLDivElement>, idx: number) {
-  if (packCardRef.current && packCardRef.current[idx]) {
-    const card = packCardRef.current[idx];
-    const offsetX = e.clientX - card.getBoundingClientRect().left;
-    const offsetY = e.clientY - card.getBoundingClientRect().top;
 
+  if(packCardRef.current && packCardRef.current[idx]) {
+    const card = packCardRef.current[idx];
+
+    
+
+
+    const PackingCardOrderProcessor = (list: HTMLDivElement[], mevent:MouseEvent) => {
+      const rect = card.getBoundingClientRect();
+      if (packingCardContRef.current) {
+        const containerRect = packingCardContRef.current.getBoundingClientRect();
+      const x = mevent.clientX < containerRect.left ? containerRect.left : mevent.clientX;
+      const y = mevent.clientY < containerRect.top ? containerRect.top : mevent.clientY;
+      console.log("X: ", x, "Y: ", y);
+      }
+
+    }
     const onMouseMove = (moveEvent: MouseEvent) => {
-      card.style.left = `${moveEvent.clientX - offsetX}px`;
-      card.style.top = `${moveEvent.clientY - offsetY}px`;
+      PackingCardOrderProcessor(packCardRef.current, moveEvent);
     };
 
     const onMouseUp = () => {
+      card.style.position = 'static';
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseup', onMouseUp);
     };
@@ -1057,7 +1070,7 @@ function drag_packCard(e: React.MouseEvent<HTMLDivElement>, idx: number) {
             <div>Animation Here</div>
           )}
           {sideSelected === "bag" && (
-            <div className='h-full w-full bg-white p-5 flex flex-col gap-5'>
+            <div  className='h-full w-full bg-white p-5 flex flex-col gap-5'>
             <div className='flex justify-between items-center'>
             <span className='text-xl text-gray-700 font-semibold'>Packing List</span>
             <button
@@ -1071,10 +1084,10 @@ function drag_packCard(e: React.MouseEvent<HTMLDivElement>, idx: number) {
               <span className='mr-auto'>Add</span>
             </button>
             </div>
-            <div className='flex justify-center'>
-              <div className='flex flex-row gap-3 justify-evenly flex-wrap mx-auto w-fit'>
+            <div  className='flex justify-center'>
+              <div ref={packingCardContRef}  className='flex flex-row gap-3 justify-evenly flex-wrap mx-auto w-fit'>
               { pckList.current.map((itm, idx) => (
-                <div key={idx} ref={(elem) => {if(packCardRef.current && elem) packCardRef.current[idx]=elem}} className='absolute' onMouseDown={(e) => {
+                <div key={idx} ref={(elem) => {if(packCardRef.current && elem) packCardRef.current[idx]=elem}} className='' onMouseDown={(e) => {
                   drag_packCard(e, idx);
                 }}>
                 <PackingCard name={itm.name} values={ itm.values } 
