@@ -422,19 +422,42 @@ const packingCardContRef = useRef<HTMLDivElement | null>(null);
 const packCardRef = useRef<HTMLDivElement[]>([]);
 function drag_packCard(e: React.MouseEvent<HTMLDivElement>, idx: number) {
 
-  if(packCardRef.current && packCardRef.current[idx]) {
+  if(packCardRef.current && packCardRef.current[idx] && packingCardContRef.current) {
     const card = packCardRef.current[idx];
 
+    const containerRect = packingCardContRef.current.getBoundingClientRect();
     
 
 
     const PackingCardOrderProcessor = (list: HTMLDivElement[], mevent:MouseEvent) => {
-      const rect = card.getBoundingClientRect();
+      const Cardrect = card.getBoundingClientRect();
+
+
+
       if (packingCardContRef.current) {
-        const containerRect = packingCardContRef.current.getBoundingClientRect();
-      const x = mevent.clientX < containerRect.left ? containerRect.left : mevent.clientX;
-      const y = mevent.clientY < containerRect.top ? containerRect.top : mevent.clientY;
-      console.log("X: ", x, "Y: ", y);
+        // console.log(Cardrect.width === Math.abs(Cardrect.left - Cardrect.right))
+        
+         var x = mevent.clientX;
+        if (mevent.clientX <= containerRect.left) {
+          x = containerRect.left; 
+        }
+        else if (mevent.clientX + Cardrect.width >= containerRect.right) {
+          x = containerRect.right- Cardrect.width;
+        }
+
+        
+
+        var y = mevent.clientY;
+        
+        if (mevent.clientY <= containerRect.top) {
+          y = containerRect.top;
+        } else if (mevent.clientY + Cardrect.height >= containerRect.bottom) {
+          y = containerRect.bottom - Cardrect.height;
+        }
+
+        card.style.position = 'absolute';
+        card.style.left = `${x}px`;
+        card.style.top = `${y}px`;
       }
 
     }
