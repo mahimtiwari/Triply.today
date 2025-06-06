@@ -37,11 +37,10 @@ const mapOptions: MapOptions = {
   container: mapContainerRef.current,
   style: `https://api.maptiler.com/maps/basic-v2/style.json?key=${gji56jc7}`,
   center: [-122.4194, 37.7749],
-  zoom: 5,
+  zoom: 2,
   pitchWithRotate: false,
   dragRotate: false,
 };
-
     const mapInstance = new maplibregl.Map(mapOptions);
     mapRef.current = mapInstance;
 
@@ -52,7 +51,7 @@ const mapOptions: MapOptions = {
         visualizePitch: true,
         visualizeRoll: true,
         showZoom: true,
-        showCompass: true,
+        showCompass: false,
       })
     );
 
@@ -115,7 +114,7 @@ const mapOptions: MapOptions = {
         source: 'places',
         paint: {
           'circle-radius': 12,
-          'circle-color': '#1976d2',
+          'circle-color': '#f7bc00',
           'circle-stroke-width': 3,
           'circle-stroke-color': '#ffffff',
           'circle-blur': 0.4,
