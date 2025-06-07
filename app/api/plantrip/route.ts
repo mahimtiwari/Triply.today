@@ -39,7 +39,8 @@ export async function GET(request: NextRequest) {
           time: "3:00 PM",
           from: "SFO Airport",
           to: "Hotel XYZ"
-          preffered_transport: "Taxi"
+          preffered_transport: "Taxi",
+          description: "Check-in at Hotel XYZ, a comfortable stay in New York."
         },
         {
           category: "sightseeing",
@@ -48,7 +49,8 @@ export async function GET(request: NextRequest) {
           time: "10:00 AM",
           from: "Hotel XYZ",
           to: "Statue of Liberty"
-          preffered_transport: "Public Transport"
+          preffered_transport: "Public Transport",
+          description: "Visit the iconic Statue of Liberty and Ellis Island."
         },
         {
           category: "sightseeing",
@@ -57,7 +59,8 @@ export async function GET(request: NextRequest) {
           time: "2:00 PM",
           from: "Statue of Liberty",
           to: "Central Park"
-          preffered_transport: "Public Transport"
+          preffered_transport: "Public Transport",
+          description: "Explore the vast greenery and iconic landmarks of Central Park."
         },
         {
           category: "restaurant",
@@ -66,7 +69,8 @@ export async function GET(request: NextRequest) {
           time: "6:00 PM",
           from: "Central Park",
           to: "Joe's Pizza"
-          preffered_transport: "Public Transport"
+          preffered_transport: "Public Transport",
+          description: "Enjoy a slice of New York's famous pizza at Joe's Pizza."
         },
         {
           category: "hotel",
@@ -75,7 +79,8 @@ export async function GET(request: NextRequest) {
           time: "8:00 PM",
           from: "Joe's Pizza",
           to: "Hotel XYZ"
-          preffered_transport: "Taxi"
+          preffered_transport: "Taxi",
+          description: "Relax and unwind at your hotel after a day of sightseeing."
         }
       ]
     },
@@ -90,7 +95,8 @@ export async function GET(request: NextRequest) {
         time: "3:00 PM",
         from: "XYZ Park",
         to: "Hotel XYZ",
-        preffered_transport: "Taxi"},
+        preffered_transport: "Taxi",
+        description: "Check-in at Hotel XYZ, a comfortable stay in San Francisco."},
 
         {category: "intermediate_transport",
         name: "SFO Train Station"
@@ -115,7 +121,8 @@ export async function GET(request: NextRequest) {
           time: "7:00 PM",
           from: "San Jose Train Station",
           to: "Hotel ABC",
-          preffered_transport: "Taxi"
+          preffered_transport: "Taxi",
+          description: "Check-in at Hotel ABC, a comfortable stay in San Jose."
         }
       ...
       ]
@@ -136,7 +143,8 @@ export async function GET(request: NextRequest) {
         "time": "10:00 AM",
         "from": "Hotel XYZ",
         "to": "Golden Gate Bridge",
-        "preffered_transport": "Public Transport"
+        "preffered_transport": "Public Transport",
+        "description": "A must-see landmark with stunning views. Rent a bike to explore the area."
       },
       {
         "category": "restaurant",
@@ -145,7 +153,8 @@ export async function GET(request: NextRequest) {
         "time": "1:00 PM",
         "from": "Golden Gate Bridge",
         "to": "Fisherman's Wharf Restaurant",
-        "preffered_transport": "Public Transport"
+        "preffered_transport": "Public Transport",
+        "description": "Enjoy fresh seafood with a view of the bay. Try the clam chowder in a bread bowl."
       },
       {
         "category": "hotel",
@@ -154,7 +163,8 @@ export async function GET(request: NextRequest) {
         "time": "3:00 PM",
         "from": "Fisherman's Wharf Restaurant",
         "to": "Hotel XYZ",
-        "preffered_transport": "Public Transport"
+        "preffered_transport": "Public Transport",
+        "description": "Relax and unwind at your hotel. Enjoy the amenities and prepare for departure."
       },
       {
         "category": "intermediate_transport",
@@ -227,7 +237,8 @@ Based on this info, plan a trip for the user. The trip should include the follow
        - time (when it will be visited)
        - cost in ${plan.currencyCode} currency as "{SYMBOL}NUMBER" (no ranges)
        - from and to fields (these must be real places and match with the transport section)
-     - Ensure all routes make sense and return to the hotel at the end of the day
+       - description (a brief description of the place or activity under 20 words and above 10 wrods) (this should not be included in the intermediate_transport category)
+       - Ensure all routes make sense and return to the hotel at the end of the day
      - Include at least one restaurant or food place for lunch and one for dinner each day
 
 Important Guidelines:
@@ -256,7 +267,6 @@ Important Guidelines:
 - Arriving and departing sections can only have flights and in their from and to can only be airports.
 - If the user location is from the same city as the destination then "arriving" and "departing" cannot be included in the day object.
 - Price of hotel should given for each day separately *If applicable*.
-
 JSON format to follow exactly:
 ${json_format}
 

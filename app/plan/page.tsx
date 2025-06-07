@@ -11,7 +11,6 @@ import { get } from 'http';
 import PackingCard from '../components/packingCard';
 import { off } from 'process';
 import BufferComponent from '../components/planpageLoader';
-import { time } from 'console';
 
 
 const PlanTrip = () => {
@@ -26,6 +25,7 @@ interface Place {
   from: string;
   to: string;
   preffered_transport: string;
+  description?:string
 }
 
 interface ArrivingOrDeparting {
@@ -208,7 +208,6 @@ const costProcessor = (data: Trip): CostDetailsType => {
     if (trip[day].departing) transportCost += getTransportationCost(transportation, trip[day].departing.from, trip[day].departing.to, trip[day].departing.preffered_transport);
     
     for (const place of trip[day].places) {
-      console.log("Processing Place:", place);
       if (place.category.toLowerCase() === "hotel" && hNumber === 0) {
         hotelCost = parseInt(place.cost.replace(/[^0-9.-]+/g, ""));
         hNumber++;
@@ -269,6 +268,7 @@ const monthNames = [
 ];
 
 const [bufferBool, setBufferBool] = useState(false);
+const [serverResState, setServerResState] = useState(false);
 
 
 const [currencySymbol, setCurrencySymbol] = useState<string | null>(null);
@@ -276,7 +276,6 @@ const [currencySymbol, setCurrencySymbol] = useState<string | null>(null);
     // Getting the data from /plantrip api
 
     let locData: string;
-
     fetch('https://ipinfo.io/json')
       .then((res) => res.json())
       .then((locationData) => {
@@ -301,9 +300,11 @@ const [currencySymbol, setCurrencySymbol] = useState<string | null>(null);
           })
           .catch((error) => {
             console.error('Error fetching trip data:', error);
+            if (error.message.includes('503')) {
+              setServerResState(true);
+            }
           });
           })
-
 
       .catch((err) => {
         console.error("Error fetching location:", err);
@@ -535,10 +536,18 @@ const diffTime = Math.abs(endDate.getTime() - startDate.getTime());
 const tripDayLen = Math.ceil(diffTime / (1000 * 60 * 60 * 24))+1;
 const [progressNum, setProgressNum] = useState<number>(0);
 
-console.log("Trip Day Length:", tripDayLen);
   return (
     <>
-
+{serverResState && (
+<div className='absolute top-2 left-1/2 transform -translate-x-1/2 bg-red-300 border-1 border-red-500 rounded-2xl p-5 z-100'>
+  <span>API is Currently Overloaded. Try again later (4-5min)</span>
+  <button 
+  onClick={() => {setServerResState(false)}}
+  className="ml-4 px-3 py-1 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors duration-200">
+    ×
+  </button>
+</div>
+)}
 
 <div className='flex flex-col h-screen'>
 <div className="flex flex-row flex-grow ">
@@ -655,6 +664,9 @@ console.log("Trip Day Length:", tripDayLen);
             progressProp={progressNum}
             defaultTime={dayTimeBufferT.find((day) => day.days <= tripDayLen)?.time || 60000} dataStatus={bufferBool}/>
           )}
+
+
+
           {sideSelected === "itin" && bufSate && (
           <div className='h-full w-full bg-white'>
             <div>
@@ -857,6 +869,11 @@ console.log("Trip Day Length:", tripDayLen);
                             <span className="text-sm text-gray-500">{`To: ${place.to}`}</span>
                             </div>
                           </div>
+                          {place.category !== "intermediate_transport" && place.description && (
+                            <div className="mt-2 text-sm text-gray-600 italic bg-gray-200 p-3 rounded-lg shadow-inner border-l-4 border-blue-300">
+                              {place.description}
+                            </div>
+                          )}
                           </div>
                           
 
@@ -1194,7 +1211,6 @@ console.log("Trip Day Length:", tripDayLen);
                   }else {
                     pckList.current[idx].values = values;
                   }
-                  console.log("Updated Packing List:", pckList.current);
                 }}
                 />
                 </div>
