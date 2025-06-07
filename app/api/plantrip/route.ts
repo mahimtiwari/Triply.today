@@ -91,6 +91,7 @@ export async function GET(request: NextRequest) {
         from: "XYZ Park",
         to: "Hotel XYZ",
         preffered_transport: "Taxi"},
+
         {category: "intermediate_transport",
         name: "SFO Train Station"
         from: "Hotel XYZ,
@@ -98,6 +99,7 @@ export async function GET(request: NextRequest) {
         cost: "$0",
         time: "5:00 PM",
         preffered_transport: "Public Transport"},
+
         {category: "intermediate_transport",
         name: "San Jose Train Station",
         from: "SFO Train Station",
@@ -105,6 +107,7 @@ export async function GET(request: NextRequest) {
         cost: "$0",
         time: "6:00 PM",
         preffered_transport: "Train"},
+
         {
           category: "hotel",
           name: "Hotel ABC",
@@ -119,6 +122,12 @@ export async function GET(request: NextRequest) {
     }
     ...
     dayN: {
+          
+    "departing": {
+        "from": "SFO Airport",
+        "to": "IGI Airport",
+        preffered_transport: "Flight"
+      },
     places: [
       {
         "category": "sightseeing",
@@ -141,7 +150,7 @@ export async function GET(request: NextRequest) {
       {
         "category": "hotel",
         "name": "Hotel XYZ",
-        "cost": "$0",
+        "cost": "$535",
         "time": "3:00 PM",
         "from": "Fisherman's Wharf Restaurant",
         "to": "Hotel XYZ",
@@ -150,18 +159,13 @@ export async function GET(request: NextRequest) {
       {
         "category": "intermediate_transport",
         "name": "SFO Airport",
-        "cost": "$0",
+        "cost": "$345",
         "time": "6:00 PM",
         "from": "Hotel XYZ",
         "to": "SFO Airport",
         "preffered_transport": "Taxi"
       }
-    ...
-      "departing": {
-        "from": "SFO Airport",
-        "to": "IGI Airport",
-        preffered_transport: "Flight"
-      }
+
     ...}
   },
 
@@ -227,7 +231,7 @@ Based on this info, plan a trip for the user. The trip should include the follow
      - Include at least one restaurant or food place for lunch and one for dinner each day
 
 Important Guidelines:
-
+- Then number of days in the trip should be equal to the number of days between the start and end date
 - The trip must match the selected budget type (Budget, Normal, or Luxury)
 - The cost of each item and total trip cost should be written in "$NUMBER" format — no ranges like "$100 - $200"
 - Every activity or place visited must have a return to the hotel at the end of the day
@@ -246,7 +250,13 @@ Important Guidelines:
 - arriving/departing is only for the first and last day of the trip, respectively. It should not be included in the middle days.
 - use "intermediate_transport" category when transportation between two places needs more than one mode of transport, Example: from hotel to delhi train station then from delhi train station to jaipur train station. It should be *only* used when there is a need for more than one mode of transport between two places. 
 - from and to *should not have their values as city names*, they should be specific places like "Hotel XYZ", "SFO Airport", etc.
-- *Dont forget* to include the cost of transportation of the arriving and departing in the transportation section.
+- arriving and departure should never be inside the places array, they should be separate objects in the day object.
+- **You are required include the costs of both arriving and departing flights separately in the transportation array.
+- The to of the previous place should match with the from of the next place in the places array. 
+- Arriving and departing sections can only have flights and in their from and to can only be airports.
+- If the user location is from the same city as the destination then "arriving" and "departing" cannot be included in the day object.
+- Price of hotel should given for each day separately *If applicable*.
+
 JSON format to follow exactly:
 ${json_format}
 

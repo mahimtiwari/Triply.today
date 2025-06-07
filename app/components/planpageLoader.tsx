@@ -1,23 +1,24 @@
 import React, { useEffect, useState } from "react";
 
-const BufferComponent: React.FC<{ defaultTime: number; dataStatus?: boolean; onComplete: ()=>void }> = ({
+const BufferComponent: React.FC<{ defaultTime: number; progressProp:number; onProgress:(pDone:number)=>void; dataStatus?: boolean; onComplete: ()=>void }> = ({
     defaultTime,
     dataStatus = false,
+    progressProp,
+    onProgress = (pDone) => {},
     onComplete = () => {},
 }) => {
     
-    const [progress, setProgress] = useState(0);
     const [visible, setVisible] = useState(true);
     useEffect(() => {
         const gap = 20;
         const stp = defaultTime / gap;
         const addVal = 100 / stp;
-        var pDone = 0;
+        var pDone = progressProp;
+        
         let timer = setInterval(() => {
-            setProgress((prev) => {
+            
                 const reducer = pDone > 85 ? 1/(pDone) : 1;
-                // console.log("reducer", reducer);
-                const next = !dataStatus ? prev + addVal*reducer : prev + 100;
+                const next = !dataStatus ? pDone + addVal*reducer : pDone + 100;
                 if (next >= 100) {
                     clearInterval(timer);
                     setTimeout(() => {setVisible(false);onComplete()}, 300);
@@ -28,8 +29,9 @@ const BufferComponent: React.FC<{ defaultTime: number; dataStatus?: boolean; onC
                 } else {
                     pDone = next;
                 }
+                onProgress(pDone)
+
                 return next;
-            });
             
         }, gap);
 
@@ -41,13 +43,16 @@ const BufferComponent: React.FC<{ defaultTime: number; dataStatus?: boolean; onC
     if (!visible) return null;
     return (
         <div className="w-full h-full flex flex-col items-center justify-center bg-white/50 z-[100]">
-            <p className="mb-4 text-lg text-gray-600">Loading...</p>
-            <div className="w-64 h-3 bg-gray-200 rounded-full overflow-hidden">
-                <div
-                    className="h-full bg-blue-500 transition-all"
-                    style={{ width: `${progress}%` }}
-                ></div>
-            </div>
+<p className="mb-6 text-xl text-gray-700 font-semibold animate-pulse">
+  Loading, please wait...
+</p>
+<div className="w-72 h-4 bg-gray-300 rounded-full overflow-hidden shadow-inner">
+  <div
+    className="h-full bg-gradient-to-r from-blue-400 to-blue-600 transition-all duration-300 ease-in-out"
+    style={{ width: `${progressProp}%` }}
+  ></div>
+</div>
+
         </div>
     );
 };

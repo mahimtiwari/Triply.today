@@ -208,7 +208,7 @@ const costProcessor = (data: Trip): CostDetailsType => {
     if (trip[day].departing) transportCost += getTransportationCost(transportation, trip[day].departing.from, trip[day].departing.to, trip[day].departing.preffered_transport);
     
     for (const place of trip[day].places) {
-
+      console.log("Processing Place:", place);
       if (place.category.toLowerCase() === "hotel" && hNumber === 0) {
         hotelCost = parseInt(place.cost.replace(/[^0-9.-]+/g, ""));
         hNumber++;
@@ -526,13 +526,15 @@ function drag_packCard(e: React.MouseEvent<HTMLDivElement>, idx: number) {
 }
 const [bufSate, setBufState] = useState<boolean>(false);
 // here the order matters sooooo dont forget that-------------------------
-const dayTimeBufferT = [{days:14, time:60000}, {days:10, time:50000}, {days: 7, time:35000} ,{days:3, time:15000}];
+const dayTimeBufferT = [{days:14, time:60000}, {days:10, time:50000}, {days: 7, time:35000} ,{days:3, time:15000}, {days:1, time:10000}]; // this is the buffer time for the trip days, it will be used to show the loading state
 // here the order matters sooooo dont forget that----------------------------------
 
 const startDate = new Date(tripDetails.startDate);
 const endDate = new Date(tripDetails.endDate);
 const diffTime = Math.abs(endDate.getTime() - startDate.getTime());
 const tripDayLen = Math.ceil(diffTime / (1000 * 60 * 60 * 24))+1;
+const [progressNum, setProgressNum] = useState<number>(0);
+
 console.log("Trip Day Length:", tripDayLen);
   return (
     <>
@@ -647,10 +649,11 @@ console.log("Trip Day Length:", tripDayLen);
 </div>
           {!bufSate && sideSelected !== "bag" && (
             <BufferComponent onComplete={() => {
-              setBufState(true)
-            }} 
+              setBufState(true);
+            }}
+            onProgress={(pDone) => {setProgressNum(pDone);}}
+            progressProp={progressNum}
             defaultTime={dayTimeBufferT.find((day) => day.days <= tripDayLen)?.time || 60000} dataStatus={bufferBool}/>
-
           )}
           {sideSelected === "itin" && bufSate && (
           <div className='h-full w-full bg-white'>
