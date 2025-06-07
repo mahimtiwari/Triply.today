@@ -46,7 +46,7 @@ const BufferComponent: React.FC<{ defaultTime: number; progressProp:number; onPr
 <p className="mb-6 text-xl text-gray-700 font-semibold animate-pulse">
   Loading, please wait...
 </p>
-<div className="w-72 h-4 bg-gray-300 rounded-full overflow-hidden shadow-inner">
+<div className="w-72 h-[8px] bg-gray-300 rounded-full overflow-hidden shadow-inner">
   <div
     className="h-full bg-gradient-to-r from-blue-400 to-blue-600 transition-all duration-300 ease-in-out"
     style={{ width: `${progressProp}%` }}
