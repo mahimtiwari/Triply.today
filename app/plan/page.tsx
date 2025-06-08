@@ -554,17 +554,31 @@ const [bottomSheetHeight, setBottomSheetHeight] = useState<number>(50);
 const [bottomSheetRestrictedHeight, setBottomSheetRestrictedHeight] = useState<number>(50);
 // Order matters here........!!!!!!!! lowest -> highest
 const BottomSheetHeightVariations = [20, 50, 100]
+const [bottomSheetDiff, setBottomSheetDiff] = useState<number>(0);
+const bottomSheetRef = useRef<HTMLDivElement | null>(null);
 
-function bottomSheetHeightChange(e: React.TouchEvent) {
-    if (e.touches.length > 0) {
-    const touch = e.touches[0];
-    const newHeight = 100 - (touch.clientY/window.innerHeight)*100;
-    setBottomSheetHeight(newHeight);
+function bottomSheetHeightStartChange(e: React.TouchEvent) {
+  if (e.touches.length > 0) {
+  const cont = bottomSheetRef.current?.getBoundingClientRect();
+  if (cont) {
+      const touch = e.touches[0];
+      setBottomSheetDiff(cont.top - touch.clientY);
+
+    }
+  }
 }
+function bottomSheetHeightChange(e: React.TouchEvent) {
+  if (e.touches.length > 0) {
+    
+    const touch = e.touches[0] ;
+    const newHeight = 100 - ((touch.clientY+bottomSheetDiff) /window.innerHeight)*100;
+    setBottomSheetHeight(newHeight);
+  }
 }
 function bottomSheetHeightRestrictedEndChange(e: React.TouchEvent) {
   setBottomSheetHeight(prevHeight => {
     var nHeight:number = prevHeight; 
+    
     if (prevHeight <= bottomSheetRestrictedHeight) {
       if (bottomSheetRestrictedHeight < BottomSheetHeightVariations[0]) {
         nHeight = BottomSheetHeightVariations[0]; 
@@ -588,6 +602,9 @@ function bottomSheetHeightRestrictedEndChange(e: React.TouchEvent) {
     return nHeight;
   })
 }
+
+
+
 
   return (
     <>
@@ -1459,7 +1476,7 @@ function bottomSheetHeightRestrictedEndChange(e: React.TouchEvent) {
             defaultTime={dayTimeBufferT.find((day) => day.days <= tripDayLen)?.time || 60000} dataStatus={bufferBool}/>
 
 <div className='deskver:hidden flex flex-col h-[100vh] font-[geist]'>
-    <div className='sticky top-0 z-1000 w-full p-2'>
+    <div className='absolute top-0 z-1000 w-full p-2'>
       <div className='w-full bg-[#ffffff7d] backdrop-blur-[33px] rounded-2xl p-3 flex flex-row items-center h-[70px] z-1000'>
           <button className='rounded-full flex justify-center items-center h-[20px] p-5 w-[20px] bg-green-300 '>
               <span className="material-icons text-white">menu</span>
@@ -1484,17 +1501,26 @@ function bottomSheetHeightRestrictedEndChange(e: React.TouchEvent) {
         controls={false} 
       />
     </div>
-    <div className={`sticky bg-white rounded-t-2xl z-50 top-[100vh] `}
+    <div className={`sticky bg-white z-50 top-[100vh] transition-all duration-300`}
       style={
-        {height: `${bottomSheetHeight}vh`}
-      }
-    >
+        {height: `${bottomSheetHeight}vh`,
+      transitionTimingFunction: 'cubic-bezier(0.2, 0.56, 0.16, 0.98)',
+      borderRadius: bottomSheetHeight !== BottomSheetHeightVariations[2] ? '30px 30px 0 0':"",
+      }} onTouchMove={(e) =>bottomSheetHeightChange(e)} 
+      onTouchEnd={(e)=> bottomSheetHeightRestrictedEndChange(e)}
+      onTouchStart={(e) => bottomSheetHeightStartChange(e)}
+      ref={bottomSheetRef}
+
+      >
         {/* bottomsheet slider bar */}
         <div className='w-full flex justify-center items-center h-7'
-        onTouchMove={(e) =>bottomSheetHeightChange(e)} onTouchEnd={(e)=> bottomSheetHeightRestrictedEndChange(e)}>
-          <div className='w-[40px] h-[5px] bg-gray-300 rounded-full'></div>
+        ><div className='w-[40px] h-[5px] bg-gray-300 rounded-full'></div>
         </div>
         {/* Bottom sheet cont */}
+
+
+
+
 
     </div>
 </div>
