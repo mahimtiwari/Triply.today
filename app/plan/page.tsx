@@ -549,6 +549,8 @@ const diffTime = Math.abs(endDate.getTime() - startDate.getTime());
 const tripDayLen = Math.ceil(diffTime / (1000 * 60 * 60 * 24))+1;
 const [progressNum, setProgressNum] = useState<number>(0);
 
+const [bottomSheetHeight, setBottomSheetHeight] = useState<number>(50);
+
   return (
     <>
 
@@ -1411,7 +1413,6 @@ const [progressNum, setProgressNum] = useState<number>(0);
 </div>
 
 {/* Mobile Ver */}
-
             <BufferComponent onComplete={() => {
               setBufState(true);
             }}
@@ -1423,7 +1424,7 @@ const [progressNum, setProgressNum] = useState<number>(0);
     <div className='sticky top-0 z-1000 w-full p-2'>
       <div className='w-full bg-[#ffffff7d] backdrop-blur-[33px] rounded-2xl p-3 flex flex-row items-center h-[70px] z-1000'>
           <button className='rounded-full flex justify-center items-center h-[20px] p-5 w-[20px] bg-green-300 '>
-              <span className="material-icons">menu</span>
+              <span className="material-icons text-white">menu</span>
           </button>
           {tripDetails.destination && (
           <span className='ml-3 h-fit flex flex-col'>
@@ -1445,8 +1446,15 @@ const [progressNum, setProgressNum] = useState<number>(0);
         controls={false} 
       />
     </div>
-    <div className='sticky bg-white rounded-t-2xl h-[40vh] z-50 top-[100vh]'>
-      
+    <div className={`sticky bg-white rounded-t-2xl h-[${bottomSheetHeight}vh] z-50 top-[100vh] `}>
+        {/* bottomsheet slider bar */}
+        <div className='w-full flex justify-center items-center h-7'>
+          <div className='w-[40px] h-[5px] bg-gray-300 rounded-full'></div>
+        </div>
+        {/* Bottom sheet cont */}
+
+
+
     </div>
 </div>
 
