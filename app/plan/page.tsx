@@ -551,6 +551,44 @@ const [progressNum, setProgressNum] = useState<number>(0);
 
 const [bottomSheetHeight, setBottomSheetHeight] = useState<number>(50);
 
+const [bottomSheetRestrictedHeight, setBottomSheetRestrictedHeight] = useState<number>(50);
+// Order matters here........!!!!!!!! lowest -> highest
+const BottomSheetHeightVariations = [20, 50, 100]
+
+function bottomSheetHeightChange(e: React.TouchEvent) {
+    if (e.touches.length > 0) {
+    const touch = e.touches[0];
+    const newHeight = 100 - (touch.clientY/window.innerHeight)*100;
+    setBottomSheetHeight(newHeight);
+}
+}
+function bottomSheetHeightRestrictedEndChange(e: React.TouchEvent) {
+  setBottomSheetHeight(prevHeight => {
+    var nHeight:number = prevHeight; 
+    if (prevHeight <= bottomSheetRestrictedHeight) {
+      if (bottomSheetRestrictedHeight < BottomSheetHeightVariations[0]) {
+        nHeight = BottomSheetHeightVariations[0]; 
+      }
+      else if (prevHeight < BottomSheetHeightVariations[1]) {
+        nHeight = BottomSheetHeightVariations[0];
+      }
+      else if (prevHeight < BottomSheetHeightVariations[2]){
+        nHeight = BottomSheetHeightVariations[1];
+      }
+    } else if (prevHeight > bottomSheetRestrictedHeight) {
+      if (prevHeight > BottomSheetHeightVariations[0]) {
+        nHeight = BottomSheetHeightVariations[1]; 
+      }
+      if (prevHeight > BottomSheetHeightVariations[1]) {
+        nHeight = BottomSheetHeightVariations[2]; 
+      }
+    }
+
+    setBottomSheetRestrictedHeight(nHeight);
+    return nHeight;
+  })
+}
+
   return (
     <>
 
@@ -1446,14 +1484,17 @@ const [bottomSheetHeight, setBottomSheetHeight] = useState<number>(50);
         controls={false} 
       />
     </div>
-    <div className={`sticky bg-white rounded-t-2xl h-[${bottomSheetHeight}vh] z-50 top-[100vh] `}>
+    <div className={`sticky bg-white rounded-t-2xl z-50 top-[100vh] `}
+      style={
+        {height: `${bottomSheetHeight}vh`}
+      }
+    >
         {/* bottomsheet slider bar */}
-        <div className='w-full flex justify-center items-center h-7'>
+        <div className='w-full flex justify-center items-center h-7'
+        onTouchMove={(e) =>bottomSheetHeightChange(e)} onTouchEnd={(e)=> bottomSheetHeightRestrictedEndChange(e)}>
           <div className='w-[40px] h-[5px] bg-gray-300 rounded-full'></div>
         </div>
         {/* Bottom sheet cont */}
-
-
 
     </div>
 </div>
