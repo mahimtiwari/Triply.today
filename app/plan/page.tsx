@@ -538,6 +538,7 @@ const [progressNum, setProgressNum] = useState<number>(0);
 
   return (
     <>
+
 {serverResState && (
 <div className='absolute top-2 left-1/2 transform -translate-x-1/2 bg-red-300 border-1 border-red-500 rounded-2xl p-5 z-100'>
   <span>API is Currently Overloaded. Try again later (4-5min)</span>
@@ -548,9 +549,9 @@ const [progressNum, setProgressNum] = useState<number>(0);
   </button>
 </div>
 )}
-
-<div className='flex flex-col h-screen'>
-<div className="flex flex-row flex-grow ">
+{/* Desk Ver */}
+<div className=' flex-col h-screen deskver:flex hidden'>
+  <div className="flex flex-row flex-grow ">
 
       <div className="h-[100vh] flex min-w-[600px]" style={{ width: `${["play", "bag"].includes(sideSelected) ? 100 : leftWidth}%`}}>
         
@@ -1225,12 +1226,12 @@ const [progressNum, setProgressNum] = useState<number>(0);
         </div>
 
       </div>
-
 {!["play", "bag"].includes(sideSelected) && (
 <div
   className="relative w-[1px] bg-gray-300 cursor-grab z-20 group"
   onMouseDown={startDrag}
 >
+
   <span
     className="absolute select-none top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-gray-300 rounded-full w-5 h-12 flex items-center justify-center text-sm font-bold text-gray-700 group-hover:scale-110 transition-transform duration-200 ease-in-out"
     style={{
@@ -1393,8 +1394,47 @@ const [progressNum, setProgressNum] = useState<number>(0);
             )}     
           </div>
 
-      </div>
+  </div>
 </div>
+
+{/* Mobile Ver */}
+
+            <BufferComponent onComplete={() => {
+              setBufState(true);
+            }}
+            onProgress={(pDone) => {setProgressNum(pDone);}}
+            progressProp={progressNum}
+            defaultTime={dayTimeBufferT.find((day) => day.days <= tripDayLen)?.time || 60000} dataStatus={bufferBool}/>
+
+<div className='deskver:hidden flex flex-col h-[100vh] font-[geist]'>
+    <div className='sticky top-0 z-1000 w-full p-2'>
+      <div className='w-full bg-[#ffffff7d] backdrop-blur-[33px] rounded-2xl p-3 flex flex-row items-center h-[70px] z-1000'>
+          <button className='rounded-full flex justify-center items-center h-[20px] p-5 w-[20px] bg-green-300 '>
+              <span className="material-icons">menu</span>
+          </button>
+          <span className='ml-3 h-fit flex flex-col'>
+              <h1 className='animated-text-gradient w-fit leading-tight font-bold text-xl'>{tripDetails.destination.split(",")[0]}</h1>
+            <span className='text-sm text-gray-700 font-semibold leading-tight'>{`${tripDetails.startDate.split("-")[2]} ${monthNames[parseInt(tripDetails.startDate.split("-")[1])]} - ${tripDetails.endDate.split("-")[2]} ${monthNames[parseInt(tripDetails.endDate.split("-")[1])]}`}</span>
+          </span>
+      </div>
+    </div>
+    <div className='absolute w-full h-[100vh] bg-amber-400'>
+      <Map 
+        placesNames={React.useMemo(() => ['San Francisco', 'Mountain View', 'Los Angeles'], [])} 
+        onClick={React.useCallback(
+        (placeName: string) => {
+          console.log("place:", placeName);
+        }, 
+        []
+        )}
+        controls={false} 
+      />
+    </div>
+    <div className='sticky bg-white rounded-t-2xl h-[40vh] z-50 top-[100vh]'>
+      
+    </div>
+</div>
+
 
     </>
   )

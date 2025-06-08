@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-const BufferComponent: React.FC<{ defaultTime: number; progressProp:number; onProgress:(pDone:number)=>void; dataStatus?: boolean; onComplete: ()=>void }> = ({
+const BufferComponentMobile: React.FC<{ defaultTime: number; progressProp:number; onProgress:(pDone:number)=>void; dataStatus?: boolean; onComplete: ()=>void }> = ({
     defaultTime,
     dataStatus = false,
     progressProp,
@@ -18,7 +18,7 @@ const BufferComponent: React.FC<{ defaultTime: number; progressProp:number; onPr
                 const reducer = pDone > Math.floor(Math.random()*8) + 90 ? 1/(pDone) : 1;
                 const next = !dataStatus ? pDone + addVal*reducer : pDone + 100;
                 if (next >= 100) {
-                    if (dataStatus){
+                    if (false){
                     pDone = 100;
                     clearInterval(timer);
                     setTimeout(() => {setVisible(false);onComplete()}, 500);
@@ -30,7 +30,7 @@ const BufferComponent: React.FC<{ defaultTime: number; progressProp:number; onPr
                 }
                 
 
-                onProgress(pDone)
+                onProgress(50)
                 return next;
             
         }, gap);
@@ -42,21 +42,8 @@ const BufferComponent: React.FC<{ defaultTime: number; progressProp:number; onPr
 
     if (!visible) return null;
     return (<>
-    <div className="w-full h-full hidden deskver:flex flex-col items-center justify-center bg-white z-[100]">
-        <p className="mb-6 text-xl text-gray-700 font-semibold animate-pulse">
-        Loading, please wait...
-        </p>
-        <div className="w-72 h-[8px] bg-gray-300 rounded-full overflow-hidden shadow-inner">
-        <div
-            className="h-full bg-gradient-to-r from-blue-400 to-blue-600 transition-all duration-300 ease-in-out"
-            style={{ width: `${progressProp}%` }}
-        >
 
-        </div>
-        </div>
-    </div>
-
-<div className="deskver:hidden fixed top-0 left-0 flex flex-col gap-10 items-center justify-center w-full h-full z-[1000] bg-white">
+<div className="deskver:hidden fixed top-0 left-0 flex flex-col gap-10 items-center justify-center w-full h-full z-[100000] bg-white">
     <div className="relative w-[200px] h-[200px]">
         <svg className="absolute top-0 left-0 w-full h-full" viewBox="0 0 100 100">
             <circle
@@ -116,4 +103,4 @@ const BufferComponent: React.FC<{ defaultTime: number; progressProp:number; onPr
     );
 };
 
-export default BufferComponent;
+export default BufferComponentMobile;

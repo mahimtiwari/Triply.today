@@ -23,9 +23,10 @@ import 'maplibre-gl/dist/maplibre-gl.css';
 interface MapProps {
   placesNames: string[];
   onClick: (name: string) => void;
+  controls?: boolean;
 }
 
-const Map: React.FC<MapProps> = ({ placesNames, onClick }) => {
+const Map: React.FC<MapProps> = ({ placesNames, onClick, controls=true }) => {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<MapLibreMap | null>(null);
   const gji56jc7 = "3b9GgU5VpXSJd2RNtN0t";
@@ -45,6 +46,7 @@ const mapOptions: MapOptions = {
     mapRef.current = mapInstance;
 
     // Add GlobeControl
+    if (controls) {
     mapInstance.addControl(new maplibregl.GlobeControl(), 'top-right');
     mapInstance.addControl(
       new maplibregl.NavigationControl({
@@ -54,6 +56,7 @@ const mapOptions: MapOptions = {
         showCompass: false,
       })
     );
+  }
 
     // projection of the map on globe
     mapInstance.on('style.load', () => {
