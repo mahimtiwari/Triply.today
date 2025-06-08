@@ -530,6 +530,19 @@ const [bufSate, setBufState] = useState<boolean>(false);
 const dayTimeBufferT = [{days:14, time:60000}, {days:10, time:50000}, {days: 7, time:35000} ,{days:3, time:15000}, {days:1, time:10000}]; // this is the buffer time for the trip days, it will be used to show the loading state
 // here the order matters sooooo dont forget that----------------------------------
 
+
+
+  const [screenWidth, setScreenWidth] = useState<number | null>(null);
+
+  useEffect(() => {
+    const updateWidth = () => setScreenWidth(window.innerWidth);
+    updateWidth();
+    window.addEventListener('resize', updateWidth);
+
+    return () => window.removeEventListener('resize', updateWidth);
+  }, []);
+
+
 const startDate = new Date(tripDetails.startDate);
 const endDate = new Date(tripDetails.endDate);
 const diffTime = Math.abs(endDate.getTime() - startDate.getTime());
@@ -657,7 +670,7 @@ const [progressNum, setProgressNum] = useState<number>(0);
 
 <div>
 </div>
-          {!bufSate && sideSelected !== "bag" && (
+          {!bufSate && sideSelected !== "bag" && screenWidth!>900 && (
             <BufferComponent onComplete={() => {
               setBufState(true);
             }}
@@ -1412,10 +1425,12 @@ const [progressNum, setProgressNum] = useState<number>(0);
           <button className='rounded-full flex justify-center items-center h-[20px] p-5 w-[20px] bg-green-300 '>
               <span className="material-icons">menu</span>
           </button>
+          {tripDetails.destination && (
           <span className='ml-3 h-fit flex flex-col'>
               <h1 className='animated-text-gradient w-fit leading-tight font-bold text-xl'>{tripDetails.destination.split(",")[0]}</h1>
             <span className='text-sm text-gray-700 font-semibold leading-tight'>{`${tripDetails.startDate.split("-")[2]} ${monthNames[parseInt(tripDetails.startDate.split("-")[1])]} - ${tripDetails.endDate.split("-")[2]} ${monthNames[parseInt(tripDetails.endDate.split("-")[1])]}`}</span>
           </span>
+          )}
       </div>
     </div>
     <div className='absolute w-full h-[100vh] bg-amber-400'>
