@@ -1518,6 +1518,20 @@ function bottomSheetHeightRestrictedEndChange(e: React.TouchEvent) {
         </div>
         {/* Bottom sheet cont */}
 
+        <div
+        style={
+          {
+            marginTop:bottomSheetHeight !== BottomSheetHeightVariations[2] ? "0px" :"60px",
+            transition: 'margin-top 0.3s cubic-bezier(0, 0, 0, 0.91)',
+          }
+        }
+        >
+
+          
+          The content goes here
+        
+        
+        </div>
 
 
 
