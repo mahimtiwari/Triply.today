@@ -1,0 +1,4 @@
+html, body {
+  overscroll-behavior-y: none; /* disables vertical pull-to-refresh */
+  overscroll-behavior: none;   /* disables all overscroll behaviors */
+}

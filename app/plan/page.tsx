@@ -11,7 +11,7 @@ import { get } from 'http';
 import PackingCard from '../components/packingCard';
 import { off } from 'process';
 import BufferComponent from '../components/planpageLoader';
-
+import "../../public/css/plan.css"
 
 const PlanTrip = () => {
 
@@ -1526,11 +1526,7 @@ function bottomSheetHeightRestrictedEndChange(e: React.TouchEvent) {
           }
         }
         >
-
-          
           The content goes here
-        
-        
         </div>
 
 
