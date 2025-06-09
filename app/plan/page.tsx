@@ -1477,16 +1477,51 @@ function bottomSheetHeightRestrictedEndChange(e: React.TouchEvent) {
 
 <div className='deskver:hidden flex flex-col h-[100vh] font-[geist]'>
     <div className='absolute top-0 z-1000 w-full p-2'>
-      <div className='w-full bg-[#ffffff7d] backdrop-blur-[33px] rounded-2xl p-3 flex flex-row items-center h-[70px] z-1000'>
-          <button className='rounded-full flex justify-center items-center h-[20px] p-5 w-[20px] bg-green-300 '>
-              <span className="material-icons text-white">menu</span>
-          </button>
-          {tripDetails.destination && (
-          <span className='ml-3 h-fit flex flex-col'>
-              <h1 className='animated-text-gradient w-fit leading-tight font-bold text-xl'>{tripDetails.destination.split(",")[0]}</h1>
-            <span className='text-sm text-gray-700 font-semibold leading-tight'>{`${tripDetails.startDate.split("-")[2]} ${monthNames[parseInt(tripDetails.startDate.split("-")[1])]} - ${tripDetails.endDate.split("-")[2]} ${monthNames[parseInt(tripDetails.endDate.split("-")[1])]}`}</span>
-          </span>
-          )}
+      <div className='w-full bg-[#ffffff7d] backdrop-blur-[15px] rounded-2xl p-3  z-1000'>
+          <div className='flex flex-row items-center h-[50px]'>
+            <button className='rounded-full flex justify-center items-center h-[20px] p-5 w-[20px] bg-green-300 '>
+                <span className="material-icons text-white">menu</span>
+            </button>
+            {tripDetails.destination && (
+            <span className='ml-3 h-fit flex flex-col'>
+                <h1 className='animated-text-gradient w-fit leading-tight font-bold text-xl'>{tripDetails.destination.split(",")[0]}</h1>
+              <span className='text-sm text-gray-700 font-semibold leading-tight'>{`${tripDetails.startDate.split("-")[2]} ${monthNames[parseInt(tripDetails.startDate.split("-")[1])]} - ${tripDetails.endDate.split("-")[2]} ${monthNames[parseInt(tripDetails.endDate.split("-")[1])]}`}</span>
+            </span>
+            )}
+          </div>
+
+          {/* Side select menu (mobile ver) */}
+          <div>
+            <div className='grid grid-cols-6  gap-1 mt-3'>
+              <button className={`bg-[#0000000d] col-span-2 otline-0 h-15 flex flex-col rounded-xl  items-center justify-center   ${sideSelected === "itin" ? "bg-[#001fff0f] text-[#004079]" : "text-[#292929]"} `}
+                onClick={() => setSideSelected("itin")}>
+                <span className="material-icons text-2xl">travel_explore</span>
+              </button>
+              <button className={`bg-[#0000000d] col-span-2 otline-0 h-15 flex flex-col rounded-xl  items-center justify-center   ${sideSelected === "plan" ? "bg-[#001fff0f] text-[#004079]" : "text-[#292929]"}`}
+                onClick={() => setSideSelected("plan")}>
+                <span className="material-icons text-2xl">map</span>
+              </button>
+              <button className={`bg-[#0000000d] col-span-2 otline-0 h-15 flex flex-col rounded-xl  items-center justify-center   ${sideSelected === "cost" ? "bg-[#001fff0f] text-[#004079]" : "text-[#292929]"}`}
+                onClick={() => setSideSelected("cost")}>
+                <span className="material-icons text-2xl">paid</span>
+              </button>
+              <button className={`bg-[#0000000d] col-span-3 otline-0 h-15 flex flex-col rounded-xl  items-center justify-center   ${sideSelected === "play" ? "bg-[#001fff0f] text-[#004079]" : "text-[#292929]"}`}
+                onClick={() => setSideSelected("play")}>
+                <span className="material-icons text-2xl">play_circle</span>
+              </button>
+              <button className={`bg-[#0000000d] col-span-3 otline-0 h-15 flex flex-col rounded-xl  items-center justify-center   ${sideSelected === "bag" ? "bg-[#001fff0f] text-[#004079]" : "text-[#292929]"}`}
+                onClick={() => setSideSelected("bag")}>
+                <span className="material-icons text-2xl">luggage</span>
+              </button>
+
+
+
+
+            </div>
+          </div>
+
+
+
       </div>
     </div>
     <div className='absolute w-full h-[100vh] bg-amber-400'>
