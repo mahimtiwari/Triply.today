@@ -558,6 +558,7 @@ const [bottomSheetDiff, setBottomSheetDiff] = useState<number>(0);
 const bottomSheetRef = useRef<HTMLDivElement | null>(null);
 
 function bottomSheetHeightStartChange(e: React.TouchEvent) {
+  setControlMenuOpen(false)
   if (e.touches.length > 0) {
   const cont = bottomSheetRef.current?.getBoundingClientRect();
   if (cont) {
@@ -603,6 +604,7 @@ function bottomSheetHeightRestrictedEndChange(e: React.TouchEvent) {
   })
 }
 
+const [controlmenuOpen, setControlMenuOpen] = useState<boolean>(false);
 
 
 
@@ -1477,9 +1479,13 @@ function bottomSheetHeightRestrictedEndChange(e: React.TouchEvent) {
 
 <div className='deskver:hidden flex flex-col h-[100vh] font-[geist]'>
     <div className='absolute top-0 z-1000 w-full p-2'>
-      <div className='w-full bg-[#ffffff7d] backdrop-blur-[15px] rounded-2xl p-3  z-1000'>
+      <div className={`w-full bg-[#ffffff7d] backdrop-blur-[15px] rounded-2xl p-3  z-1000`}
+      style={{
+        height: `${controlmenuOpen ? "255px" : "75px"}`,
+        transition: 'height 0.3s ease-in-out',
+      }}>
           <div className='flex flex-row items-center h-[50px]'>
-            <button className='rounded-full flex justify-center items-center h-[20px] p-5 w-[20px] bg-green-300 '>
+            <button onClick={()=>setControlMenuOpen(!controlmenuOpen)} className='rounded-full flex justify-center items-center h-[20px] p-5 w-[20px] bg-green-300 '>
                 <span className="material-icons text-white">menu</span>
             </button>
             {tripDetails.destination && (
@@ -1491,40 +1497,53 @@ function bottomSheetHeightRestrictedEndChange(e: React.TouchEvent) {
           </div>
 
           {/* Side select menu (mobile ver) */}
-          <div>
-            <div className='grid grid-cols-6  gap-1 mt-3'>
-              <button className={`bg-[#0000000d] col-span-2 otline-0 h-15 flex flex-col rounded-xl  items-center justify-center   ${sideSelected === "itin" ? "bg-[#001fff0f] text-[#004079]" : "text-[#292929]"} `}
-                onClick={() => setSideSelected("itin")}>
-                <span className="material-icons text-2xl">travel_explore</span>
-              </button>
-              <button className={`bg-[#0000000d] col-span-2 otline-0 h-15 flex flex-col rounded-xl  items-center justify-center   ${sideSelected === "plan" ? "bg-[#001fff0f] text-[#004079]" : "text-[#292929]"}`}
-                onClick={() => setSideSelected("plan")}>
-                <span className="material-icons text-2xl">map</span>
-              </button>
-              <button className={`bg-[#0000000d] col-span-2 otline-0 h-15 flex flex-col rounded-xl  items-center justify-center   ${sideSelected === "cost" ? "bg-[#001fff0f] text-[#004079]" : "text-[#292929]"}`}
-                onClick={() => setSideSelected("cost")}>
-                <span className="material-icons text-2xl">paid</span>
-              </button>
-              <button className={`bg-[#0000000d] col-span-3 otline-0 h-15 flex flex-col rounded-xl  items-center justify-center   ${sideSelected === "play" ? "bg-[#001fff0f] text-[#004079]" : "text-[#292929]"}`}
-                onClick={() => setSideSelected("play")}>
-                <span className="material-icons text-2xl">play_circle</span>
-              </button>
-              <button className={`bg-[#0000000d] col-span-3 otline-0 h-15 flex flex-col rounded-xl  items-center justify-center   ${sideSelected === "bag" ? "bg-[#001fff0f] text-[#004079]" : "text-[#292929]"}`}
-                onClick={() => setSideSelected("bag")}>
-                <span className="material-icons text-2xl">luggage</span>
-              </button>
 
 
+            <div style={{
+              visibility: `${controlmenuOpen ? "visible" : "hidden"}`,
+              opacity: `${controlmenuOpen ? 1 : 0}`,
+              transition: 'opacity 0.3s ease-in-out, visibility 0.3s ease-in-out'
+            }}>
+              <div className='grid grid-cols-6  gap-2 mt-3'>
+                <button className={`bg-[#0000000d] col-span-2 otline-0 h-20 flex flex-col rounded-xl  items-center justify-center   ${sideSelected === "itin" ? "bg-[#001eff13] text-[#004079] scale-101" : "text-[#292929]"} transition-all duration-200 ease-in-out`}
+                  onClick={() => setSideSelected("itin")}>
+                  <span className="material-icons text-2xl">travel_explore</span>
+                  <span className='text-sm font-semibold'>Itin</span>
+                </button>
+                <button className={`bg-[#0000000d] col-span-2 otline-0 h-20 flex flex-col rounded-xl  items-center justify-center   ${sideSelected === "plan" ? "bg-[#001eff13] text-[#004079] scale-101" : "text-[#292929]"} transition-all duration-200 ease-in-out`}
+                  onClick={() => setSideSelected("plan")}>
+                  <span className="material-icons text-2xl">map</span>
+                  <span className='text-sm font-semibold'>Plan</span>
 
+                </button>
+                <button className={`bg-[#0000000d] col-span-2 otline-0 h-20 flex flex-col rounded-xl  items-center justify-center   ${sideSelected === "cost" ? "bg-[#001eff13] text-[#004079] scale-101" : "text-[#292929]"} transition-all duration-200 ease-in-out`}
+                  onClick={() => setSideSelected("cost")}>
+                  <span className="material-icons text-2xl">paid</span>
+                  <span className='text-sm font-semibold'>Cost</span>
 
+                </button>
+                <button className={`bg-[#0000000d] col-span-3 otline-0 h-20 flex flex-col rounded-xl  items-center justify-center   ${sideSelected === "play" ? "bg-[#001eff13] text-[#004079] scale-101" : "text-[#292929]"} transition-all duration-200 ease-in-out`}
+                  onClick={() => setSideSelected("play")}>
+                  <span className="material-icons text-2xl">play_circle</span>
+                  <span className='text-sm font-semibold'>Play</span>
+
+                </button>
+                <button className={`bg-[#0000000d] col-span-3 otline-0 h-20 flex flex-col rounded-xl  items-center justify-center   ${sideSelected === "bag" ? "bg-[#001eff13] text-[#004079] scale-101" : "text-[#292929]"} transition-all duration-200 ease-in-out`}
+                  onClick={() => setSideSelected("bag")}>
+                  <span className="material-icons text-2xl">luggage</span>
+                  <span className='text-sm font-semibold'>Bag</span>
+
+                </button>
+              </div>
             </div>
-          </div>
 
 
 
       </div>
     </div>
-    <div className='absolute w-full h-[100vh] bg-amber-400'>
+    <div className='absolute w-full h-[100vh] bg-amber-400 ' 
+    onTouchMove={() => setControlMenuOpen(false)}
+    onClick={() => setControlMenuOpen(false)}>
       <Map 
         placesNames={React.useMemo(() => ['San Francisco', 'Mountain View', 'Los Angeles'], [])} 
         onClick={React.useCallback(
@@ -1537,6 +1556,7 @@ function bottomSheetHeightRestrictedEndChange(e: React.TouchEvent) {
       />
     </div>
     <div className={`sticky bg-white z-50 top-[100vh] transition-all duration-300`}
+
       style={
         {height: `${bottomSheetHeight}vh`,
       transitionTimingFunction: 'cubic-bezier(0.2, 0.56, 0.16, 0.98)',
