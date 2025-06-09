@@ -543,6 +543,8 @@ const dayTimeBufferT = [{days:14, time:60000}, {days:10, time:50000}, {days: 7, 
   }, []);
 
 
+
+
 const startDate = new Date(tripDetails.startDate);
 const endDate = new Date(tripDetails.endDate);
 const diffTime = Math.abs(endDate.getTime() - startDate.getTime());
@@ -577,7 +579,6 @@ function bottomSheetHeightStartChange(e: React.TouchEvent) {
 }
 
 function bottomSheetHeightChange(e: React.TouchEvent) {
-  console.log(Math.abs(bottomsheetYintial.current - e.touches[0].clientY));
   if (!sureHeightChangeBottomSheet && Math.abs(bottomsheetYintial.current - e.touches[0].clientY) > 50) {
     setSureHeightChangeBottomSheet(true);
   };
@@ -618,12 +619,27 @@ function bottomSheetHeightRestrictedEndChange(e: React.TouchEvent) {
     setBottomSheetRestrictedHeight(nHeight);
     return nHeight;
 
-    return prevHeight;
+    
   })
 }
 
 const [controlmenuOpen, setControlMenuOpen] = useState<boolean>(false);
 
+
+useEffect(() => {
+  const dayScrll = document.querySelector(`#${dayExpanded}-${sideSelected}`) as HTMLDivElement | null;
+  dayScrll?.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+  });
+  console.log("Day Expanded:", dayExpanded);
+  setTimeout(() => {
+
+    if (dayScrll) {
+      dayScrll.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }    
+  }, 0);
+}, [dayExpanded])
 
 
   return (
@@ -880,8 +896,14 @@ const [controlmenuOpen, setControlMenuOpen] = useState<boolean>(false);
               )}
 
               { dataJSON?.trip?.trip && Object.entries(dataJSON.trip.trip).map(([day, tripInfo]) => (
-                <div key={day} className="bg-white border-b-1 border-gray-300 p-4">
-                  <div className="flex items-center justify-between cursor-pointer" onClick={() => setDayExpanded(dayExpanded === day ? null : day)}>
+                <div key={day} className="bg-white border-b-1 border-gray-300 p-4" id={`${day}-plan`}>
+                    <div className="flex items-center justify-between cursor-pointer" onClick={(e) => {
+                    
+                    setDayExpanded(dayExpanded === day ? null : day);
+
+
+
+                    }}>
                     <h2 className="text-lg font-bold text-gray-700">{`Day ${day.replace("day", "")}`}<span className='font-medium ml-4'>( {tripInfo.destination} )</span></h2>
                     <span className="text-sm font-medium text-gray-500">{dayExpanded === day ? "Hide Details" : "Show Details"}</span>
                   </div>
@@ -1023,7 +1045,7 @@ const [controlmenuOpen, setControlMenuOpen] = useState<boolean>(false);
                 Total
               </button>
               </div>
-
+              <div></div>
               { !dataJSON && (
                 <>
                 {Array.from({ length: 7 }, (_, index) => (
@@ -1033,7 +1055,7 @@ const [controlmenuOpen, setControlMenuOpen] = useState<boolean>(false);
               )}
 
               {dataJSON?.trip?.trip && costType==="day" && Object.entries(dataJSON.trip.trip).map(([day, tripInfo]) => (
-                <div key={day} className="bg-white border-b-1 border-gray-300 p-4">
+                <div key={day} className="bg-white border-b-1 border-gray-300 p-4" id={`${day}-cost`}>
                   <div className="flex items-center justify-between cursor-pointer" onClick={() => setDayExpanded(dayExpanded === day ? null : day)}>
                     <h2 className="text-lg font-bold text-gray-700">{`Day ${day.replace("day", "")}`}<span className='font-medium ml-4'>( {tripInfo.destination} )</span></h2>
                     <span className="bg-gradient-to-r mr-6 ml-auto from-green-300 via-green-500 to-green-600 text-white px-3 py-1 rounded-full text-sm font-semibold">
@@ -1502,8 +1524,8 @@ const [controlmenuOpen, setControlMenuOpen] = useState<boolean>(false);
         height: `${controlmenuOpen ? "255px" : "75px"}`,
         transition: 'height 0.3s ease-in-out',
       }}
-      onClick={()=>setControlMenuOpen(!controlmenuOpen)}>
-          <div className='flex flex-row items-center h-[50px]'>
+      >
+          <div className='flex flex-row items-center h-[50px]' onClick={()=>setControlMenuOpen(!controlmenuOpen)}>
             <button  className='rounded-full flex justify-center items-center h-[20px] p-5 w-[20px] bg-green-300 '>
                 <span className="material-icons text-white">menu</span>
             </button>
@@ -1516,8 +1538,6 @@ const [controlmenuOpen, setControlMenuOpen] = useState<boolean>(false);
           </div>
 
           {/* Side select menu (mobile ver) */}
-
-
             <div style={{
               visibility: `${controlmenuOpen ? "visible" : "hidden"}`,
               opacity: `${controlmenuOpen ? 1 : 0}`,
@@ -1555,9 +1575,6 @@ const [controlmenuOpen, setControlMenuOpen] = useState<boolean>(false);
                 </button>
               </div>
             </div>
-
-
-
       </div>
     </div>
     <div className='absolute w-full h-[100vh] bg-amber-400 ' 
@@ -1574,20 +1591,17 @@ const [controlmenuOpen, setControlMenuOpen] = useState<boolean>(false);
         controls={false} 
       />
     </div>
-    <div className={`sticky bg-white z-50 top-[100vh] transition-all duration-300`}
-
+    <div className={`sticky bg-white z-50 top-[100vh] transition-all duration-300 overflow-y-auto`}
       style={
         {height: `${bottomSheetHeight}vh`,
       transitionTimingFunction: 'cubic-bezier(0.2, 0.56, 0.16, 0.98)',
-      borderRadius: bottomSheetHeight !== BottomSheetHeightVariations[2] ? '30px 30px 0 0':"",
+      borderRadius: bottomSheetRestrictedHeight !== BottomSheetHeightVariations[2] ? '30px 30px 0 0':"",
       }} onTouchMove={(e) =>bottomSheetHeightChange(e)} 
       onTouchEnd={(e)=> bottomSheetHeightRestrictedEndChange(e)}
       onTouchStart={(e) => bottomSheetHeightStartChange(e)}
-      ref={bottomSheetRef}
-
-      >
+      ref={bottomSheetRef}>
         {/* bottomsheet slider bar */}
-        <div className='w-full flex justify-center items-center h-7'
+        <div className='w-full flex justify-center items-center h-7 bg-white sticky top-0 z-10'
         ><div className='w-[40px] h-[5px] bg-gray-300 rounded-full'></div>
         </div>
         {/* Bottom sheet cont */}
@@ -2116,10 +2130,8 @@ const [controlmenuOpen, setControlMenuOpen] = useState<boolean>(false);
           )}
           
           {sideSelected === "play" && bufSate && (
-            <div>Animation Here</div>
+            <div>Very Cool Animation Here</div>
           )}
-
-
 
         </div>
 
