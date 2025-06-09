@@ -628,13 +628,7 @@ const [controlmenuOpen, setControlMenuOpen] = useState<boolean>(false);
 
 useEffect(() => {
   const dayScrll = document.querySelector(`#${dayExpanded}-${sideSelected}`) as HTMLDivElement | null;
-  dayScrll?.scrollTo({
-    top: 0,
-    behavior: 'smooth'
-  });
-  console.log("Day Expanded:", dayExpanded);
   setTimeout(() => {
-
     if (dayScrll) {
       dayScrll.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }    
