@@ -296,7 +296,7 @@ const [currencySymbol, setCurrencySymbol] = useState<string | null>(null);
             setTotalCost(costDetailsRef.current.totalcost);
             updateGraphicalCostData(costDetailsRef.current);
 
-            placesNames.current.push(...Object.values(data.trip.trip).flatMap((day) => (day as Day).places.map(place => place.name)));
+            placesNames.current.push(...Object.values(data.trip.trip).flatMap((day) => (day as Day).places.map(place => `${place.name}, ${ params.get('destination') || ''}`)));
             console.log("Places Names:", placesNames.current);
             setDataJSON(data);
             setBufferBool(true);
@@ -1393,7 +1393,7 @@ useEffect(() => {
               []
               )} 
             />
-            
+
             )
             }
 

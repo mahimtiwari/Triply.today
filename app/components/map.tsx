@@ -29,6 +29,8 @@ interface MapProps {
 }
 
 const Map: React.FC<MapProps> = ({ placesNames, onClick, controls=true }) => {
+  
+  
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<MapLibreMap | null>(null);
   const gji56jc7 = "3b9GgU5VpXSJd2RNtN0t";
