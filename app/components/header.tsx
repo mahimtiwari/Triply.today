@@ -33,7 +33,9 @@ export default function Header() {
       <nav aria-label="Global" className="mx-auto flex items-center justify-between p-6 lg:px-8">
         <div className="flex lg:flex-1">
           <a href="/" className="-m-1.5 p-1.5">
-            <span className="text-xl font-bold text-indigo-600">Triply<span className="text-gray-800">.today</span></span>
+            <span className="text-2xl font-bold text-blue-600 font-[geist] tracking-tight">
+              Triply<span className="text-black ml-[2px]">.today</span>
+            </span>
             {/* <img
               alt=""
               src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=600"
@@ -88,11 +90,13 @@ export default function Header() {
           <div className="flex items-center justify-between">
             <a href="#" className="-m-1.5 p-1.5">
               <span className="sr-only">Triply.today</span>
-              <img
+              {/* <img
                 alt=""
                 src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=600"
                 className="h-8 w-auto"
-              />
+              /> */}
+                        <div className='text-3xl font-semibold  text-gray-400'>t</div>
+
             </a>
             <button
               type="button"

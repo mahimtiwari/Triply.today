@@ -6,18 +6,19 @@ interface MiscComponentProps {
     name: string;
     inpval: number; // Add inpval as a prop
     onChange: (value: number) => void;
+    code: string;
 }
 
-const MiscComponent: React.FC<MiscComponentProps> = ({ name, inpval, onChange }) => {
+const MiscComponent: React.FC<MiscComponentProps> = ({ name, inpval, onChange, code }) => {
         const [InputValue, setInputValue] = useState<number>(inpval); // Initialize with inpval
         const InputValueRef = useRef<HTMLInputElement>(null);
-
+        
         return (
                 <div className="flex items-center justify-between cursor-pointer">
                         <h2 className="text-lg font-bold text-gray-700">{name}</h2>
                         <div className="flex items-center gap-4">
                                 <div className="flex items-center bg-gradient-to-r from-green-300 via-green-500 to-green-600 text-white px-4 py-2 rounded-full text-sm font-semibold">
-                                        <span className="mr-2">$</span>
+                                        <span className="mr-2">{code}</span>
                                         <input
                                                 ref={InputValueRef}
                                                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {

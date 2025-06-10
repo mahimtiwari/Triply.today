@@ -15,7 +15,7 @@ export default function Home() {
             Build your perfect trip plan ✈️
           </h1>
           <p className="text-gray-500 text-base sm:text-lg md:text-xl max-w-md sm:max-w-lg md:max-w-xl">
-            Discover destinations, and customize your next adventure—all in one place.
+            Discover destinations, and customize your next adventure all in one place.
           </p>
 
           <SearchBarAutocomplete placeholder="Search destination" />

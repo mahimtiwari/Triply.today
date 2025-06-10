@@ -65,7 +65,7 @@ const SearchBarAutocomplete = (parameters: any) => {
         <form ref={formRef} action="/preplan" className="w-full max-w-[500px] mt-[70px] mx-[10px]">
             <label htmlFor="default-search" className="mb-2 text-sm font-medium text-gray-900 sr-only">Search</label>
             <div className="relative">
-                <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                <div className="absolute inset-y-0 z-1 start-0 flex items-center ps-3 pointer-events-none">
                     <svg className="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                         <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
                     </svg>
@@ -75,7 +75,7 @@ const SearchBarAutocomplete = (parameters: any) => {
                     name='destination'
                     autoComplete='off'
                     id="default-search"
-                    className="block bg-white w-full font-bold text-[18px] p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-2xl bg-gray-50 focus:ring-blue-300 focus:ring-3 outline-none transition-all duration-300"
+                    className="block bg-white/50 backdrop-blur-[30px] w-full font-bold text-[18px] p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-2xl focus:ring-blue-300 focus:ring-3 outline-none transition-all duration-300"
                     placeholder={parameters.placeholder}
                     onChange={(e) => {
                         setQuery(e.target.value);
@@ -91,9 +91,9 @@ const SearchBarAutocomplete = (parameters: any) => {
                 {boolSuggestions && (
                     <>
                     <ul
-                        className="absolute z-10 w-[100%] mt-2  backdrop-blur-md border border-gray-300 rounded-2xl shadow-lg  overflow-y-auto divide-y divide-gray-200 transition-all duration-300 transform "
+                        className="absolute z-10 w-[100%] mt-2 overflow-y-hidden overflow-x-hidden backdrop-blur-md border border-gray-300 rounded-2xl shadow-lg divide-y divide-gray-200 transition-all duration-300 transform "
                         style={{
-                            backgroundColor: 'rgb(255 255 255 / 50%)',
+                            backgroundColor: 'rgb(255 255 255 / 30%)',
                             animation: boolSuggestions
                                 ? 'fadeInScale 0.3s ease-out forwards'
                                 : 'fadeOutScale 0.2s ease-in forwards',
@@ -102,7 +102,7 @@ const SearchBarAutocomplete = (parameters: any) => {
                         {filteredSuggestions.map((suggestion, idx) => (
                             <li
                                 key={suggestion.search + idx}
-                                className="px-4 py-3 cursor-pointer hover:bg-blue-50 transition-colors duration-200 flex items-center gap-2 w-full"
+                                className="px-4 py-3 cursor-pointer hover:bg-white/45 hover:scale-102 transition-all duration-300 flex items-center gap-2 w-full"
                                 onMouseDown={() => handleSuggestionClick(suggestion.search)}
                                 onClick={() => handleSuggestionClick(suggestion.search)}
                             >

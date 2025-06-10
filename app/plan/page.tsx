@@ -655,9 +655,10 @@ useEffect(() => {
 <div className=' flex-col h-screen deskver:flex hidden overflow-x-hidden'>
   <div className="flex flex-row flex-grow ">
 
-      <div className={`h-[100vh] flex min-w-[${leftWidthConst}px]`} style={
+      <div className={`h-[100vh] flex `} style={
         { width: `${["play", "bag"].includes(sideSelected) ? 100 : leftWidth}%`,
                   transition: !isDragging.current ? "width 0.7s ease-in-out": "",
+                  minWidth: `${leftWidthConst}px`,
                   }}>
         
         <div className='h-full w-[90px] font-[geist] flex items-center flex-col justify-start bg-white border-r-[1px] border-gray-300'>
@@ -1204,19 +1205,28 @@ useEffect(() => {
                   <MiscComponent name='Shopping' inpval={costDetailsRef.current!.shopping || 0} onChange={(value) => {
                     costDetailsRef.current!.shopping = value;
                     updateTotalCostDetails(costDetailsRef.current!);
-                  }} />
+                  }} 
+                    code={currencySymbol ? currencySymbol : "$"}
+                  />
                   <MiscComponent name='Insurance' inpval={costDetailsRef.current!.insurance || 0} onChange={(value) => {
                     costDetailsRef.current!.insurance = value;
                     updateTotalCostDetails(costDetailsRef.current!);
-                  }} />
+                  }} 
+                    code={currencySymbol ? currencySymbol : "$"}
+                  />
                   <MiscComponent name='Visa' inpval={costDetailsRef.current!.visa || 0} onChange={(value) => {
                     costDetailsRef.current!.visa = value;
                     updateTotalCostDetails(costDetailsRef.current!);
-                  }} />
+                  }} 
+                    code={currencySymbol ? currencySymbol : "$"}
+                  />
                   <MiscComponent name='Other' inpval={costDetailsRef.current!.other || 0} onChange={(value) => {
                     costDetailsRef.current!.other = value;
                     updateTotalCostDetails(costDetailsRef.current!);
-                  }} />
+                  }} 
+                    code={currencySymbol ? currencySymbol : "$"}
+                  
+                  />
 
                 </div>
               )}
@@ -1843,7 +1853,7 @@ useEffect(() => {
                           </div>
                           </div>
                           )}
-                          <div className={` ${place.category.toLowerCase() == "intermediate_transport" ? "" : "mt-4 border-t-[2px] pt-4"} border-gray-300 `}>
+                          <div className={`${place.category.toLowerCase() == "intermediate_transport" ? "" : "mt-4 border-t-[2px] pt-4"} border-gray-300 `}>
                           <div className="flex items-center justify-between font-semibold">
                             <div className="flex items-center gap-2">
 
@@ -2077,19 +2087,27 @@ useEffect(() => {
                   <MiscComponent name='Shopping' inpval={costDetailsRef.current!.shopping || 0} onChange={(value) => {
                     costDetailsRef.current!.shopping = value;
                     updateTotalCostDetails(costDetailsRef.current!);
-                  }} />
+                  }} 
+                    code={currencySymbol ? currencySymbol : "$"}
+                  />
                   <MiscComponent name='Insurance' inpval={costDetailsRef.current!.insurance || 0} onChange={(value) => {
                     costDetailsRef.current!.insurance = value;
                     updateTotalCostDetails(costDetailsRef.current!);
-                  }} />
+                  }} 
+                    code={currencySymbol ? currencySymbol : "$"}
+                  />
                   <MiscComponent name='Visa' inpval={costDetailsRef.current!.visa || 0} onChange={(value) => {
                     costDetailsRef.current!.visa = value;
                     updateTotalCostDetails(costDetailsRef.current!);
-                  }} />
+                  }} 
+                    code={currencySymbol ? currencySymbol : "$"}
+                  />
                   <MiscComponent name='Other' inpval={costDetailsRef.current!.other || 0} onChange={(value) => {
                     costDetailsRef.current!.other = value;
                     updateTotalCostDetails(costDetailsRef.current!);
-                  }} />
+                  }} 
+                    code={currencySymbol ? currencySymbol : "$"}
+                  />
 
                 </div>
               )}

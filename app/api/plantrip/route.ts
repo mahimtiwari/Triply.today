@@ -228,6 +228,7 @@ Based on this info, plan a trip for the user. The trip should include the follow
 6. A full day-wise itinerary organized like:
    - Day 1:
      - arriving/departing: "from" and "to" (only for departure airport to destination airport)
+          -cost: this cannot be zero in any case
      - destiantion: the name of the overall destination(city) and it cannot be empty
      - places array: list of events (e.g., hotel check-in, sightseeing, food, etc.)
      - for each place:
