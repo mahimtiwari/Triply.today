@@ -339,12 +339,20 @@ const [currencySymbol, setCurrencySymbol] = useState<string | null>(null);
   const [drag_direction, setDragDirection] = useState<string | null>(null);
   const isDragging = useRef(false);
   const prevLeftWidth = useRef(leftWidth);
+  const [dragXdesk, setDragXdesk] = useState(0);
+  const [sensetiivtyDragBool, setSensetiivtyDragBool] = useState<boolean>(false);
 const startDrag = () => {
     isDragging.current = true;
   };
-
+  
   const onDrag = (e: MouseEvent) => {
     if (!isDragging.current) return;
+    console.log(`x: ${e.clientX}, dragX: ${dragXdesk}, diff: ${Math.abs(e.clientX - dragXdesk)}`);
+    if (!sensetiivtyDragBool) {
+      const diff = Math.abs(e.clientX - dragXdesk);
+      setSensetiivtyDragBool(diff > 10);
+    }
+    if (sensetiivtyDragBool) {
     const newLeftWidth = (e.clientX / window.innerWidth) * 100;
     setLeftWidth(newLeftWidth); 
     
@@ -354,11 +362,12 @@ const startDrag = () => {
     }
     
     prevLeftWidth.current = newLeftWidth;
+  }
   };
 
   const stopDrag = () => {
     isDragging.current = false;
-
+    setSensetiivtyDragBool(false);
     setDragDirection(null);
   };
 const [dayExpanded, setDayExpanded] = useState<null | string>(null);
@@ -566,7 +575,7 @@ function bottomSheetHeightStartChange(e: React.TouchEvent) {
 
   
 
-  setControlMenuOpen(false)
+  // setControlMenuOpen(false)
   if (e.touches.length > 0) {
   const cont = bottomSheetRef.current?.getBoundingClientRect();
   if (cont) {
@@ -635,7 +644,6 @@ useEffect(() => {
   }, 0);
 }, [dayExpanded])
 
-
   return (
     <>
 
@@ -650,10 +658,13 @@ useEffect(() => {
 </div>
 )}
 {/* Desk Ver */}
-<div className=' flex-col h-screen deskver:flex hidden'>
+<div className=' flex-col h-screen deskver:flex hidden overflow-x-hidden'>
   <div className="flex flex-row flex-grow ">
 
-      <div className="h-[100vh] flex min-w-[600px]" style={{ width: `${["play", "bag"].includes(sideSelected) ? 100 : leftWidth}%`}}>
+      <div className="h-[100vh] flex min-w-[600px]" style={
+        { width: `${["play", "bag"].includes(sideSelected) ? 100 : leftWidth}%`,
+                  transition: !isDragging.current ? "width 0.6s ease-in-out": "",
+                  }}>
         
         <div className='h-full w-[90px] font-[geist] flex items-center flex-col justify-start bg-white border-r-[1px] border-gray-300'>
           <div className='text-3xl font-semibold mt-[20px] text-gray-400'><a href='/'>t</a></div>
@@ -1335,11 +1346,19 @@ useEffect(() => {
 {!["play", "bag"].includes(sideSelected) && (
 <div
   className="relative w-[1px] bg-gray-300 cursor-grab z-20 group"
-  onMouseDown={startDrag}
+  onMouseDown={(e) => {
+
+    console.log(e.clientX);
+    setDragXdesk(e.clientX);
+
+    startDrag();
+    
+  }}
+
 >
 
   <span
-    className="absolute select-none top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-gray-300 rounded-full w-5 h-12 flex items-center justify-center text-sm font-bold text-gray-700 group-hover:scale-110 transition-transform duration-200 ease-in-out"
+    className="absolute select-none top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 group bg-gray-100/25 border-1 hover:w-20 border-gray-300 backdrop-blur-2xl rounded-full w-5 h-12 flex items-center justify-center text-sm font-bold text-gray-700 group-hover:scale-110 transition-transform duration-200 ease-in-out"
     style={{
       transition: "all 0.3s ease-in-out",
       color: "blue",
@@ -1351,7 +1370,26 @@ useEffect(() => {
         : {})
     }}
   >
-    {drag_direction === "right" ? ">" : drag_direction === "left" ? "<" : ""}
+    {drag_direction && drag_direction !== "" && (
+    <span className='material-icons text-gray-500'>
+      chevron_{drag_direction === "right" ? "right" : drag_direction === "left" ? "left" : ""}
+    </span>
+    )}  
+    {!isDragging.current && (
+      <div className='flex items-center justify-center gap-2 text-gray-500'>
+        <button 
+        onClick={() => {
+          setLeftWidth(0);
+        }}
+        className='cursor-pointer material-icons group-hover:opacity-100 opacity-0 transition-opacity duration-300 ease-in-out'>chevron_left</button>
+        <button 
+        onClick={() => {
+          setLeftWidth(100);
+        }}
+        className='cursor-pointer material-icons group-hover:opacity-100 opacity-0 transition-opacity duration-300 ease-in-out'>chevron_right</button>
+      </div>
+    )}
+  
   </span>
 </div>
 )}
@@ -1513,7 +1551,7 @@ useEffect(() => {
 
 <div className='deskver:hidden flex flex-col h-[100vh] font-[geist] overflow-y-hidden'>
     <div className='absolute top-0 z-1000 w-full p-2'>
-      <div className={`w-full bg-[#ffffff7d] backdrop-blur-[15px] rounded-2xl p-3  z-1000`}
+      <div className={`w-full bg-[#ffffff7d] backdrop-blur-[9px] rounded-2xl p-3  z-1000`}
       style={{
         height: `${controlmenuOpen ? "255px" : "75px"}`,
         transition: 'height 0.3s ease-in-out',

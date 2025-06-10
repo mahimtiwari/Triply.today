@@ -154,7 +154,7 @@ const SearchBarAutocomplete = (parameters: any) => {
                 
                 <button
                     type="submit"
-                    className="text-white absolute end-2.5 bottom-0 rounded-2xl rounded-bl-none rounded-tl-none bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium text-sm px-4 py-[14px] h-[100%] right-0 w-[100px]"
+                    className="rounded-r-2xl text-white absolute end-2.5 bottom-0 bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-semibold text-sm px-6 py-3 h-[100%] right-0 w-[120px] transition-all duration-300 cursor-pointer"
                 >
                     Search
                 </button>
