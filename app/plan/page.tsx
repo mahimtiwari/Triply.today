@@ -270,7 +270,7 @@ const monthNames = [
 const [bufferBool, setBufferBool] = useState(false);
 const [serverResState, setServerResState] = useState(false);
 
-
+const placesNames = useRef<string[]>([]);
 const [currencySymbol, setCurrencySymbol] = useState<string | null>(null);
   useEffect(() => {
     // Getting the data from /plantrip api
@@ -295,6 +295,9 @@ const [currencySymbol, setCurrencySymbol] = useState<string | null>(null);
             costDetailsRef.current = costProcessor(data);
             setTotalCost(costDetailsRef.current.totalcost);
             updateGraphicalCostData(costDetailsRef.current);
+
+            placesNames.current.push(...Object.values(data.trip.trip).flatMap((day) => (day as Day).places.map(place => place.name)));
+            console.log("Places Names:", placesNames.current);
             setDataJSON(data);
             setBufferBool(true);
           })
@@ -334,25 +337,17 @@ const [currencySymbol, setCurrencySymbol] = useState<string | null>(null);
 
 
 
-
+  const leftWidthConst = 600;
   const [leftWidth, setLeftWidth] = useState(50); // in percentage
   const [drag_direction, setDragDirection] = useState<string | null>(null);
   const isDragging = useRef(false);
   const prevLeftWidth = useRef(leftWidth);
-  const [dragXdesk, setDragXdesk] = useState(0);
-  const [sensetiivtyDragBool, setSensetiivtyDragBool] = useState<boolean>(false);
 const startDrag = () => {
     isDragging.current = true;
   };
-  
+
   const onDrag = (e: MouseEvent) => {
     if (!isDragging.current) return;
-    console.log(`x: ${e.clientX}, dragX: ${dragXdesk}, diff: ${Math.abs(e.clientX - dragXdesk)}`);
-    if (!sensetiivtyDragBool) {
-      const diff = Math.abs(e.clientX - dragXdesk);
-      setSensetiivtyDragBool(diff > 10);
-    }
-    if (sensetiivtyDragBool) {
     const newLeftWidth = (e.clientX / window.innerWidth) * 100;
     setLeftWidth(newLeftWidth); 
     
@@ -362,12 +357,11 @@ const startDrag = () => {
     }
     
     prevLeftWidth.current = newLeftWidth;
-  }
   };
 
   const stopDrag = () => {
     isDragging.current = false;
-    setSensetiivtyDragBool(false);
+
     setDragDirection(null);
   };
 const [dayExpanded, setDayExpanded] = useState<null | string>(null);
@@ -661,9 +655,9 @@ useEffect(() => {
 <div className=' flex-col h-screen deskver:flex hidden overflow-x-hidden'>
   <div className="flex flex-row flex-grow ">
 
-      <div className="h-[100vh] flex min-w-[600px]" style={
+      <div className={`h-[100vh] flex min-w-[${leftWidthConst}px]`} style={
         { width: `${["play", "bag"].includes(sideSelected) ? 100 : leftWidth}%`,
-                  transition: !isDragging.current ? "width 0.6s ease-in-out": "",
+                  transition: !isDragging.current ? "width 0.7s ease-in-out": "",
                   }}>
         
         <div className='h-full w-[90px] font-[geist] flex items-center flex-col justify-start bg-white border-r-[1px] border-gray-300'>
@@ -1346,15 +1340,7 @@ useEffect(() => {
 {!["play", "bag"].includes(sideSelected) && (
 <div
   className="relative w-[1px] bg-gray-300 cursor-grab z-20 group"
-  onMouseDown={(e) => {
-
-    console.log(e.clientX);
-    setDragXdesk(e.clientX);
-
-    startDrag();
-    
-  }}
-
+  onMouseDown={startDrag}
 >
 
   <span
@@ -1379,7 +1365,7 @@ useEffect(() => {
       <div className='flex items-center justify-center gap-2 text-gray-500'>
         <button 
         onClick={() => {
-          setLeftWidth(0);
+          setLeftWidth(leftWidthConst/window.innerWidth*100);
         }}
         className='cursor-pointer material-icons group-hover:opacity-100 opacity-0 transition-opacity duration-300 ease-in-out'>chevron_left</button>
         <button 
@@ -1396,8 +1382,10 @@ useEffect(() => {
         
             
             <div className={`flex-grow ${ sideSelected === "itin" || sideSelected === "plan" ? "block" : "hidden" }`}>
+            
+            { placesNames.current.length ===0 && (
             <Map 
-              placesNames={React.useMemo(() => ['San Francisco', 'Mountain View', 'Los Angeles'], [])} 
+        placesNames={React.useMemo(() => placesNames.current, [placesNames.current])} 
               onClick={React.useCallback(
               (placeName: string) => {
                 console.log("place:", placeName);
@@ -1405,6 +1393,21 @@ useEffect(() => {
               []
               )} 
             />
+            
+            )
+            }
+
+            {placesNames.current.length > 0 && (
+            <Map 
+        placesNames={React.useMemo(() => placesNames.current, [placesNames.current])} 
+              onClick={React.useCallback(
+              (placeName: string) => {
+                console.log("place:", placeName);
+              }, 
+              []
+              )} 
+            />
+            )}
             </div>
           <div className={`flex-grow overflow-y-hidden ${ sideSelected === "cost" ? "block" : "hidden" }`}>
             { graphicalCostDataRef.current && (      

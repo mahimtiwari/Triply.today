@@ -4,20 +4,22 @@ import { useEffect, useRef } from 'react';
 import maplibregl, { Map as MapLibreMap, MapOptions } from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 
-// async function geocodePlace(name: string): Promise<[number, number] | null> {
-//   try {
-//     const res = await fetch(
-//       `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(name)}`
-//     );
-//     const data = await res.json();
-//     if (data && data.length > 0) {
-//       return [parseFloat(data[0].lon), parseFloat(data[0].lat)];
-//     }
-//   } catch (error) {
-//     console.error('Geocoding error:', error);
-//   }
-//   return null;
-// }
+async function geocodePlace(name: string): Promise<[number, number] | null> {
+  try {
+    console.log(`Geocoding place: ${name}`);
+    const res = await fetch(
+      `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(name)}`
+    );
+    const data = await res.json();
+    if (data && data.length > 0) {
+      console.log(`Geocoded ${name} to coordinates:`, data[0].lat, data[0].lon);
+      return [parseFloat(data[0].lon), parseFloat(data[0].lat)];
+    }
+  } catch (error) {
+    console.error('Geocoding error:', error);
+  }
+  return null;
+}
 
 
 interface MapProps {
@@ -31,6 +33,8 @@ const Map: React.FC<MapProps> = ({ placesNames, onClick, controls=true }) => {
   const mapRef = useRef<MapLibreMap | null>(null);
   const gji56jc7 = "3b9GgU5VpXSJd2RNtN0t";
   
+// console.log("Map component initialized with places:", placesNames);
+
   useEffect(() => {
     if (!mapContainerRef.current) return;
 
@@ -80,14 +84,14 @@ const mapOptions: MapOptions = {
         }
       });
 
-      // for (const name of placesNames) {
-      //   const coords = await geocodePlace(name);
-      //   if (coords) {
-      //     places.push({ coords, label: name });
-      //   } else {
-      //     console.warn(`Could not geocode place: ${name}`);
-      //   }
-      // }
+      for (const name of placesNames) {
+        const coords = await geocodePlace(name);
+        if (coords) {
+          places.push({ coords, label: name });
+        } else {
+          console.warn(`Could not geocode place: ${name}`);
+        }
+      }
 
       if (places.length === 0) {
         console.warn('No valid places to display');
