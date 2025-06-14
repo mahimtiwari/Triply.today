@@ -1404,7 +1404,19 @@ function aiGeneratePackingList() {
           gradientRef.current!.style.opacity = "0%";
         }}
 
-      onClick={() => aiGeneratePackingList()}
+      onClick={() => {
+
+          gradientBgRefLoader.current!.style.display = "block";
+  fetch(`/api/packlist?destination=${tripDetails.destination}`)
+      .then((response) => response.json())
+      .then((packListData) => {
+
+        gradientBgRefLoader.current!.style.display = "none";
+      })
+      .catch((error) => {
+        console.error('Error fetching packing list:', error);
+      });
+      }}
 
     >
       
@@ -1450,7 +1462,9 @@ function aiGeneratePackingList() {
             </button>
             </div>
             <div  className='flex justify-center'>
+              
               <div ref={packingCardContRef}  className='flex flex-row gap-3 justify-evenly flex-wrap mx-auto w-fit'>
+              {pckList.current[0].values.data[0].name}
               { pckList.current.map((itm, idx) => (
                 <div key={idx} ref={(elem) => {if(packCardRef.current && elem) packCardRef.current[idx]=elem}} className='' onMouseDown={(e) => {
                   drag_packCard(e, idx);
