@@ -12,6 +12,7 @@ import PackingCard from '../components/packingCard';
 import { off } from 'process';
 import BufferComponent from '../components/planpageLoader';
 import "../../public/css/plan.css"
+import { Gentium_Book_Plus } from 'next/font/google';
 
 const PlanTrip = () => {
 
@@ -392,38 +393,89 @@ const COLORS = [
 ];
 
 const pckList = useRef<{name: string, values: {data: { name: string; checked: boolean }[], color?: string}}[]>([
+   
+  {
+    name: "Essentials",
+    values: {
+      data: [
+        { name: "Passport", checked: false },
+        { name: "Tickets", checked: false },
+        { name: "Wallet", checked: false },
+        { name: "Travel Insurance", checked: false },
+        { name: "Visa Documents", checked: false },
+        { name: "Phone + Charger", checked: false }
+      ],
+    },
+  },
+  {
+    name: "Clothing",
+    values: {
+      data: [
+        { name: "Shirts", checked: false },
+        { name: "Pants", checked: false },
+        { name: "Shoes", checked: false },
+        { name: "Undergarments", checked: false },
+        { name: "Socks", checked: false },
+        { name: "Jacket/Sweater", checked: false },
+        { name: "Sleepwear", checked: false },
+        { name: "Swimwear", checked: false }
+      ],
+    },
+  },
+  {
+    name: "Toiletries",
+    values: {
+      data: [
+        { name: "Toothbrush", checked: false },
+        { name: "Toothpaste", checked: false },
+        { name: "Shampoo", checked: false },
+        { name: "Soap", checked: false },
+        { name: "Deodorant", checked: false },
+        { name: "Towel", checked: false },
+        { name: "Sunscreen", checked: false }
+      ],
+    },
+  },
+  {
+    name: "Electronics",
+    values: {
+      data: [
+        { name: "Phone", checked: false },
+        { name: "Power Bank", checked: false },
+        { name: "Earphones", checked: false },
+        { name: "Camera", checked: false },
+        { name: "Adapters/Converters", checked: false },
+        { name: "Laptop/Tablet", checked: false }
+      ],
+    },
+  },
+  {
+    name: "Health",
+    values: {
+      data: [
+        { name: "Medicines", checked: false },
+        { name: "First Aid Kit", checked: false },
+        { name: "Face Masks", checked: false },
+        { name: "Hand Sanitizer", checked: false },
+        { name: "Vitamins", checked: false }
+      ],
+    },
+  },
+  {
+    name: "Extras",
+    values: {
+      data: [
+        { name: "Snacks", checked: false },
+        { name: "Books/Kindle", checked: false },
+        { name: "Sunglasses", checked: false },
+        { name: "Travel Pillow", checked: false },
+        { name: "Notebook/Pen", checked: false },
+        { name: "Reusable Water Bottle", checked: false }
+      ],
+    },
+  }
 
-  
-    {
-      name: "Essentials",
-      values: {
-        data: [
-          { name: "Passport", checked: false },
-          { name: "Tickets", checked: false },
-          { name: "Wallet", checked: false },
-        ],
-      },
-    },
-    {
-      name: "Clothing",
-      values: {
-        data: [
-          { name: "Shirts", checked: false },
-          { name: "Pants", checked: false },
-          { name: "Shoes", checked: false },
-        ],
-      },
-    },
-    {
-      name: "Toiletries",
-      values: {
-        data: [
-          { name: "Toothbrush", checked: false },
-          { name: "Shampoo", checked: false },
-          { name: "Soap", checked: false },
-        ],
-      },
-    },
+
   
 
 ]);
@@ -638,6 +690,40 @@ useEffect(() => {
   }, 0);
 }, [dayExpanded])
 
+
+
+
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const gradientRef = useRef<HTMLDivElement>(null);
+  const gradientBgRefLoader = useRef<HTMLDivElement>(null);
+
+  const aiGlowEffect = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    const button = buttonRef.current;
+    if (!button) return;
+    gradientRef.current!.style.opacity = "100";
+    const rect = button.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    button.style.setProperty("--x", `${x}px`);
+    button.style.setProperty("--y", `${y}px`);
+  };
+
+function aiGeneratePackingList() {
+  gradientBgRefLoader.current!.style.display = "block";
+  fetch(`/api/packlist?destination=${tripDetails.destination}`)
+    .then((response) => response.json())
+    .then((packListData) => {
+      pckList.current = packListData;
+      setSumCards(pckList.current);
+      gradientBgRefLoader.current!.style.display = "none";
+    })
+    .catch((error) => {
+      console.error('Error fetching packing list:', error);
+    });
+}
+
+  
   return (
     <>
 
@@ -1307,7 +1393,51 @@ useEffect(() => {
           {sideSelected === "bag" && (
             <div  className='h-full w-full bg-white p-5 flex flex-col gap-5'>
             <div className='flex justify-between items-center'>
-            <span className='text-xl text-gray-700 font-semibold'>Packing List</span>
+            <div className="flex items-center gap-3">
+              <span className="text-2xl text-gray-800 font-bold">Packing List</span>
+    <button
+      ref={buttonRef}
+      onMouseMove={aiGlowEffect}
+      className="relative group  cursor-pointer overflow-hidden rounded-3xl p-[2px] transition-all duration-200"
+      title="AI Suggestions"
+              onMouseLeave={() => {
+          gradientRef.current!.style.opacity = "0%";
+        }}
+
+      onClick={() => aiGeneratePackingList()}
+
+    >
+      
+      <div
+        ref={gradientBgRefLoader}
+        className="absolute inset-0 animate-pulse hidden z-0 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500  transition-all duration-300"
+        
+      />
+
+      <div
+        ref={gradientRef}
+        className="absolute inset-0 z-0 opacity-0 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500  transition-all duration-300"
+        style={{
+          WebkitMaskImage:
+            'radial-gradient(120px at var(--x, 50%) var(--y, 50%), white 0%, transparent 60%)',
+          maskImage:
+            'radial-gradient(120px at var(--x, 50%) var(--y, 50%), white 0%, transparent 60%)',
+          WebkitMaskRepeat: 'no-repeat',
+          maskRepeat: 'no-repeat',
+
+        }}
+
+
+      />
+
+      <div className="relative z-10 flex items-center gap-2 px-4 py-2 bg-white border-1 border-gray-300 rounded-[inherit]">
+        <Image src="/img/ai.png" width={20} height={20} alt="AI Icon" />
+        <span className="text-sm font-medium text-black" >Generate</span>
+      </div>
+    </button>
+
+
+            </div>
             <button
               className="flex select-none items-center gap-2 text-green-600 cursor-pointer hover:text-green-800 font-medium rounded-lg px-2 py-1 transition-colors duration-200"
               onClick={() => {
@@ -1555,13 +1685,14 @@ useEffect(() => {
 </div>
 
 {/* Mobile Ver */}
+            <div className='deskver:hidden'>
             <BufferComponent onComplete={() => {
               setBufState(true);
             }}
             onProgress={(pDone) => {setProgressNum(pDone);}}
             progressProp={progressNum}
             defaultTime={dayTimeBufferT.find((day) => day.days <= tripDayLen)?.time || 60000} dataStatus={bufferBool}/>
-
+</div>
 <div className='deskver:hidden flex flex-col h-[100vh] font-[geist] overflow-y-hidden'>
     <div className='absolute top-0 z-1000 w-full p-2'>
       <div className={`w-full bg-[#ffffff7d] backdrop-blur-[9px] rounded-2xl p-3  z-1000`}
