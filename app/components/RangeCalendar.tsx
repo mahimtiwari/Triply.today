@@ -22,7 +22,7 @@ const RangeCalendar: React.FC<RangeCalendarProps> = ({
     end: null,
   });
   const [hoveredDate, setHoveredDate] = useState<Dayjs | null>(null);
-
+  const limitDays = 13; // days - 1
   useEffect(() => {
     if (preselectedRange) {
       setSelectedRange({
@@ -48,12 +48,19 @@ const RangeCalendar: React.FC<RangeCalendarProps> = ({
     if (!selectedRange.start || (selectedRange.start && selectedRange.end)) {
       setSelectedRange({ start: date, end: null });
     } else if (selectedRange.start && !selectedRange.end) {
+
+      const limitDate = selectedRange.start ? selectedRange.start.add(limitDays, 'day') : null;
+      const limitDateMinus = selectedRange.start ? selectedRange.start.subtract(limitDays, 'day') : null;
+      const withinLimit = selectedRange.start ? (date.isBefore(limitDate) && date.isAfter(limitDateMinus)) : true;
+      
+
       if (date.isBefore(selectedRange.start, "day")) {
         setSelectedRange({ start: date, end: selectedRange.start });
       }
+      
       const newRange = {
-        start: date.isBefore(selectedRange.start, "day") ? date : selectedRange.start,
-        end: date.isAfter(selectedRange.start, "day") ? date : selectedRange.start,
+        start: date.isBefore(selectedRange.start, "day") && withinLimit ? date : date.isBefore(selectedRange.start, "day") && !withinLimit ? limitDateMinus : selectedRange.start,
+        end: date.isAfter(selectedRange.start, "day") && withinLimit ? date : date.isAfter(selectedRange.start, "day") && !withinLimit ? limitDate : selectedRange.start,
       };
       setSelectedRange(newRange);
       onDateSelected({
@@ -106,7 +113,10 @@ const RangeCalendar: React.FC<RangeCalendarProps> = ({
       const selected = isSelected(currentDate);
       const inRange = isInRange(currentDate);
       const isDisabled = currentDate.isBefore(today, "day");
-
+      const limitDate = selectedRange.start ? selectedRange.start.add(limitDays, 'day') : null;
+      const limitDateMinus = selectedRange.start ? selectedRange.start.subtract(limitDays, 'day') : null;
+      const withinLimit = selectedRange.start ? (currentDate.isBefore(limitDate) && currentDate.isAfter(limitDateMinus)) : true;
+      
       days.push(
         <button
           key={d}
@@ -114,16 +124,18 @@ const RangeCalendar: React.FC<RangeCalendarProps> = ({
           onMouseEnter={() => handleMouseEnter(currentDate)}
           onMouseLeave={handleMouseLeave}
           disabled={isDisabled}
-          className={`w-10 h-10 flex items-center justify-center rounded-full transition-all
+          className={`w-10 h-10 flex items-center justify-center cursor-pointer rounded-full transition-all
             ${
               selected
                 ? "bg-gradient-to-r from-blue-500 to-purple-500 text-white shadow-lg"
-                : inRange
+                : (inRange && withinLimit)
                 ? "bg-blue-100"
                 : isDisabled
                 ? "text-gray-400 cursor-not-allowed"
-                : "hover:bg-gradient-to-r hover:from-gray-200 hover:to-gray-300"
-            }`}
+                : withinLimit 
+                ? "hover:bg-gradient-to-r hover:from-gray-200 hover:to-gray-300"
+                :""
+              }`}
         >
           {d}
         </button>
@@ -135,7 +147,7 @@ const RangeCalendar: React.FC<RangeCalendarProps> = ({
 
   return (
     <div
-      className={`bg-gradient-to-r from-white to-gray-100 border rounded-[25px] border-gray-300 flex flex-col items-center justify-center p-6 shadow-xl ${className}`}
+      className={`bg-white border rounded-[25px] border-gray-300 flex flex-col items-center justify-center p-6 shadow-lg ${className}`}
       style={{ width: "100%" }}
     >
       <div className="flex items-center justify-between w-full mb-4">
@@ -143,7 +155,7 @@ const RangeCalendar: React.FC<RangeCalendarProps> = ({
           onClick={prevMonth}
           aria-label="Previous Month"
           disabled={currentMonth.isSame(today, "month")}
-          className="p-2 rounded-full hover:bg-gray-200 disabled:opacity-50"
+          className="p-2 rounded-full hover:bg-gray-200 cursor-pointer disabled:opacity-50"
         >
           <svg
             className="w-5 h-5 text-gray-600"
@@ -161,7 +173,7 @@ const RangeCalendar: React.FC<RangeCalendarProps> = ({
         <button
           onClick={nextMonth}
           aria-label="Next Month"
-          className="p-2 rounded-full hover:bg-gray-200"
+          className="p-2 rounded-full cursor-pointer hover:bg-gray-200"
         >
           <svg
             className="w-5 h-5 text-gray-600"

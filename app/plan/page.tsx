@@ -1408,7 +1408,7 @@ function aiGeneratePackingList() {
               onMouseLeave={() => {
           gradientRef.current!.style.opacity = "0%";
         }}
-
+        
       onClick={() => aiGeneratePackingList() }    >
       
       <div
