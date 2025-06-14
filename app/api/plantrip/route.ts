@@ -268,6 +268,8 @@ Important Guidelines:
 - Arriving and departing sections can only have flights and in their from and to can only be airports.
 - If the user location is from the same city as the destination then "arriving" and "departing" cannot be included in the day object.
 - Price of hotel should given for each day separately *If applicable*.
+- Respond ONLY in valid JSON. Do not use triple backticks. Ensure all strings are quoted, all braces/brackets are closed, and no trailing commas are used.
+
 JSON format to follow exactly:
 ${json_format}
 
@@ -288,6 +290,8 @@ Additional Rules:
         }
     });
     console.log(response.text);
+    
+    console.log(response.usageMetadata?.candidatesTokenCount);
     return new Response(
         JSON.stringify({ trip: JSON.parse(String(response.text).replace("```json", "").replace(/```/g, '')) }),
         // JSON.stringify({ trip: String(response.text) }),

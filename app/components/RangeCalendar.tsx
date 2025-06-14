@@ -22,7 +22,7 @@ const RangeCalendar: React.FC<RangeCalendarProps> = ({
     end: null,
   });
   const [hoveredDate, setHoveredDate] = useState<Dayjs | null>(null);
-  const limitDays = 13; // days - 1
+  const limitDays = 8; // days - 1
   useEffect(() => {
     if (preselectedRange) {
       setSelectedRange({
