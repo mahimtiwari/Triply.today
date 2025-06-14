@@ -696,6 +696,7 @@ useEffect(() => {
   const buttonRef = useRef<HTMLButtonElement>(null);
   const gradientRef = useRef<HTMLDivElement>(null);
   const gradientBgRefLoader = useRef<HTMLDivElement>(null);
+  const [genAiPackLoad, setGenAiPackLoad] = useState<boolean>(false);
 
   const aiGlowEffect = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     const button = buttonRef.current;
@@ -710,13 +711,16 @@ useEffect(() => {
   };
 
 function aiGeneratePackingList() {
+  setGenAiPackLoad(true);
   gradientBgRefLoader.current!.style.display = "block";
   fetch(`/api/packlist?destination=${tripDetails.destination}`)
     .then((response) => response.json())
     .then((packListData) => {
+      // packingCardContRef.current!.innerHTML = "";
       pckList.current = packListData;
       setSumCards(pckList.current);
       gradientBgRefLoader.current!.style.display = "none";
+      setGenAiPackLoad(false);
     })
     .catch((error) => {
       console.error('Error fetching packing list:', error);
@@ -1395,6 +1399,7 @@ function aiGeneratePackingList() {
             <div className='flex justify-between items-center'>
             <div className="flex items-center gap-3">
               <span className="text-2xl text-gray-800 font-bold">Packing List</span>
+    
     <button
       ref={buttonRef}
       onMouseMove={aiGlowEffect}
@@ -1404,21 +1409,7 @@ function aiGeneratePackingList() {
           gradientRef.current!.style.opacity = "0%";
         }}
 
-      onClick={() => {
-
-          gradientBgRefLoader.current!.style.display = "block";
-  fetch(`/api/packlist?destination=${tripDetails.destination}`)
-      .then((response) => response.json())
-      .then((packListData) => {
-
-        gradientBgRefLoader.current!.style.display = "none";
-      })
-      .catch((error) => {
-        console.error('Error fetching packing list:', error);
-      });
-      }}
-
-    >
+      onClick={() => aiGeneratePackingList() }    >
       
       <div
         ref={gradientBgRefLoader}
@@ -1462,13 +1453,18 @@ function aiGeneratePackingList() {
             </button>
             </div>
             <div  className='flex justify-center'>
-              
+              {!genAiPackLoad && (
               <div ref={packingCardContRef}  className='flex flex-row gap-3 justify-evenly flex-wrap mx-auto w-fit'>
-              {pckList.current[0].values.data[0].name}
+              {/* {pckList.current[0].values.data[0].name} */}
+              {/* <div>
+                {JSON.stringify(sumCards)}
+              </div> */}
               { pckList.current.map((itm, idx) => (
                 <div key={idx} ref={(elem) => {if(packCardRef.current && elem) packCardRef.current[idx]=elem}} className='' onMouseDown={(e) => {
                   drag_packCard(e, idx);
                 }}>
+                {/* <span className="text-gray-500 text-sm">{itm.values.data.map(item => item.name).join(", ")}</span> */}
+
                 <PackingCard name={itm.name} values={ itm.values } 
                 onChange={(values, cardN) => {
                   pckList.current[idx].name = cardN;
@@ -1482,6 +1478,7 @@ function aiGeneratePackingList() {
                 </div>
             ))}
               </div>
+              )}
             </div>
             </div>
           )}
