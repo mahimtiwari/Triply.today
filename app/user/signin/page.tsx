@@ -3,9 +3,12 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import SignInButtons from '@/app/components/SignInButtons';
 import Header from '@/app/components/header';
+import { redirect } from 'next/navigation'
 export default async function SSRAuthPage() {
   const session = await getServerSession(authOptions);
-
+  if (session) {
+    redirect('/user');
+  }
   return (
     <>
     <Header />
