@@ -3,11 +3,14 @@ import SearchBarAutocomplete from "./components/searchbar";
 import "../public/css/home.css";
 import PopularDestinationComponent from "./components/PopularDestination";
 
-export default function Home() {
+
+export default async function Home() {
+
   return (
     <>
 
       <Header />
+
       <main className="relative flex flex-col items-center justify-center h-[70vh] bg-gradient-to-b from-white via-blue-100 to-purple-100 px-4 sm:px-6 lg:px-8">
 
         <div className="z-10 flex flex-col items-center text-center space-y-6 animate-fade-in pb-24">
