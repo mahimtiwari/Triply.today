@@ -20,12 +20,12 @@ exports.Prisma = Prisma
 exports.$Enums = {}
 
 /**
- * Prisma Client JS version: 6.8.2
- * Query Engine version: 2060c79ba17c6bb9f5823312b6f6b7f4a845738e
+ * Prisma Client JS version: 6.9.0
+ * Query Engine version: 81e4af48011447c3cc503a190e86995b66d2a28e
  */
 Prisma.prismaVersion = {
-  client: "6.8.2",
-  engine: "2060c79ba17c6bb9f5823312b6f6b7f4a845738e"
+  client: "6.9.0",
+  engine: "81e4af48011447c3cc503a190e86995b66d2a28e"
 }
 
 Prisma.PrismaClientKnownRequestError = () => {
@@ -120,17 +120,55 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
   Serializable: 'Serializable'
 });
 
-exports.Prisma.TravelPlanScalarFieldEnum = {
+exports.Prisma.UserScalarFieldEnum = {
   id: 'id',
-  destination: 'destination',
-  startDate: 'startDate',
-  endDate: 'endDate',
-  budget: 'budget',
-  peopleType: 'peopleType',
-  adults: 'adults',
-  children: 'children',
+  name: 'name',
+  email: 'email',
+  emailVerified: 'emailVerified',
+  image: 'image',
   createdAt: 'createdAt',
-  expiresAt: 'expiresAt'
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.AccountScalarFieldEnum = {
+  userId: 'userId',
+  type: 'type',
+  provider: 'provider',
+  providerAccountId: 'providerAccountId',
+  refresh_token: 'refresh_token',
+  access_token: 'access_token',
+  expires_at: 'expires_at',
+  token_type: 'token_type',
+  scope: 'scope',
+  id_token: 'id_token',
+  session_state: 'session_state',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.SessionScalarFieldEnum = {
+  sessionToken: 'sessionToken',
+  userId: 'userId',
+  expires: 'expires',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.VerificationTokenScalarFieldEnum = {
+  identifier: 'identifier',
+  token: 'token',
+  expires: 'expires'
+};
+
+exports.Prisma.AuthenticatorScalarFieldEnum = {
+  credentialID: 'credentialID',
+  userId: 'userId',
+  providerAccountId: 'providerAccountId',
+  credentialPublicKey: 'credentialPublicKey',
+  counter: 'counter',
+  credentialDeviceType: 'credentialDeviceType',
+  credentialBackedUp: 'credentialBackedUp',
+  transports: 'transports'
 };
 
 exports.Prisma.SortOrder = {
@@ -143,9 +181,18 @@ exports.Prisma.QueryMode = {
   insensitive: 'insensitive'
 };
 
+exports.Prisma.NullsOrder = {
+  first: 'first',
+  last: 'last'
+};
+
 
 exports.Prisma.ModelName = {
-  TravelPlan: 'TravelPlan'
+  User: 'User',
+  Account: 'Account',
+  Session: 'Session',
+  VerificationToken: 'VerificationToken',
+  Authenticator: 'Authenticator'
 };
 
 /**
