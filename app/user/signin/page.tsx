@@ -4,7 +4,7 @@ import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import SignInButtons from '@/app/components/SignInButtons';
 import Header from '@/app/components/header';
 import { redirect } from 'next/navigation'
-export default async function SSRAuthPage() {
+export default async function SignIn() {
   const session = await getServerSession(authOptions);
   if (session) {
     redirect('/user');
@@ -20,7 +20,7 @@ export default async function SSRAuthPage() {
       </span>
       <span className="mt-4 text-[17px] font-semibold tracking-tight">Sign in with OAuth</span>
 
-      <SignInButtons />
+      <SignInButtons text='Sign In' />
     </div>
   </div>
 </div>

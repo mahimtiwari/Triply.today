@@ -2,7 +2,7 @@
 
 import { signIn } from 'next-auth/react';
 import Image from 'next/image';
-export default function SignInButtons() {
+export default function SignInButtons({ text }: { text: string }) {
   return (
     <div className='flex flex-col gap-3 w-full mt-5'>
 <button
@@ -19,7 +19,7 @@ export default function SignInButtons() {
   />
   
   <span className="z-10 ml-3 text-gray-700 font-medium text-sm group-hover:text-black transition-colors duration-300">
-    Sign in with Google
+    {text} with Google
   </span>
 </button>
 {/* <button
