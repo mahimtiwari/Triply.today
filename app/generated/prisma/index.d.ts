@@ -38,6 +38,34 @@ export type VerificationToken = $Result.DefaultSelection<Prisma.$VerificationTok
  * 
  */
 export type Authenticator = $Result.DefaultSelection<Prisma.$AuthenticatorPayload>
+/**
+ * Model Trip
+ * 
+ */
+export type Trip = $Result.DefaultSelection<Prisma.$TripPayload>
+/**
+ * Model SharedTrip
+ * 
+ */
+export type SharedTrip = $Result.DefaultSelection<Prisma.$SharedTripPayload>
+
+/**
+ * Enums
+ */
+export namespace $Enums {
+  export const Visibility: {
+  PRIVATE: 'PRIVATE',
+  PUBLIC: 'PUBLIC',
+  SHARED: 'SHARED'
+};
+
+export type Visibility = (typeof Visibility)[keyof typeof Visibility]
+
+}
+
+export type Visibility = $Enums.Visibility
+
+export const Visibility: typeof $Enums.Visibility
 
 /**
  * ##  Prisma Client ʲˢ
@@ -213,6 +241,26 @@ export class PrismaClient<
     * ```
     */
   get authenticator(): Prisma.AuthenticatorDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.trip`: Exposes CRUD operations for the **Trip** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Trips
+    * const trips = await prisma.trip.findMany()
+    * ```
+    */
+  get trip(): Prisma.TripDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.sharedTrip`: Exposes CRUD operations for the **SharedTrip** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more SharedTrips
+    * const sharedTrips = await prisma.sharedTrip.findMany()
+    * ```
+    */
+  get sharedTrip(): Prisma.SharedTripDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -657,7 +705,9 @@ export namespace Prisma {
     Account: 'Account',
     Session: 'Session',
     VerificationToken: 'VerificationToken',
-    Authenticator: 'Authenticator'
+    Authenticator: 'Authenticator',
+    Trip: 'Trip',
+    SharedTrip: 'SharedTrip'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -676,7 +726,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "account" | "session" | "verificationToken" | "authenticator"
+      modelProps: "user" | "account" | "session" | "verificationToken" | "authenticator" | "trip" | "sharedTrip"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1050,6 +1100,154 @@ export namespace Prisma {
           }
         }
       }
+      Trip: {
+        payload: Prisma.$TripPayload<ExtArgs>
+        fields: Prisma.TripFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.TripFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TripPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.TripFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TripPayload>
+          }
+          findFirst: {
+            args: Prisma.TripFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TripPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.TripFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TripPayload>
+          }
+          findMany: {
+            args: Prisma.TripFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TripPayload>[]
+          }
+          create: {
+            args: Prisma.TripCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TripPayload>
+          }
+          createMany: {
+            args: Prisma.TripCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.TripCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TripPayload>[]
+          }
+          delete: {
+            args: Prisma.TripDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TripPayload>
+          }
+          update: {
+            args: Prisma.TripUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TripPayload>
+          }
+          deleteMany: {
+            args: Prisma.TripDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.TripUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.TripUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TripPayload>[]
+          }
+          upsert: {
+            args: Prisma.TripUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TripPayload>
+          }
+          aggregate: {
+            args: Prisma.TripAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateTrip>
+          }
+          groupBy: {
+            args: Prisma.TripGroupByArgs<ExtArgs>
+            result: $Utils.Optional<TripGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.TripCountArgs<ExtArgs>
+            result: $Utils.Optional<TripCountAggregateOutputType> | number
+          }
+        }
+      }
+      SharedTrip: {
+        payload: Prisma.$SharedTripPayload<ExtArgs>
+        fields: Prisma.SharedTripFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.SharedTripFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SharedTripPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.SharedTripFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SharedTripPayload>
+          }
+          findFirst: {
+            args: Prisma.SharedTripFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SharedTripPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.SharedTripFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SharedTripPayload>
+          }
+          findMany: {
+            args: Prisma.SharedTripFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SharedTripPayload>[]
+          }
+          create: {
+            args: Prisma.SharedTripCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SharedTripPayload>
+          }
+          createMany: {
+            args: Prisma.SharedTripCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.SharedTripCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SharedTripPayload>[]
+          }
+          delete: {
+            args: Prisma.SharedTripDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SharedTripPayload>
+          }
+          update: {
+            args: Prisma.SharedTripUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SharedTripPayload>
+          }
+          deleteMany: {
+            args: Prisma.SharedTripDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.SharedTripUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.SharedTripUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SharedTripPayload>[]
+          }
+          upsert: {
+            args: Prisma.SharedTripUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SharedTripPayload>
+          }
+          aggregate: {
+            args: Prisma.SharedTripAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateSharedTrip>
+          }
+          groupBy: {
+            args: Prisma.SharedTripGroupByArgs<ExtArgs>
+            result: $Utils.Optional<SharedTripGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.SharedTripCountArgs<ExtArgs>
+            result: $Utils.Optional<SharedTripCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1139,6 +1337,8 @@ export namespace Prisma {
     session?: SessionOmit
     verificationToken?: VerificationTokenOmit
     authenticator?: AuthenticatorOmit
+    trip?: TripOmit
+    sharedTrip?: SharedTripOmit
   }
 
   /* Types for Logging */
@@ -1236,12 +1436,16 @@ export namespace Prisma {
     accounts: number
     sessions: number
     Authenticator: number
+    trips: number
+    sharedTrips: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     accounts?: boolean | UserCountOutputTypeCountAccountsArgs
     sessions?: boolean | UserCountOutputTypeCountSessionsArgs
     Authenticator?: boolean | UserCountOutputTypeCountAuthenticatorArgs
+    trips?: boolean | UserCountOutputTypeCountTripsArgs
+    sharedTrips?: boolean | UserCountOutputTypeCountSharedTripsArgs
   }
 
   // Custom InputTypes
@@ -1274,6 +1478,51 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountAuthenticatorArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: AuthenticatorWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountTripsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TripWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountSharedTripsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SharedTripWhereInput
+  }
+
+
+  /**
+   * Count Type TripCountOutputType
+   */
+
+  export type TripCountOutputType = {
+    sharedWith: number
+  }
+
+  export type TripCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    sharedWith?: boolean | TripCountOutputTypeCountSharedWithArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * TripCountOutputType without action
+   */
+  export type TripCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TripCountOutputType
+     */
+    select?: TripCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * TripCountOutputType without action
+   */
+  export type TripCountOutputTypeCountSharedWithArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SharedTripWhereInput
   }
 
 
@@ -1464,6 +1713,8 @@ export namespace Prisma {
     accounts?: boolean | User$accountsArgs<ExtArgs>
     sessions?: boolean | User$sessionsArgs<ExtArgs>
     Authenticator?: boolean | User$AuthenticatorArgs<ExtArgs>
+    trips?: boolean | User$tripsArgs<ExtArgs>
+    sharedTrips?: boolean | User$sharedTripsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -1502,6 +1753,8 @@ export namespace Prisma {
     accounts?: boolean | User$accountsArgs<ExtArgs>
     sessions?: boolean | User$sessionsArgs<ExtArgs>
     Authenticator?: boolean | User$AuthenticatorArgs<ExtArgs>
+    trips?: boolean | User$tripsArgs<ExtArgs>
+    sharedTrips?: boolean | User$sharedTripsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -1513,6 +1766,8 @@ export namespace Prisma {
       accounts: Prisma.$AccountPayload<ExtArgs>[]
       sessions: Prisma.$SessionPayload<ExtArgs>[]
       Authenticator: Prisma.$AuthenticatorPayload<ExtArgs>[]
+      trips: Prisma.$TripPayload<ExtArgs>[]
+      sharedTrips: Prisma.$SharedTripPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -1919,6 +2174,8 @@ export namespace Prisma {
     accounts<T extends User$accountsArgs<ExtArgs> = {}>(args?: Subset<T, User$accountsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     sessions<T extends User$sessionsArgs<ExtArgs> = {}>(args?: Subset<T, User$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     Authenticator<T extends User$AuthenticatorArgs<ExtArgs> = {}>(args?: Subset<T, User$AuthenticatorArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AuthenticatorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    trips<T extends User$tripsArgs<ExtArgs> = {}>(args?: Subset<T, User$tripsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TripPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    sharedTrips<T extends User$sharedTripsArgs<ExtArgs> = {}>(args?: Subset<T, User$sharedTripsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SharedTripPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2412,6 +2669,54 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: AuthenticatorScalarFieldEnum | AuthenticatorScalarFieldEnum[]
+  }
+
+  /**
+   * User.trips
+   */
+  export type User$tripsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Trip
+     */
+    select?: TripSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Trip
+     */
+    omit?: TripOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TripInclude<ExtArgs> | null
+    where?: TripWhereInput
+    orderBy?: TripOrderByWithRelationInput | TripOrderByWithRelationInput[]
+    cursor?: TripWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: TripScalarFieldEnum | TripScalarFieldEnum[]
+  }
+
+  /**
+   * User.sharedTrips
+   */
+  export type User$sharedTripsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SharedTrip
+     */
+    select?: SharedTripSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SharedTrip
+     */
+    omit?: SharedTripOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SharedTripInclude<ExtArgs> | null
+    where?: SharedTripWhereInput
+    orderBy?: SharedTripOrderByWithRelationInput | SharedTripOrderByWithRelationInput[]
+    cursor?: SharedTripWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SharedTripScalarFieldEnum | SharedTripScalarFieldEnum[]
   }
 
   /**
@@ -6788,6 +7093,2121 @@ export namespace Prisma {
 
 
   /**
+   * Model Trip
+   */
+
+  export type AggregateTrip = {
+    _count: TripCountAggregateOutputType | null
+    _min: TripMinAggregateOutputType | null
+    _max: TripMaxAggregateOutputType | null
+  }
+
+  export type TripMinAggregateOutputType = {
+    id: string | null
+    destination: string | null
+    visibility: $Enums.Visibility | null
+    ownerId: string | null
+  }
+
+  export type TripMaxAggregateOutputType = {
+    id: string | null
+    destination: string | null
+    visibility: $Enums.Visibility | null
+    ownerId: string | null
+  }
+
+  export type TripCountAggregateOutputType = {
+    id: number
+    destination: number
+    visibility: number
+    ownerId: number
+    _all: number
+  }
+
+
+  export type TripMinAggregateInputType = {
+    id?: true
+    destination?: true
+    visibility?: true
+    ownerId?: true
+  }
+
+  export type TripMaxAggregateInputType = {
+    id?: true
+    destination?: true
+    visibility?: true
+    ownerId?: true
+  }
+
+  export type TripCountAggregateInputType = {
+    id?: true
+    destination?: true
+    visibility?: true
+    ownerId?: true
+    _all?: true
+  }
+
+  export type TripAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Trip to aggregate.
+     */
+    where?: TripWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Trips to fetch.
+     */
+    orderBy?: TripOrderByWithRelationInput | TripOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: TripWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Trips from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Trips.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Trips
+    **/
+    _count?: true | TripCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: TripMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: TripMaxAggregateInputType
+  }
+
+  export type GetTripAggregateType<T extends TripAggregateArgs> = {
+        [P in keyof T & keyof AggregateTrip]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateTrip[P]>
+      : GetScalarType<T[P], AggregateTrip[P]>
+  }
+
+
+
+
+  export type TripGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TripWhereInput
+    orderBy?: TripOrderByWithAggregationInput | TripOrderByWithAggregationInput[]
+    by: TripScalarFieldEnum[] | TripScalarFieldEnum
+    having?: TripScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: TripCountAggregateInputType | true
+    _min?: TripMinAggregateInputType
+    _max?: TripMaxAggregateInputType
+  }
+
+  export type TripGroupByOutputType = {
+    id: string
+    destination: string
+    visibility: $Enums.Visibility
+    ownerId: string
+    _count: TripCountAggregateOutputType | null
+    _min: TripMinAggregateOutputType | null
+    _max: TripMaxAggregateOutputType | null
+  }
+
+  type GetTripGroupByPayload<T extends TripGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<TripGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof TripGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], TripGroupByOutputType[P]>
+            : GetScalarType<T[P], TripGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type TripSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    destination?: boolean
+    visibility?: boolean
+    ownerId?: boolean
+    owner?: boolean | UserDefaultArgs<ExtArgs>
+    sharedWith?: boolean | Trip$sharedWithArgs<ExtArgs>
+    _count?: boolean | TripCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["trip"]>
+
+  export type TripSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    destination?: boolean
+    visibility?: boolean
+    ownerId?: boolean
+    owner?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["trip"]>
+
+  export type TripSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    destination?: boolean
+    visibility?: boolean
+    ownerId?: boolean
+    owner?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["trip"]>
+
+  export type TripSelectScalar = {
+    id?: boolean
+    destination?: boolean
+    visibility?: boolean
+    ownerId?: boolean
+  }
+
+  export type TripOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "destination" | "visibility" | "ownerId", ExtArgs["result"]["trip"]>
+  export type TripInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    owner?: boolean | UserDefaultArgs<ExtArgs>
+    sharedWith?: boolean | Trip$sharedWithArgs<ExtArgs>
+    _count?: boolean | TripCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type TripIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    owner?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type TripIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    owner?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $TripPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Trip"
+    objects: {
+      owner: Prisma.$UserPayload<ExtArgs>
+      sharedWith: Prisma.$SharedTripPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      destination: string
+      visibility: $Enums.Visibility
+      ownerId: string
+    }, ExtArgs["result"]["trip"]>
+    composites: {}
+  }
+
+  type TripGetPayload<S extends boolean | null | undefined | TripDefaultArgs> = $Result.GetResult<Prisma.$TripPayload, S>
+
+  type TripCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<TripFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: TripCountAggregateInputType | true
+    }
+
+  export interface TripDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Trip'], meta: { name: 'Trip' } }
+    /**
+     * Find zero or one Trip that matches the filter.
+     * @param {TripFindUniqueArgs} args - Arguments to find a Trip
+     * @example
+     * // Get one Trip
+     * const trip = await prisma.trip.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends TripFindUniqueArgs>(args: SelectSubset<T, TripFindUniqueArgs<ExtArgs>>): Prisma__TripClient<$Result.GetResult<Prisma.$TripPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Trip that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {TripFindUniqueOrThrowArgs} args - Arguments to find a Trip
+     * @example
+     * // Get one Trip
+     * const trip = await prisma.trip.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends TripFindUniqueOrThrowArgs>(args: SelectSubset<T, TripFindUniqueOrThrowArgs<ExtArgs>>): Prisma__TripClient<$Result.GetResult<Prisma.$TripPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Trip that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TripFindFirstArgs} args - Arguments to find a Trip
+     * @example
+     * // Get one Trip
+     * const trip = await prisma.trip.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends TripFindFirstArgs>(args?: SelectSubset<T, TripFindFirstArgs<ExtArgs>>): Prisma__TripClient<$Result.GetResult<Prisma.$TripPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Trip that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TripFindFirstOrThrowArgs} args - Arguments to find a Trip
+     * @example
+     * // Get one Trip
+     * const trip = await prisma.trip.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends TripFindFirstOrThrowArgs>(args?: SelectSubset<T, TripFindFirstOrThrowArgs<ExtArgs>>): Prisma__TripClient<$Result.GetResult<Prisma.$TripPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Trips that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TripFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Trips
+     * const trips = await prisma.trip.findMany()
+     * 
+     * // Get first 10 Trips
+     * const trips = await prisma.trip.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const tripWithIdOnly = await prisma.trip.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends TripFindManyArgs>(args?: SelectSubset<T, TripFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TripPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Trip.
+     * @param {TripCreateArgs} args - Arguments to create a Trip.
+     * @example
+     * // Create one Trip
+     * const Trip = await prisma.trip.create({
+     *   data: {
+     *     // ... data to create a Trip
+     *   }
+     * })
+     * 
+     */
+    create<T extends TripCreateArgs>(args: SelectSubset<T, TripCreateArgs<ExtArgs>>): Prisma__TripClient<$Result.GetResult<Prisma.$TripPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Trips.
+     * @param {TripCreateManyArgs} args - Arguments to create many Trips.
+     * @example
+     * // Create many Trips
+     * const trip = await prisma.trip.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends TripCreateManyArgs>(args?: SelectSubset<T, TripCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Trips and returns the data saved in the database.
+     * @param {TripCreateManyAndReturnArgs} args - Arguments to create many Trips.
+     * @example
+     * // Create many Trips
+     * const trip = await prisma.trip.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Trips and only return the `id`
+     * const tripWithIdOnly = await prisma.trip.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends TripCreateManyAndReturnArgs>(args?: SelectSubset<T, TripCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TripPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Trip.
+     * @param {TripDeleteArgs} args - Arguments to delete one Trip.
+     * @example
+     * // Delete one Trip
+     * const Trip = await prisma.trip.delete({
+     *   where: {
+     *     // ... filter to delete one Trip
+     *   }
+     * })
+     * 
+     */
+    delete<T extends TripDeleteArgs>(args: SelectSubset<T, TripDeleteArgs<ExtArgs>>): Prisma__TripClient<$Result.GetResult<Prisma.$TripPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Trip.
+     * @param {TripUpdateArgs} args - Arguments to update one Trip.
+     * @example
+     * // Update one Trip
+     * const trip = await prisma.trip.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends TripUpdateArgs>(args: SelectSubset<T, TripUpdateArgs<ExtArgs>>): Prisma__TripClient<$Result.GetResult<Prisma.$TripPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Trips.
+     * @param {TripDeleteManyArgs} args - Arguments to filter Trips to delete.
+     * @example
+     * // Delete a few Trips
+     * const { count } = await prisma.trip.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends TripDeleteManyArgs>(args?: SelectSubset<T, TripDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Trips.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TripUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Trips
+     * const trip = await prisma.trip.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends TripUpdateManyArgs>(args: SelectSubset<T, TripUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Trips and returns the data updated in the database.
+     * @param {TripUpdateManyAndReturnArgs} args - Arguments to update many Trips.
+     * @example
+     * // Update many Trips
+     * const trip = await prisma.trip.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Trips and only return the `id`
+     * const tripWithIdOnly = await prisma.trip.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends TripUpdateManyAndReturnArgs>(args: SelectSubset<T, TripUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TripPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Trip.
+     * @param {TripUpsertArgs} args - Arguments to update or create a Trip.
+     * @example
+     * // Update or create a Trip
+     * const trip = await prisma.trip.upsert({
+     *   create: {
+     *     // ... data to create a Trip
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Trip we want to update
+     *   }
+     * })
+     */
+    upsert<T extends TripUpsertArgs>(args: SelectSubset<T, TripUpsertArgs<ExtArgs>>): Prisma__TripClient<$Result.GetResult<Prisma.$TripPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Trips.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TripCountArgs} args - Arguments to filter Trips to count.
+     * @example
+     * // Count the number of Trips
+     * const count = await prisma.trip.count({
+     *   where: {
+     *     // ... the filter for the Trips we want to count
+     *   }
+     * })
+    **/
+    count<T extends TripCountArgs>(
+      args?: Subset<T, TripCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], TripCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Trip.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TripAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends TripAggregateArgs>(args: Subset<T, TripAggregateArgs>): Prisma.PrismaPromise<GetTripAggregateType<T>>
+
+    /**
+     * Group by Trip.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TripGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends TripGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: TripGroupByArgs['orderBy'] }
+        : { orderBy?: TripGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, TripGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetTripGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Trip model
+   */
+  readonly fields: TripFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Trip.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__TripClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    owner<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    sharedWith<T extends Trip$sharedWithArgs<ExtArgs> = {}>(args?: Subset<T, Trip$sharedWithArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SharedTripPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Trip model
+   */
+  interface TripFieldRefs {
+    readonly id: FieldRef<"Trip", 'String'>
+    readonly destination: FieldRef<"Trip", 'String'>
+    readonly visibility: FieldRef<"Trip", 'Visibility'>
+    readonly ownerId: FieldRef<"Trip", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Trip findUnique
+   */
+  export type TripFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Trip
+     */
+    select?: TripSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Trip
+     */
+    omit?: TripOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TripInclude<ExtArgs> | null
+    /**
+     * Filter, which Trip to fetch.
+     */
+    where: TripWhereUniqueInput
+  }
+
+  /**
+   * Trip findUniqueOrThrow
+   */
+  export type TripFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Trip
+     */
+    select?: TripSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Trip
+     */
+    omit?: TripOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TripInclude<ExtArgs> | null
+    /**
+     * Filter, which Trip to fetch.
+     */
+    where: TripWhereUniqueInput
+  }
+
+  /**
+   * Trip findFirst
+   */
+  export type TripFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Trip
+     */
+    select?: TripSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Trip
+     */
+    omit?: TripOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TripInclude<ExtArgs> | null
+    /**
+     * Filter, which Trip to fetch.
+     */
+    where?: TripWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Trips to fetch.
+     */
+    orderBy?: TripOrderByWithRelationInput | TripOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Trips.
+     */
+    cursor?: TripWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Trips from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Trips.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Trips.
+     */
+    distinct?: TripScalarFieldEnum | TripScalarFieldEnum[]
+  }
+
+  /**
+   * Trip findFirstOrThrow
+   */
+  export type TripFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Trip
+     */
+    select?: TripSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Trip
+     */
+    omit?: TripOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TripInclude<ExtArgs> | null
+    /**
+     * Filter, which Trip to fetch.
+     */
+    where?: TripWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Trips to fetch.
+     */
+    orderBy?: TripOrderByWithRelationInput | TripOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Trips.
+     */
+    cursor?: TripWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Trips from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Trips.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Trips.
+     */
+    distinct?: TripScalarFieldEnum | TripScalarFieldEnum[]
+  }
+
+  /**
+   * Trip findMany
+   */
+  export type TripFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Trip
+     */
+    select?: TripSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Trip
+     */
+    omit?: TripOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TripInclude<ExtArgs> | null
+    /**
+     * Filter, which Trips to fetch.
+     */
+    where?: TripWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Trips to fetch.
+     */
+    orderBy?: TripOrderByWithRelationInput | TripOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Trips.
+     */
+    cursor?: TripWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Trips from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Trips.
+     */
+    skip?: number
+    distinct?: TripScalarFieldEnum | TripScalarFieldEnum[]
+  }
+
+  /**
+   * Trip create
+   */
+  export type TripCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Trip
+     */
+    select?: TripSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Trip
+     */
+    omit?: TripOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TripInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Trip.
+     */
+    data: XOR<TripCreateInput, TripUncheckedCreateInput>
+  }
+
+  /**
+   * Trip createMany
+   */
+  export type TripCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Trips.
+     */
+    data: TripCreateManyInput | TripCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Trip createManyAndReturn
+   */
+  export type TripCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Trip
+     */
+    select?: TripSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Trip
+     */
+    omit?: TripOmit<ExtArgs> | null
+    /**
+     * The data used to create many Trips.
+     */
+    data: TripCreateManyInput | TripCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TripIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Trip update
+   */
+  export type TripUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Trip
+     */
+    select?: TripSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Trip
+     */
+    omit?: TripOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TripInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Trip.
+     */
+    data: XOR<TripUpdateInput, TripUncheckedUpdateInput>
+    /**
+     * Choose, which Trip to update.
+     */
+    where: TripWhereUniqueInput
+  }
+
+  /**
+   * Trip updateMany
+   */
+  export type TripUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Trips.
+     */
+    data: XOR<TripUpdateManyMutationInput, TripUncheckedUpdateManyInput>
+    /**
+     * Filter which Trips to update
+     */
+    where?: TripWhereInput
+    /**
+     * Limit how many Trips to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Trip updateManyAndReturn
+   */
+  export type TripUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Trip
+     */
+    select?: TripSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Trip
+     */
+    omit?: TripOmit<ExtArgs> | null
+    /**
+     * The data used to update Trips.
+     */
+    data: XOR<TripUpdateManyMutationInput, TripUncheckedUpdateManyInput>
+    /**
+     * Filter which Trips to update
+     */
+    where?: TripWhereInput
+    /**
+     * Limit how many Trips to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TripIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Trip upsert
+   */
+  export type TripUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Trip
+     */
+    select?: TripSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Trip
+     */
+    omit?: TripOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TripInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Trip to update in case it exists.
+     */
+    where: TripWhereUniqueInput
+    /**
+     * In case the Trip found by the `where` argument doesn't exist, create a new Trip with this data.
+     */
+    create: XOR<TripCreateInput, TripUncheckedCreateInput>
+    /**
+     * In case the Trip was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<TripUpdateInput, TripUncheckedUpdateInput>
+  }
+
+  /**
+   * Trip delete
+   */
+  export type TripDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Trip
+     */
+    select?: TripSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Trip
+     */
+    omit?: TripOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TripInclude<ExtArgs> | null
+    /**
+     * Filter which Trip to delete.
+     */
+    where: TripWhereUniqueInput
+  }
+
+  /**
+   * Trip deleteMany
+   */
+  export type TripDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Trips to delete
+     */
+    where?: TripWhereInput
+    /**
+     * Limit how many Trips to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Trip.sharedWith
+   */
+  export type Trip$sharedWithArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SharedTrip
+     */
+    select?: SharedTripSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SharedTrip
+     */
+    omit?: SharedTripOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SharedTripInclude<ExtArgs> | null
+    where?: SharedTripWhereInput
+    orderBy?: SharedTripOrderByWithRelationInput | SharedTripOrderByWithRelationInput[]
+    cursor?: SharedTripWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SharedTripScalarFieldEnum | SharedTripScalarFieldEnum[]
+  }
+
+  /**
+   * Trip without action
+   */
+  export type TripDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Trip
+     */
+    select?: TripSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Trip
+     */
+    omit?: TripOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TripInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model SharedTrip
+   */
+
+  export type AggregateSharedTrip = {
+    _count: SharedTripCountAggregateOutputType | null
+    _min: SharedTripMinAggregateOutputType | null
+    _max: SharedTripMaxAggregateOutputType | null
+  }
+
+  export type SharedTripMinAggregateOutputType = {
+    id: string | null
+    tripId: string | null
+    userId: string | null
+  }
+
+  export type SharedTripMaxAggregateOutputType = {
+    id: string | null
+    tripId: string | null
+    userId: string | null
+  }
+
+  export type SharedTripCountAggregateOutputType = {
+    id: number
+    tripId: number
+    userId: number
+    _all: number
+  }
+
+
+  export type SharedTripMinAggregateInputType = {
+    id?: true
+    tripId?: true
+    userId?: true
+  }
+
+  export type SharedTripMaxAggregateInputType = {
+    id?: true
+    tripId?: true
+    userId?: true
+  }
+
+  export type SharedTripCountAggregateInputType = {
+    id?: true
+    tripId?: true
+    userId?: true
+    _all?: true
+  }
+
+  export type SharedTripAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SharedTrip to aggregate.
+     */
+    where?: SharedTripWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SharedTrips to fetch.
+     */
+    orderBy?: SharedTripOrderByWithRelationInput | SharedTripOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: SharedTripWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SharedTrips from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SharedTrips.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned SharedTrips
+    **/
+    _count?: true | SharedTripCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: SharedTripMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: SharedTripMaxAggregateInputType
+  }
+
+  export type GetSharedTripAggregateType<T extends SharedTripAggregateArgs> = {
+        [P in keyof T & keyof AggregateSharedTrip]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateSharedTrip[P]>
+      : GetScalarType<T[P], AggregateSharedTrip[P]>
+  }
+
+
+
+
+  export type SharedTripGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SharedTripWhereInput
+    orderBy?: SharedTripOrderByWithAggregationInput | SharedTripOrderByWithAggregationInput[]
+    by: SharedTripScalarFieldEnum[] | SharedTripScalarFieldEnum
+    having?: SharedTripScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: SharedTripCountAggregateInputType | true
+    _min?: SharedTripMinAggregateInputType
+    _max?: SharedTripMaxAggregateInputType
+  }
+
+  export type SharedTripGroupByOutputType = {
+    id: string
+    tripId: string
+    userId: string
+    _count: SharedTripCountAggregateOutputType | null
+    _min: SharedTripMinAggregateOutputType | null
+    _max: SharedTripMaxAggregateOutputType | null
+  }
+
+  type GetSharedTripGroupByPayload<T extends SharedTripGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<SharedTripGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof SharedTripGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], SharedTripGroupByOutputType[P]>
+            : GetScalarType<T[P], SharedTripGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type SharedTripSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tripId?: boolean
+    userId?: boolean
+    trip?: boolean | TripDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["sharedTrip"]>
+
+  export type SharedTripSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tripId?: boolean
+    userId?: boolean
+    trip?: boolean | TripDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["sharedTrip"]>
+
+  export type SharedTripSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tripId?: boolean
+    userId?: boolean
+    trip?: boolean | TripDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["sharedTrip"]>
+
+  export type SharedTripSelectScalar = {
+    id?: boolean
+    tripId?: boolean
+    userId?: boolean
+  }
+
+  export type SharedTripOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tripId" | "userId", ExtArgs["result"]["sharedTrip"]>
+  export type SharedTripInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    trip?: boolean | TripDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type SharedTripIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    trip?: boolean | TripDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type SharedTripIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    trip?: boolean | TripDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $SharedTripPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "SharedTrip"
+    objects: {
+      trip: Prisma.$TripPayload<ExtArgs>
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      tripId: string
+      userId: string
+    }, ExtArgs["result"]["sharedTrip"]>
+    composites: {}
+  }
+
+  type SharedTripGetPayload<S extends boolean | null | undefined | SharedTripDefaultArgs> = $Result.GetResult<Prisma.$SharedTripPayload, S>
+
+  type SharedTripCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<SharedTripFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: SharedTripCountAggregateInputType | true
+    }
+
+  export interface SharedTripDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['SharedTrip'], meta: { name: 'SharedTrip' } }
+    /**
+     * Find zero or one SharedTrip that matches the filter.
+     * @param {SharedTripFindUniqueArgs} args - Arguments to find a SharedTrip
+     * @example
+     * // Get one SharedTrip
+     * const sharedTrip = await prisma.sharedTrip.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends SharedTripFindUniqueArgs>(args: SelectSubset<T, SharedTripFindUniqueArgs<ExtArgs>>): Prisma__SharedTripClient<$Result.GetResult<Prisma.$SharedTripPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one SharedTrip that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {SharedTripFindUniqueOrThrowArgs} args - Arguments to find a SharedTrip
+     * @example
+     * // Get one SharedTrip
+     * const sharedTrip = await prisma.sharedTrip.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends SharedTripFindUniqueOrThrowArgs>(args: SelectSubset<T, SharedTripFindUniqueOrThrowArgs<ExtArgs>>): Prisma__SharedTripClient<$Result.GetResult<Prisma.$SharedTripPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SharedTrip that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SharedTripFindFirstArgs} args - Arguments to find a SharedTrip
+     * @example
+     * // Get one SharedTrip
+     * const sharedTrip = await prisma.sharedTrip.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends SharedTripFindFirstArgs>(args?: SelectSubset<T, SharedTripFindFirstArgs<ExtArgs>>): Prisma__SharedTripClient<$Result.GetResult<Prisma.$SharedTripPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SharedTrip that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SharedTripFindFirstOrThrowArgs} args - Arguments to find a SharedTrip
+     * @example
+     * // Get one SharedTrip
+     * const sharedTrip = await prisma.sharedTrip.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends SharedTripFindFirstOrThrowArgs>(args?: SelectSubset<T, SharedTripFindFirstOrThrowArgs<ExtArgs>>): Prisma__SharedTripClient<$Result.GetResult<Prisma.$SharedTripPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more SharedTrips that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SharedTripFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all SharedTrips
+     * const sharedTrips = await prisma.sharedTrip.findMany()
+     * 
+     * // Get first 10 SharedTrips
+     * const sharedTrips = await prisma.sharedTrip.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const sharedTripWithIdOnly = await prisma.sharedTrip.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends SharedTripFindManyArgs>(args?: SelectSubset<T, SharedTripFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SharedTripPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a SharedTrip.
+     * @param {SharedTripCreateArgs} args - Arguments to create a SharedTrip.
+     * @example
+     * // Create one SharedTrip
+     * const SharedTrip = await prisma.sharedTrip.create({
+     *   data: {
+     *     // ... data to create a SharedTrip
+     *   }
+     * })
+     * 
+     */
+    create<T extends SharedTripCreateArgs>(args: SelectSubset<T, SharedTripCreateArgs<ExtArgs>>): Prisma__SharedTripClient<$Result.GetResult<Prisma.$SharedTripPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many SharedTrips.
+     * @param {SharedTripCreateManyArgs} args - Arguments to create many SharedTrips.
+     * @example
+     * // Create many SharedTrips
+     * const sharedTrip = await prisma.sharedTrip.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends SharedTripCreateManyArgs>(args?: SelectSubset<T, SharedTripCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many SharedTrips and returns the data saved in the database.
+     * @param {SharedTripCreateManyAndReturnArgs} args - Arguments to create many SharedTrips.
+     * @example
+     * // Create many SharedTrips
+     * const sharedTrip = await prisma.sharedTrip.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many SharedTrips and only return the `id`
+     * const sharedTripWithIdOnly = await prisma.sharedTrip.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends SharedTripCreateManyAndReturnArgs>(args?: SelectSubset<T, SharedTripCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SharedTripPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a SharedTrip.
+     * @param {SharedTripDeleteArgs} args - Arguments to delete one SharedTrip.
+     * @example
+     * // Delete one SharedTrip
+     * const SharedTrip = await prisma.sharedTrip.delete({
+     *   where: {
+     *     // ... filter to delete one SharedTrip
+     *   }
+     * })
+     * 
+     */
+    delete<T extends SharedTripDeleteArgs>(args: SelectSubset<T, SharedTripDeleteArgs<ExtArgs>>): Prisma__SharedTripClient<$Result.GetResult<Prisma.$SharedTripPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one SharedTrip.
+     * @param {SharedTripUpdateArgs} args - Arguments to update one SharedTrip.
+     * @example
+     * // Update one SharedTrip
+     * const sharedTrip = await prisma.sharedTrip.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends SharedTripUpdateArgs>(args: SelectSubset<T, SharedTripUpdateArgs<ExtArgs>>): Prisma__SharedTripClient<$Result.GetResult<Prisma.$SharedTripPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more SharedTrips.
+     * @param {SharedTripDeleteManyArgs} args - Arguments to filter SharedTrips to delete.
+     * @example
+     * // Delete a few SharedTrips
+     * const { count } = await prisma.sharedTrip.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends SharedTripDeleteManyArgs>(args?: SelectSubset<T, SharedTripDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SharedTrips.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SharedTripUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many SharedTrips
+     * const sharedTrip = await prisma.sharedTrip.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends SharedTripUpdateManyArgs>(args: SelectSubset<T, SharedTripUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SharedTrips and returns the data updated in the database.
+     * @param {SharedTripUpdateManyAndReturnArgs} args - Arguments to update many SharedTrips.
+     * @example
+     * // Update many SharedTrips
+     * const sharedTrip = await prisma.sharedTrip.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more SharedTrips and only return the `id`
+     * const sharedTripWithIdOnly = await prisma.sharedTrip.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends SharedTripUpdateManyAndReturnArgs>(args: SelectSubset<T, SharedTripUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SharedTripPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one SharedTrip.
+     * @param {SharedTripUpsertArgs} args - Arguments to update or create a SharedTrip.
+     * @example
+     * // Update or create a SharedTrip
+     * const sharedTrip = await prisma.sharedTrip.upsert({
+     *   create: {
+     *     // ... data to create a SharedTrip
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the SharedTrip we want to update
+     *   }
+     * })
+     */
+    upsert<T extends SharedTripUpsertArgs>(args: SelectSubset<T, SharedTripUpsertArgs<ExtArgs>>): Prisma__SharedTripClient<$Result.GetResult<Prisma.$SharedTripPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of SharedTrips.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SharedTripCountArgs} args - Arguments to filter SharedTrips to count.
+     * @example
+     * // Count the number of SharedTrips
+     * const count = await prisma.sharedTrip.count({
+     *   where: {
+     *     // ... the filter for the SharedTrips we want to count
+     *   }
+     * })
+    **/
+    count<T extends SharedTripCountArgs>(
+      args?: Subset<T, SharedTripCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], SharedTripCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a SharedTrip.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SharedTripAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends SharedTripAggregateArgs>(args: Subset<T, SharedTripAggregateArgs>): Prisma.PrismaPromise<GetSharedTripAggregateType<T>>
+
+    /**
+     * Group by SharedTrip.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SharedTripGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends SharedTripGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: SharedTripGroupByArgs['orderBy'] }
+        : { orderBy?: SharedTripGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, SharedTripGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSharedTripGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the SharedTrip model
+   */
+  readonly fields: SharedTripFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for SharedTrip.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__SharedTripClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    trip<T extends TripDefaultArgs<ExtArgs> = {}>(args?: Subset<T, TripDefaultArgs<ExtArgs>>): Prisma__TripClient<$Result.GetResult<Prisma.$TripPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the SharedTrip model
+   */
+  interface SharedTripFieldRefs {
+    readonly id: FieldRef<"SharedTrip", 'String'>
+    readonly tripId: FieldRef<"SharedTrip", 'String'>
+    readonly userId: FieldRef<"SharedTrip", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * SharedTrip findUnique
+   */
+  export type SharedTripFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SharedTrip
+     */
+    select?: SharedTripSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SharedTrip
+     */
+    omit?: SharedTripOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SharedTripInclude<ExtArgs> | null
+    /**
+     * Filter, which SharedTrip to fetch.
+     */
+    where: SharedTripWhereUniqueInput
+  }
+
+  /**
+   * SharedTrip findUniqueOrThrow
+   */
+  export type SharedTripFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SharedTrip
+     */
+    select?: SharedTripSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SharedTrip
+     */
+    omit?: SharedTripOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SharedTripInclude<ExtArgs> | null
+    /**
+     * Filter, which SharedTrip to fetch.
+     */
+    where: SharedTripWhereUniqueInput
+  }
+
+  /**
+   * SharedTrip findFirst
+   */
+  export type SharedTripFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SharedTrip
+     */
+    select?: SharedTripSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SharedTrip
+     */
+    omit?: SharedTripOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SharedTripInclude<ExtArgs> | null
+    /**
+     * Filter, which SharedTrip to fetch.
+     */
+    where?: SharedTripWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SharedTrips to fetch.
+     */
+    orderBy?: SharedTripOrderByWithRelationInput | SharedTripOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SharedTrips.
+     */
+    cursor?: SharedTripWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SharedTrips from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SharedTrips.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SharedTrips.
+     */
+    distinct?: SharedTripScalarFieldEnum | SharedTripScalarFieldEnum[]
+  }
+
+  /**
+   * SharedTrip findFirstOrThrow
+   */
+  export type SharedTripFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SharedTrip
+     */
+    select?: SharedTripSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SharedTrip
+     */
+    omit?: SharedTripOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SharedTripInclude<ExtArgs> | null
+    /**
+     * Filter, which SharedTrip to fetch.
+     */
+    where?: SharedTripWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SharedTrips to fetch.
+     */
+    orderBy?: SharedTripOrderByWithRelationInput | SharedTripOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SharedTrips.
+     */
+    cursor?: SharedTripWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SharedTrips from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SharedTrips.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SharedTrips.
+     */
+    distinct?: SharedTripScalarFieldEnum | SharedTripScalarFieldEnum[]
+  }
+
+  /**
+   * SharedTrip findMany
+   */
+  export type SharedTripFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SharedTrip
+     */
+    select?: SharedTripSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SharedTrip
+     */
+    omit?: SharedTripOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SharedTripInclude<ExtArgs> | null
+    /**
+     * Filter, which SharedTrips to fetch.
+     */
+    where?: SharedTripWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SharedTrips to fetch.
+     */
+    orderBy?: SharedTripOrderByWithRelationInput | SharedTripOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing SharedTrips.
+     */
+    cursor?: SharedTripWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SharedTrips from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SharedTrips.
+     */
+    skip?: number
+    distinct?: SharedTripScalarFieldEnum | SharedTripScalarFieldEnum[]
+  }
+
+  /**
+   * SharedTrip create
+   */
+  export type SharedTripCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SharedTrip
+     */
+    select?: SharedTripSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SharedTrip
+     */
+    omit?: SharedTripOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SharedTripInclude<ExtArgs> | null
+    /**
+     * The data needed to create a SharedTrip.
+     */
+    data: XOR<SharedTripCreateInput, SharedTripUncheckedCreateInput>
+  }
+
+  /**
+   * SharedTrip createMany
+   */
+  export type SharedTripCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many SharedTrips.
+     */
+    data: SharedTripCreateManyInput | SharedTripCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * SharedTrip createManyAndReturn
+   */
+  export type SharedTripCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SharedTrip
+     */
+    select?: SharedTripSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SharedTrip
+     */
+    omit?: SharedTripOmit<ExtArgs> | null
+    /**
+     * The data used to create many SharedTrips.
+     */
+    data: SharedTripCreateManyInput | SharedTripCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SharedTripIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * SharedTrip update
+   */
+  export type SharedTripUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SharedTrip
+     */
+    select?: SharedTripSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SharedTrip
+     */
+    omit?: SharedTripOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SharedTripInclude<ExtArgs> | null
+    /**
+     * The data needed to update a SharedTrip.
+     */
+    data: XOR<SharedTripUpdateInput, SharedTripUncheckedUpdateInput>
+    /**
+     * Choose, which SharedTrip to update.
+     */
+    where: SharedTripWhereUniqueInput
+  }
+
+  /**
+   * SharedTrip updateMany
+   */
+  export type SharedTripUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update SharedTrips.
+     */
+    data: XOR<SharedTripUpdateManyMutationInput, SharedTripUncheckedUpdateManyInput>
+    /**
+     * Filter which SharedTrips to update
+     */
+    where?: SharedTripWhereInput
+    /**
+     * Limit how many SharedTrips to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * SharedTrip updateManyAndReturn
+   */
+  export type SharedTripUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SharedTrip
+     */
+    select?: SharedTripSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SharedTrip
+     */
+    omit?: SharedTripOmit<ExtArgs> | null
+    /**
+     * The data used to update SharedTrips.
+     */
+    data: XOR<SharedTripUpdateManyMutationInput, SharedTripUncheckedUpdateManyInput>
+    /**
+     * Filter which SharedTrips to update
+     */
+    where?: SharedTripWhereInput
+    /**
+     * Limit how many SharedTrips to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SharedTripIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * SharedTrip upsert
+   */
+  export type SharedTripUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SharedTrip
+     */
+    select?: SharedTripSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SharedTrip
+     */
+    omit?: SharedTripOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SharedTripInclude<ExtArgs> | null
+    /**
+     * The filter to search for the SharedTrip to update in case it exists.
+     */
+    where: SharedTripWhereUniqueInput
+    /**
+     * In case the SharedTrip found by the `where` argument doesn't exist, create a new SharedTrip with this data.
+     */
+    create: XOR<SharedTripCreateInput, SharedTripUncheckedCreateInput>
+    /**
+     * In case the SharedTrip was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<SharedTripUpdateInput, SharedTripUncheckedUpdateInput>
+  }
+
+  /**
+   * SharedTrip delete
+   */
+  export type SharedTripDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SharedTrip
+     */
+    select?: SharedTripSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SharedTrip
+     */
+    omit?: SharedTripOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SharedTripInclude<ExtArgs> | null
+    /**
+     * Filter which SharedTrip to delete.
+     */
+    where: SharedTripWhereUniqueInput
+  }
+
+  /**
+   * SharedTrip deleteMany
+   */
+  export type SharedTripDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SharedTrips to delete
+     */
+    where?: SharedTripWhereInput
+    /**
+     * Limit how many SharedTrips to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * SharedTrip without action
+   */
+  export type SharedTripDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SharedTrip
+     */
+    select?: SharedTripSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SharedTrip
+     */
+    omit?: SharedTripOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SharedTripInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -6865,6 +9285,25 @@ export namespace Prisma {
   };
 
   export type AuthenticatorScalarFieldEnum = (typeof AuthenticatorScalarFieldEnum)[keyof typeof AuthenticatorScalarFieldEnum]
+
+
+  export const TripScalarFieldEnum: {
+    id: 'id',
+    destination: 'destination',
+    visibility: 'visibility',
+    ownerId: 'ownerId'
+  };
+
+  export type TripScalarFieldEnum = (typeof TripScalarFieldEnum)[keyof typeof TripScalarFieldEnum]
+
+
+  export const SharedTripScalarFieldEnum: {
+    id: 'id',
+    tripId: 'tripId',
+    userId: 'userId'
+  };
+
+  export type SharedTripScalarFieldEnum = (typeof SharedTripScalarFieldEnum)[keyof typeof SharedTripScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -6946,6 +9385,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'Visibility'
+   */
+  export type EnumVisibilityFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Visibility'>
+    
+
+
+  /**
+   * Reference to a field of type 'Visibility[]'
+   */
+  export type ListEnumVisibilityFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Visibility[]'>
+    
+
+
+  /**
    * Reference to a field of type 'Float'
    */
   export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -6976,6 +9429,8 @@ export namespace Prisma {
     accounts?: AccountListRelationFilter
     sessions?: SessionListRelationFilter
     Authenticator?: AuthenticatorListRelationFilter
+    trips?: TripListRelationFilter
+    sharedTrips?: SharedTripListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -6989,6 +9444,8 @@ export namespace Prisma {
     accounts?: AccountOrderByRelationAggregateInput
     sessions?: SessionOrderByRelationAggregateInput
     Authenticator?: AuthenticatorOrderByRelationAggregateInput
+    trips?: TripOrderByRelationAggregateInput
+    sharedTrips?: SharedTripOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -7005,6 +9462,8 @@ export namespace Prisma {
     accounts?: AccountListRelationFilter
     sessions?: SessionListRelationFilter
     Authenticator?: AuthenticatorListRelationFilter
+    trips?: TripListRelationFilter
+    sharedTrips?: SharedTripListRelationFilter
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -7302,6 +9761,108 @@ export namespace Prisma {
     transports?: StringNullableWithAggregatesFilter<"Authenticator"> | string | null
   }
 
+  export type TripWhereInput = {
+    AND?: TripWhereInput | TripWhereInput[]
+    OR?: TripWhereInput[]
+    NOT?: TripWhereInput | TripWhereInput[]
+    id?: StringFilter<"Trip"> | string
+    destination?: StringFilter<"Trip"> | string
+    visibility?: EnumVisibilityFilter<"Trip"> | $Enums.Visibility
+    ownerId?: StringFilter<"Trip"> | string
+    owner?: XOR<UserScalarRelationFilter, UserWhereInput>
+    sharedWith?: SharedTripListRelationFilter
+  }
+
+  export type TripOrderByWithRelationInput = {
+    id?: SortOrder
+    destination?: SortOrder
+    visibility?: SortOrder
+    ownerId?: SortOrder
+    owner?: UserOrderByWithRelationInput
+    sharedWith?: SharedTripOrderByRelationAggregateInput
+  }
+
+  export type TripWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: TripWhereInput | TripWhereInput[]
+    OR?: TripWhereInput[]
+    NOT?: TripWhereInput | TripWhereInput[]
+    destination?: StringFilter<"Trip"> | string
+    visibility?: EnumVisibilityFilter<"Trip"> | $Enums.Visibility
+    ownerId?: StringFilter<"Trip"> | string
+    owner?: XOR<UserScalarRelationFilter, UserWhereInput>
+    sharedWith?: SharedTripListRelationFilter
+  }, "id">
+
+  export type TripOrderByWithAggregationInput = {
+    id?: SortOrder
+    destination?: SortOrder
+    visibility?: SortOrder
+    ownerId?: SortOrder
+    _count?: TripCountOrderByAggregateInput
+    _max?: TripMaxOrderByAggregateInput
+    _min?: TripMinOrderByAggregateInput
+  }
+
+  export type TripScalarWhereWithAggregatesInput = {
+    AND?: TripScalarWhereWithAggregatesInput | TripScalarWhereWithAggregatesInput[]
+    OR?: TripScalarWhereWithAggregatesInput[]
+    NOT?: TripScalarWhereWithAggregatesInput | TripScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Trip"> | string
+    destination?: StringWithAggregatesFilter<"Trip"> | string
+    visibility?: EnumVisibilityWithAggregatesFilter<"Trip"> | $Enums.Visibility
+    ownerId?: StringWithAggregatesFilter<"Trip"> | string
+  }
+
+  export type SharedTripWhereInput = {
+    AND?: SharedTripWhereInput | SharedTripWhereInput[]
+    OR?: SharedTripWhereInput[]
+    NOT?: SharedTripWhereInput | SharedTripWhereInput[]
+    id?: StringFilter<"SharedTrip"> | string
+    tripId?: StringFilter<"SharedTrip"> | string
+    userId?: StringFilter<"SharedTrip"> | string
+    trip?: XOR<TripScalarRelationFilter, TripWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type SharedTripOrderByWithRelationInput = {
+    id?: SortOrder
+    tripId?: SortOrder
+    userId?: SortOrder
+    trip?: TripOrderByWithRelationInput
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type SharedTripWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    tripId_userId?: SharedTripTripIdUserIdCompoundUniqueInput
+    AND?: SharedTripWhereInput | SharedTripWhereInput[]
+    OR?: SharedTripWhereInput[]
+    NOT?: SharedTripWhereInput | SharedTripWhereInput[]
+    tripId?: StringFilter<"SharedTrip"> | string
+    userId?: StringFilter<"SharedTrip"> | string
+    trip?: XOR<TripScalarRelationFilter, TripWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id" | "tripId_userId">
+
+  export type SharedTripOrderByWithAggregationInput = {
+    id?: SortOrder
+    tripId?: SortOrder
+    userId?: SortOrder
+    _count?: SharedTripCountOrderByAggregateInput
+    _max?: SharedTripMaxOrderByAggregateInput
+    _min?: SharedTripMinOrderByAggregateInput
+  }
+
+  export type SharedTripScalarWhereWithAggregatesInput = {
+    AND?: SharedTripScalarWhereWithAggregatesInput | SharedTripScalarWhereWithAggregatesInput[]
+    OR?: SharedTripScalarWhereWithAggregatesInput[]
+    NOT?: SharedTripScalarWhereWithAggregatesInput | SharedTripScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"SharedTrip"> | string
+    tripId?: StringWithAggregatesFilter<"SharedTrip"> | string
+    userId?: StringWithAggregatesFilter<"SharedTrip"> | string
+  }
+
   export type UserCreateInput = {
     id?: string
     name?: string | null
@@ -7313,6 +9874,8 @@ export namespace Prisma {
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
     Authenticator?: AuthenticatorCreateNestedManyWithoutUserInput
+    trips?: TripCreateNestedManyWithoutOwnerInput
+    sharedTrips?: SharedTripCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -7326,6 +9889,8 @@ export namespace Prisma {
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     Authenticator?: AuthenticatorUncheckedCreateNestedManyWithoutUserInput
+    trips?: TripUncheckedCreateNestedManyWithoutOwnerInput
+    sharedTrips?: SharedTripUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -7339,6 +9904,8 @@ export namespace Prisma {
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
     Authenticator?: AuthenticatorUpdateManyWithoutUserNestedInput
+    trips?: TripUpdateManyWithoutOwnerNestedInput
+    sharedTrips?: SharedTripUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -7352,6 +9919,8 @@ export namespace Prisma {
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     Authenticator?: AuthenticatorUncheckedUpdateManyWithoutUserNestedInput
+    trips?: TripUncheckedUpdateManyWithoutOwnerNestedInput
+    sharedTrips?: SharedTripUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -7668,6 +10237,98 @@ export namespace Prisma {
     transports?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
+  export type TripCreateInput = {
+    id?: string
+    destination: string
+    visibility?: $Enums.Visibility
+    owner: UserCreateNestedOneWithoutTripsInput
+    sharedWith?: SharedTripCreateNestedManyWithoutTripInput
+  }
+
+  export type TripUncheckedCreateInput = {
+    id?: string
+    destination: string
+    visibility?: $Enums.Visibility
+    ownerId: string
+    sharedWith?: SharedTripUncheckedCreateNestedManyWithoutTripInput
+  }
+
+  export type TripUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    destination?: StringFieldUpdateOperationsInput | string
+    visibility?: EnumVisibilityFieldUpdateOperationsInput | $Enums.Visibility
+    owner?: UserUpdateOneRequiredWithoutTripsNestedInput
+    sharedWith?: SharedTripUpdateManyWithoutTripNestedInput
+  }
+
+  export type TripUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    destination?: StringFieldUpdateOperationsInput | string
+    visibility?: EnumVisibilityFieldUpdateOperationsInput | $Enums.Visibility
+    ownerId?: StringFieldUpdateOperationsInput | string
+    sharedWith?: SharedTripUncheckedUpdateManyWithoutTripNestedInput
+  }
+
+  export type TripCreateManyInput = {
+    id?: string
+    destination: string
+    visibility?: $Enums.Visibility
+    ownerId: string
+  }
+
+  export type TripUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    destination?: StringFieldUpdateOperationsInput | string
+    visibility?: EnumVisibilityFieldUpdateOperationsInput | $Enums.Visibility
+  }
+
+  export type TripUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    destination?: StringFieldUpdateOperationsInput | string
+    visibility?: EnumVisibilityFieldUpdateOperationsInput | $Enums.Visibility
+    ownerId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type SharedTripCreateInput = {
+    id?: string
+    trip: TripCreateNestedOneWithoutSharedWithInput
+    user: UserCreateNestedOneWithoutSharedTripsInput
+  }
+
+  export type SharedTripUncheckedCreateInput = {
+    id?: string
+    tripId: string
+    userId: string
+  }
+
+  export type SharedTripUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    trip?: TripUpdateOneRequiredWithoutSharedWithNestedInput
+    user?: UserUpdateOneRequiredWithoutSharedTripsNestedInput
+  }
+
+  export type SharedTripUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tripId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type SharedTripCreateManyInput = {
+    id?: string
+    tripId: string
+    userId: string
+  }
+
+  export type SharedTripUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type SharedTripUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tripId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -7738,6 +10399,18 @@ export namespace Prisma {
     none?: AuthenticatorWhereInput
   }
 
+  export type TripListRelationFilter = {
+    every?: TripWhereInput
+    some?: TripWhereInput
+    none?: TripWhereInput
+  }
+
+  export type SharedTripListRelationFilter = {
+    every?: SharedTripWhereInput
+    some?: SharedTripWhereInput
+    none?: SharedTripWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -7752,6 +10425,14 @@ export namespace Prisma {
   }
 
   export type AuthenticatorOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type TripOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type SharedTripOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -8075,6 +10756,72 @@ export namespace Prisma {
     _max?: NestedBoolFilter<$PrismaModel>
   }
 
+  export type EnumVisibilityFilter<$PrismaModel = never> = {
+    equals?: $Enums.Visibility | EnumVisibilityFieldRefInput<$PrismaModel>
+    in?: $Enums.Visibility[] | ListEnumVisibilityFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Visibility[] | ListEnumVisibilityFieldRefInput<$PrismaModel>
+    not?: NestedEnumVisibilityFilter<$PrismaModel> | $Enums.Visibility
+  }
+
+  export type TripCountOrderByAggregateInput = {
+    id?: SortOrder
+    destination?: SortOrder
+    visibility?: SortOrder
+    ownerId?: SortOrder
+  }
+
+  export type TripMaxOrderByAggregateInput = {
+    id?: SortOrder
+    destination?: SortOrder
+    visibility?: SortOrder
+    ownerId?: SortOrder
+  }
+
+  export type TripMinOrderByAggregateInput = {
+    id?: SortOrder
+    destination?: SortOrder
+    visibility?: SortOrder
+    ownerId?: SortOrder
+  }
+
+  export type EnumVisibilityWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Visibility | EnumVisibilityFieldRefInput<$PrismaModel>
+    in?: $Enums.Visibility[] | ListEnumVisibilityFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Visibility[] | ListEnumVisibilityFieldRefInput<$PrismaModel>
+    not?: NestedEnumVisibilityWithAggregatesFilter<$PrismaModel> | $Enums.Visibility
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumVisibilityFilter<$PrismaModel>
+    _max?: NestedEnumVisibilityFilter<$PrismaModel>
+  }
+
+  export type TripScalarRelationFilter = {
+    is?: TripWhereInput
+    isNot?: TripWhereInput
+  }
+
+  export type SharedTripTripIdUserIdCompoundUniqueInput = {
+    tripId: string
+    userId: string
+  }
+
+  export type SharedTripCountOrderByAggregateInput = {
+    id?: SortOrder
+    tripId?: SortOrder
+    userId?: SortOrder
+  }
+
+  export type SharedTripMaxOrderByAggregateInput = {
+    id?: SortOrder
+    tripId?: SortOrder
+    userId?: SortOrder
+  }
+
+  export type SharedTripMinOrderByAggregateInput = {
+    id?: SortOrder
+    tripId?: SortOrder
+    userId?: SortOrder
+  }
+
   export type AccountCreateNestedManyWithoutUserInput = {
     create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
     connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
@@ -8096,6 +10843,20 @@ export namespace Prisma {
     connect?: AuthenticatorWhereUniqueInput | AuthenticatorWhereUniqueInput[]
   }
 
+  export type TripCreateNestedManyWithoutOwnerInput = {
+    create?: XOR<TripCreateWithoutOwnerInput, TripUncheckedCreateWithoutOwnerInput> | TripCreateWithoutOwnerInput[] | TripUncheckedCreateWithoutOwnerInput[]
+    connectOrCreate?: TripCreateOrConnectWithoutOwnerInput | TripCreateOrConnectWithoutOwnerInput[]
+    createMany?: TripCreateManyOwnerInputEnvelope
+    connect?: TripWhereUniqueInput | TripWhereUniqueInput[]
+  }
+
+  export type SharedTripCreateNestedManyWithoutUserInput = {
+    create?: XOR<SharedTripCreateWithoutUserInput, SharedTripUncheckedCreateWithoutUserInput> | SharedTripCreateWithoutUserInput[] | SharedTripUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SharedTripCreateOrConnectWithoutUserInput | SharedTripCreateOrConnectWithoutUserInput[]
+    createMany?: SharedTripCreateManyUserInputEnvelope
+    connect?: SharedTripWhereUniqueInput | SharedTripWhereUniqueInput[]
+  }
+
   export type AccountUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
     connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
@@ -8115,6 +10876,20 @@ export namespace Prisma {
     connectOrCreate?: AuthenticatorCreateOrConnectWithoutUserInput | AuthenticatorCreateOrConnectWithoutUserInput[]
     createMany?: AuthenticatorCreateManyUserInputEnvelope
     connect?: AuthenticatorWhereUniqueInput | AuthenticatorWhereUniqueInput[]
+  }
+
+  export type TripUncheckedCreateNestedManyWithoutOwnerInput = {
+    create?: XOR<TripCreateWithoutOwnerInput, TripUncheckedCreateWithoutOwnerInput> | TripCreateWithoutOwnerInput[] | TripUncheckedCreateWithoutOwnerInput[]
+    connectOrCreate?: TripCreateOrConnectWithoutOwnerInput | TripCreateOrConnectWithoutOwnerInput[]
+    createMany?: TripCreateManyOwnerInputEnvelope
+    connect?: TripWhereUniqueInput | TripWhereUniqueInput[]
+  }
+
+  export type SharedTripUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<SharedTripCreateWithoutUserInput, SharedTripUncheckedCreateWithoutUserInput> | SharedTripCreateWithoutUserInput[] | SharedTripUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SharedTripCreateOrConnectWithoutUserInput | SharedTripCreateOrConnectWithoutUserInput[]
+    createMany?: SharedTripCreateManyUserInputEnvelope
+    connect?: SharedTripWhereUniqueInput | SharedTripWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -8175,6 +10950,34 @@ export namespace Prisma {
     deleteMany?: AuthenticatorScalarWhereInput | AuthenticatorScalarWhereInput[]
   }
 
+  export type TripUpdateManyWithoutOwnerNestedInput = {
+    create?: XOR<TripCreateWithoutOwnerInput, TripUncheckedCreateWithoutOwnerInput> | TripCreateWithoutOwnerInput[] | TripUncheckedCreateWithoutOwnerInput[]
+    connectOrCreate?: TripCreateOrConnectWithoutOwnerInput | TripCreateOrConnectWithoutOwnerInput[]
+    upsert?: TripUpsertWithWhereUniqueWithoutOwnerInput | TripUpsertWithWhereUniqueWithoutOwnerInput[]
+    createMany?: TripCreateManyOwnerInputEnvelope
+    set?: TripWhereUniqueInput | TripWhereUniqueInput[]
+    disconnect?: TripWhereUniqueInput | TripWhereUniqueInput[]
+    delete?: TripWhereUniqueInput | TripWhereUniqueInput[]
+    connect?: TripWhereUniqueInput | TripWhereUniqueInput[]
+    update?: TripUpdateWithWhereUniqueWithoutOwnerInput | TripUpdateWithWhereUniqueWithoutOwnerInput[]
+    updateMany?: TripUpdateManyWithWhereWithoutOwnerInput | TripUpdateManyWithWhereWithoutOwnerInput[]
+    deleteMany?: TripScalarWhereInput | TripScalarWhereInput[]
+  }
+
+  export type SharedTripUpdateManyWithoutUserNestedInput = {
+    create?: XOR<SharedTripCreateWithoutUserInput, SharedTripUncheckedCreateWithoutUserInput> | SharedTripCreateWithoutUserInput[] | SharedTripUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SharedTripCreateOrConnectWithoutUserInput | SharedTripCreateOrConnectWithoutUserInput[]
+    upsert?: SharedTripUpsertWithWhereUniqueWithoutUserInput | SharedTripUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: SharedTripCreateManyUserInputEnvelope
+    set?: SharedTripWhereUniqueInput | SharedTripWhereUniqueInput[]
+    disconnect?: SharedTripWhereUniqueInput | SharedTripWhereUniqueInput[]
+    delete?: SharedTripWhereUniqueInput | SharedTripWhereUniqueInput[]
+    connect?: SharedTripWhereUniqueInput | SharedTripWhereUniqueInput[]
+    update?: SharedTripUpdateWithWhereUniqueWithoutUserInput | SharedTripUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: SharedTripUpdateManyWithWhereWithoutUserInput | SharedTripUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: SharedTripScalarWhereInput | SharedTripScalarWhereInput[]
+  }
+
   export type AccountUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
     connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
@@ -8215,6 +11018,34 @@ export namespace Prisma {
     update?: AuthenticatorUpdateWithWhereUniqueWithoutUserInput | AuthenticatorUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: AuthenticatorUpdateManyWithWhereWithoutUserInput | AuthenticatorUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: AuthenticatorScalarWhereInput | AuthenticatorScalarWhereInput[]
+  }
+
+  export type TripUncheckedUpdateManyWithoutOwnerNestedInput = {
+    create?: XOR<TripCreateWithoutOwnerInput, TripUncheckedCreateWithoutOwnerInput> | TripCreateWithoutOwnerInput[] | TripUncheckedCreateWithoutOwnerInput[]
+    connectOrCreate?: TripCreateOrConnectWithoutOwnerInput | TripCreateOrConnectWithoutOwnerInput[]
+    upsert?: TripUpsertWithWhereUniqueWithoutOwnerInput | TripUpsertWithWhereUniqueWithoutOwnerInput[]
+    createMany?: TripCreateManyOwnerInputEnvelope
+    set?: TripWhereUniqueInput | TripWhereUniqueInput[]
+    disconnect?: TripWhereUniqueInput | TripWhereUniqueInput[]
+    delete?: TripWhereUniqueInput | TripWhereUniqueInput[]
+    connect?: TripWhereUniqueInput | TripWhereUniqueInput[]
+    update?: TripUpdateWithWhereUniqueWithoutOwnerInput | TripUpdateWithWhereUniqueWithoutOwnerInput[]
+    updateMany?: TripUpdateManyWithWhereWithoutOwnerInput | TripUpdateManyWithWhereWithoutOwnerInput[]
+    deleteMany?: TripScalarWhereInput | TripScalarWhereInput[]
+  }
+
+  export type SharedTripUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<SharedTripCreateWithoutUserInput, SharedTripUncheckedCreateWithoutUserInput> | SharedTripCreateWithoutUserInput[] | SharedTripUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SharedTripCreateOrConnectWithoutUserInput | SharedTripCreateOrConnectWithoutUserInput[]
+    upsert?: SharedTripUpsertWithWhereUniqueWithoutUserInput | SharedTripUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: SharedTripCreateManyUserInputEnvelope
+    set?: SharedTripWhereUniqueInput | SharedTripWhereUniqueInput[]
+    disconnect?: SharedTripWhereUniqueInput | SharedTripWhereUniqueInput[]
+    delete?: SharedTripWhereUniqueInput | SharedTripWhereUniqueInput[]
+    connect?: SharedTripWhereUniqueInput | SharedTripWhereUniqueInput[]
+    update?: SharedTripUpdateWithWhereUniqueWithoutUserInput | SharedTripUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: SharedTripUpdateManyWithWhereWithoutUserInput | SharedTripUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: SharedTripScalarWhereInput | SharedTripScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutAccountsInput = {
@@ -8277,6 +11108,94 @@ export namespace Prisma {
     upsert?: UserUpsertWithoutAuthenticatorInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutAuthenticatorInput, UserUpdateWithoutAuthenticatorInput>, UserUncheckedUpdateWithoutAuthenticatorInput>
+  }
+
+  export type UserCreateNestedOneWithoutTripsInput = {
+    create?: XOR<UserCreateWithoutTripsInput, UserUncheckedCreateWithoutTripsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutTripsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type SharedTripCreateNestedManyWithoutTripInput = {
+    create?: XOR<SharedTripCreateWithoutTripInput, SharedTripUncheckedCreateWithoutTripInput> | SharedTripCreateWithoutTripInput[] | SharedTripUncheckedCreateWithoutTripInput[]
+    connectOrCreate?: SharedTripCreateOrConnectWithoutTripInput | SharedTripCreateOrConnectWithoutTripInput[]
+    createMany?: SharedTripCreateManyTripInputEnvelope
+    connect?: SharedTripWhereUniqueInput | SharedTripWhereUniqueInput[]
+  }
+
+  export type SharedTripUncheckedCreateNestedManyWithoutTripInput = {
+    create?: XOR<SharedTripCreateWithoutTripInput, SharedTripUncheckedCreateWithoutTripInput> | SharedTripCreateWithoutTripInput[] | SharedTripUncheckedCreateWithoutTripInput[]
+    connectOrCreate?: SharedTripCreateOrConnectWithoutTripInput | SharedTripCreateOrConnectWithoutTripInput[]
+    createMany?: SharedTripCreateManyTripInputEnvelope
+    connect?: SharedTripWhereUniqueInput | SharedTripWhereUniqueInput[]
+  }
+
+  export type EnumVisibilityFieldUpdateOperationsInput = {
+    set?: $Enums.Visibility
+  }
+
+  export type UserUpdateOneRequiredWithoutTripsNestedInput = {
+    create?: XOR<UserCreateWithoutTripsInput, UserUncheckedCreateWithoutTripsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutTripsInput
+    upsert?: UserUpsertWithoutTripsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutTripsInput, UserUpdateWithoutTripsInput>, UserUncheckedUpdateWithoutTripsInput>
+  }
+
+  export type SharedTripUpdateManyWithoutTripNestedInput = {
+    create?: XOR<SharedTripCreateWithoutTripInput, SharedTripUncheckedCreateWithoutTripInput> | SharedTripCreateWithoutTripInput[] | SharedTripUncheckedCreateWithoutTripInput[]
+    connectOrCreate?: SharedTripCreateOrConnectWithoutTripInput | SharedTripCreateOrConnectWithoutTripInput[]
+    upsert?: SharedTripUpsertWithWhereUniqueWithoutTripInput | SharedTripUpsertWithWhereUniqueWithoutTripInput[]
+    createMany?: SharedTripCreateManyTripInputEnvelope
+    set?: SharedTripWhereUniqueInput | SharedTripWhereUniqueInput[]
+    disconnect?: SharedTripWhereUniqueInput | SharedTripWhereUniqueInput[]
+    delete?: SharedTripWhereUniqueInput | SharedTripWhereUniqueInput[]
+    connect?: SharedTripWhereUniqueInput | SharedTripWhereUniqueInput[]
+    update?: SharedTripUpdateWithWhereUniqueWithoutTripInput | SharedTripUpdateWithWhereUniqueWithoutTripInput[]
+    updateMany?: SharedTripUpdateManyWithWhereWithoutTripInput | SharedTripUpdateManyWithWhereWithoutTripInput[]
+    deleteMany?: SharedTripScalarWhereInput | SharedTripScalarWhereInput[]
+  }
+
+  export type SharedTripUncheckedUpdateManyWithoutTripNestedInput = {
+    create?: XOR<SharedTripCreateWithoutTripInput, SharedTripUncheckedCreateWithoutTripInput> | SharedTripCreateWithoutTripInput[] | SharedTripUncheckedCreateWithoutTripInput[]
+    connectOrCreate?: SharedTripCreateOrConnectWithoutTripInput | SharedTripCreateOrConnectWithoutTripInput[]
+    upsert?: SharedTripUpsertWithWhereUniqueWithoutTripInput | SharedTripUpsertWithWhereUniqueWithoutTripInput[]
+    createMany?: SharedTripCreateManyTripInputEnvelope
+    set?: SharedTripWhereUniqueInput | SharedTripWhereUniqueInput[]
+    disconnect?: SharedTripWhereUniqueInput | SharedTripWhereUniqueInput[]
+    delete?: SharedTripWhereUniqueInput | SharedTripWhereUniqueInput[]
+    connect?: SharedTripWhereUniqueInput | SharedTripWhereUniqueInput[]
+    update?: SharedTripUpdateWithWhereUniqueWithoutTripInput | SharedTripUpdateWithWhereUniqueWithoutTripInput[]
+    updateMany?: SharedTripUpdateManyWithWhereWithoutTripInput | SharedTripUpdateManyWithWhereWithoutTripInput[]
+    deleteMany?: SharedTripScalarWhereInput | SharedTripScalarWhereInput[]
+  }
+
+  export type TripCreateNestedOneWithoutSharedWithInput = {
+    create?: XOR<TripCreateWithoutSharedWithInput, TripUncheckedCreateWithoutSharedWithInput>
+    connectOrCreate?: TripCreateOrConnectWithoutSharedWithInput
+    connect?: TripWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutSharedTripsInput = {
+    create?: XOR<UserCreateWithoutSharedTripsInput, UserUncheckedCreateWithoutSharedTripsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutSharedTripsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type TripUpdateOneRequiredWithoutSharedWithNestedInput = {
+    create?: XOR<TripCreateWithoutSharedWithInput, TripUncheckedCreateWithoutSharedWithInput>
+    connectOrCreate?: TripCreateOrConnectWithoutSharedWithInput
+    upsert?: TripUpsertWithoutSharedWithInput
+    connect?: TripWhereUniqueInput
+    update?: XOR<XOR<TripUpdateToOneWithWhereWithoutSharedWithInput, TripUpdateWithoutSharedWithInput>, TripUncheckedUpdateWithoutSharedWithInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutSharedTripsNestedInput = {
+    create?: XOR<UserCreateWithoutSharedTripsInput, UserUncheckedCreateWithoutSharedTripsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutSharedTripsInput
+    upsert?: UserUpsertWithoutSharedTripsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutSharedTripsInput, UserUpdateWithoutSharedTripsInput>, UserUncheckedUpdateWithoutSharedTripsInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -8480,6 +11399,23 @@ export namespace Prisma {
     _max?: NestedBoolFilter<$PrismaModel>
   }
 
+  export type NestedEnumVisibilityFilter<$PrismaModel = never> = {
+    equals?: $Enums.Visibility | EnumVisibilityFieldRefInput<$PrismaModel>
+    in?: $Enums.Visibility[] | ListEnumVisibilityFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Visibility[] | ListEnumVisibilityFieldRefInput<$PrismaModel>
+    not?: NestedEnumVisibilityFilter<$PrismaModel> | $Enums.Visibility
+  }
+
+  export type NestedEnumVisibilityWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Visibility | EnumVisibilityFieldRefInput<$PrismaModel>
+    in?: $Enums.Visibility[] | ListEnumVisibilityFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Visibility[] | ListEnumVisibilityFieldRefInput<$PrismaModel>
+    not?: NestedEnumVisibilityWithAggregatesFilter<$PrismaModel> | $Enums.Visibility
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumVisibilityFilter<$PrismaModel>
+    _max?: NestedEnumVisibilityFilter<$PrismaModel>
+  }
+
   export type AccountCreateWithoutUserInput = {
     type: string
     provider: string
@@ -8571,6 +11507,50 @@ export namespace Prisma {
 
   export type AuthenticatorCreateManyUserInputEnvelope = {
     data: AuthenticatorCreateManyUserInput | AuthenticatorCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type TripCreateWithoutOwnerInput = {
+    id?: string
+    destination: string
+    visibility?: $Enums.Visibility
+    sharedWith?: SharedTripCreateNestedManyWithoutTripInput
+  }
+
+  export type TripUncheckedCreateWithoutOwnerInput = {
+    id?: string
+    destination: string
+    visibility?: $Enums.Visibility
+    sharedWith?: SharedTripUncheckedCreateNestedManyWithoutTripInput
+  }
+
+  export type TripCreateOrConnectWithoutOwnerInput = {
+    where: TripWhereUniqueInput
+    create: XOR<TripCreateWithoutOwnerInput, TripUncheckedCreateWithoutOwnerInput>
+  }
+
+  export type TripCreateManyOwnerInputEnvelope = {
+    data: TripCreateManyOwnerInput | TripCreateManyOwnerInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type SharedTripCreateWithoutUserInput = {
+    id?: string
+    trip: TripCreateNestedOneWithoutSharedWithInput
+  }
+
+  export type SharedTripUncheckedCreateWithoutUserInput = {
+    id?: string
+    tripId: string
+  }
+
+  export type SharedTripCreateOrConnectWithoutUserInput = {
+    where: SharedTripWhereUniqueInput
+    create: XOR<SharedTripCreateWithoutUserInput, SharedTripUncheckedCreateWithoutUserInput>
+  }
+
+  export type SharedTripCreateManyUserInputEnvelope = {
+    data: SharedTripCreateManyUserInput | SharedTripCreateManyUserInput[]
     skipDuplicates?: boolean
   }
 
@@ -8666,6 +11646,57 @@ export namespace Prisma {
     transports?: StringNullableFilter<"Authenticator"> | string | null
   }
 
+  export type TripUpsertWithWhereUniqueWithoutOwnerInput = {
+    where: TripWhereUniqueInput
+    update: XOR<TripUpdateWithoutOwnerInput, TripUncheckedUpdateWithoutOwnerInput>
+    create: XOR<TripCreateWithoutOwnerInput, TripUncheckedCreateWithoutOwnerInput>
+  }
+
+  export type TripUpdateWithWhereUniqueWithoutOwnerInput = {
+    where: TripWhereUniqueInput
+    data: XOR<TripUpdateWithoutOwnerInput, TripUncheckedUpdateWithoutOwnerInput>
+  }
+
+  export type TripUpdateManyWithWhereWithoutOwnerInput = {
+    where: TripScalarWhereInput
+    data: XOR<TripUpdateManyMutationInput, TripUncheckedUpdateManyWithoutOwnerInput>
+  }
+
+  export type TripScalarWhereInput = {
+    AND?: TripScalarWhereInput | TripScalarWhereInput[]
+    OR?: TripScalarWhereInput[]
+    NOT?: TripScalarWhereInput | TripScalarWhereInput[]
+    id?: StringFilter<"Trip"> | string
+    destination?: StringFilter<"Trip"> | string
+    visibility?: EnumVisibilityFilter<"Trip"> | $Enums.Visibility
+    ownerId?: StringFilter<"Trip"> | string
+  }
+
+  export type SharedTripUpsertWithWhereUniqueWithoutUserInput = {
+    where: SharedTripWhereUniqueInput
+    update: XOR<SharedTripUpdateWithoutUserInput, SharedTripUncheckedUpdateWithoutUserInput>
+    create: XOR<SharedTripCreateWithoutUserInput, SharedTripUncheckedCreateWithoutUserInput>
+  }
+
+  export type SharedTripUpdateWithWhereUniqueWithoutUserInput = {
+    where: SharedTripWhereUniqueInput
+    data: XOR<SharedTripUpdateWithoutUserInput, SharedTripUncheckedUpdateWithoutUserInput>
+  }
+
+  export type SharedTripUpdateManyWithWhereWithoutUserInput = {
+    where: SharedTripScalarWhereInput
+    data: XOR<SharedTripUpdateManyMutationInput, SharedTripUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type SharedTripScalarWhereInput = {
+    AND?: SharedTripScalarWhereInput | SharedTripScalarWhereInput[]
+    OR?: SharedTripScalarWhereInput[]
+    NOT?: SharedTripScalarWhereInput | SharedTripScalarWhereInput[]
+    id?: StringFilter<"SharedTrip"> | string
+    tripId?: StringFilter<"SharedTrip"> | string
+    userId?: StringFilter<"SharedTrip"> | string
+  }
+
   export type UserCreateWithoutAccountsInput = {
     id?: string
     name?: string | null
@@ -8676,6 +11707,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     sessions?: SessionCreateNestedManyWithoutUserInput
     Authenticator?: AuthenticatorCreateNestedManyWithoutUserInput
+    trips?: TripCreateNestedManyWithoutOwnerInput
+    sharedTrips?: SharedTripCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAccountsInput = {
@@ -8688,6 +11721,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     Authenticator?: AuthenticatorUncheckedCreateNestedManyWithoutUserInput
+    trips?: TripUncheckedCreateNestedManyWithoutOwnerInput
+    sharedTrips?: SharedTripUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAccountsInput = {
@@ -8716,6 +11751,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sessions?: SessionUpdateManyWithoutUserNestedInput
     Authenticator?: AuthenticatorUpdateManyWithoutUserNestedInput
+    trips?: TripUpdateManyWithoutOwnerNestedInput
+    sharedTrips?: SharedTripUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -8728,6 +11765,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     Authenticator?: AuthenticatorUncheckedUpdateManyWithoutUserNestedInput
+    trips?: TripUncheckedUpdateManyWithoutOwnerNestedInput
+    sharedTrips?: SharedTripUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutSessionsInput = {
@@ -8740,6 +11779,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     accounts?: AccountCreateNestedManyWithoutUserInput
     Authenticator?: AuthenticatorCreateNestedManyWithoutUserInput
+    trips?: TripCreateNestedManyWithoutOwnerInput
+    sharedTrips?: SharedTripCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSessionsInput = {
@@ -8752,6 +11793,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     Authenticator?: AuthenticatorUncheckedCreateNestedManyWithoutUserInput
+    trips?: TripUncheckedCreateNestedManyWithoutOwnerInput
+    sharedTrips?: SharedTripUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSessionsInput = {
@@ -8780,6 +11823,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
     Authenticator?: AuthenticatorUpdateManyWithoutUserNestedInput
+    trips?: TripUpdateManyWithoutOwnerNestedInput
+    sharedTrips?: SharedTripUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -8792,6 +11837,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     Authenticator?: AuthenticatorUncheckedUpdateManyWithoutUserNestedInput
+    trips?: TripUncheckedUpdateManyWithoutOwnerNestedInput
+    sharedTrips?: SharedTripUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutAuthenticatorInput = {
@@ -8804,6 +11851,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
+    trips?: TripCreateNestedManyWithoutOwnerInput
+    sharedTrips?: SharedTripCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAuthenticatorInput = {
@@ -8816,6 +11865,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    trips?: TripUncheckedCreateNestedManyWithoutOwnerInput
+    sharedTrips?: SharedTripUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAuthenticatorInput = {
@@ -8844,6 +11895,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
+    trips?: TripUpdateManyWithoutOwnerNestedInput
+    sharedTrips?: SharedTripUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAuthenticatorInput = {
@@ -8856,6 +11909,232 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    trips?: TripUncheckedUpdateManyWithoutOwnerNestedInput
+    sharedTrips?: SharedTripUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserCreateWithoutTripsInput = {
+    id?: string
+    name?: string | null
+    email: string
+    emailVerified?: Date | string | null
+    image?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    Authenticator?: AuthenticatorCreateNestedManyWithoutUserInput
+    sharedTrips?: SharedTripCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutTripsInput = {
+    id?: string
+    name?: string | null
+    email: string
+    emailVerified?: Date | string | null
+    image?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    Authenticator?: AuthenticatorUncheckedCreateNestedManyWithoutUserInput
+    sharedTrips?: SharedTripUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutTripsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutTripsInput, UserUncheckedCreateWithoutTripsInput>
+  }
+
+  export type SharedTripCreateWithoutTripInput = {
+    id?: string
+    user: UserCreateNestedOneWithoutSharedTripsInput
+  }
+
+  export type SharedTripUncheckedCreateWithoutTripInput = {
+    id?: string
+    userId: string
+  }
+
+  export type SharedTripCreateOrConnectWithoutTripInput = {
+    where: SharedTripWhereUniqueInput
+    create: XOR<SharedTripCreateWithoutTripInput, SharedTripUncheckedCreateWithoutTripInput>
+  }
+
+  export type SharedTripCreateManyTripInputEnvelope = {
+    data: SharedTripCreateManyTripInput | SharedTripCreateManyTripInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type UserUpsertWithoutTripsInput = {
+    update: XOR<UserUpdateWithoutTripsInput, UserUncheckedUpdateWithoutTripsInput>
+    create: XOR<UserCreateWithoutTripsInput, UserUncheckedCreateWithoutTripsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutTripsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutTripsInput, UserUncheckedUpdateWithoutTripsInput>
+  }
+
+  export type UserUpdateWithoutTripsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: StringFieldUpdateOperationsInput | string
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    Authenticator?: AuthenticatorUpdateManyWithoutUserNestedInput
+    sharedTrips?: SharedTripUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutTripsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: StringFieldUpdateOperationsInput | string
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    Authenticator?: AuthenticatorUncheckedUpdateManyWithoutUserNestedInput
+    sharedTrips?: SharedTripUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type SharedTripUpsertWithWhereUniqueWithoutTripInput = {
+    where: SharedTripWhereUniqueInput
+    update: XOR<SharedTripUpdateWithoutTripInput, SharedTripUncheckedUpdateWithoutTripInput>
+    create: XOR<SharedTripCreateWithoutTripInput, SharedTripUncheckedCreateWithoutTripInput>
+  }
+
+  export type SharedTripUpdateWithWhereUniqueWithoutTripInput = {
+    where: SharedTripWhereUniqueInput
+    data: XOR<SharedTripUpdateWithoutTripInput, SharedTripUncheckedUpdateWithoutTripInput>
+  }
+
+  export type SharedTripUpdateManyWithWhereWithoutTripInput = {
+    where: SharedTripScalarWhereInput
+    data: XOR<SharedTripUpdateManyMutationInput, SharedTripUncheckedUpdateManyWithoutTripInput>
+  }
+
+  export type TripCreateWithoutSharedWithInput = {
+    id?: string
+    destination: string
+    visibility?: $Enums.Visibility
+    owner: UserCreateNestedOneWithoutTripsInput
+  }
+
+  export type TripUncheckedCreateWithoutSharedWithInput = {
+    id?: string
+    destination: string
+    visibility?: $Enums.Visibility
+    ownerId: string
+  }
+
+  export type TripCreateOrConnectWithoutSharedWithInput = {
+    where: TripWhereUniqueInput
+    create: XOR<TripCreateWithoutSharedWithInput, TripUncheckedCreateWithoutSharedWithInput>
+  }
+
+  export type UserCreateWithoutSharedTripsInput = {
+    id?: string
+    name?: string | null
+    email: string
+    emailVerified?: Date | string | null
+    image?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    Authenticator?: AuthenticatorCreateNestedManyWithoutUserInput
+    trips?: TripCreateNestedManyWithoutOwnerInput
+  }
+
+  export type UserUncheckedCreateWithoutSharedTripsInput = {
+    id?: string
+    name?: string | null
+    email: string
+    emailVerified?: Date | string | null
+    image?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    Authenticator?: AuthenticatorUncheckedCreateNestedManyWithoutUserInput
+    trips?: TripUncheckedCreateNestedManyWithoutOwnerInput
+  }
+
+  export type UserCreateOrConnectWithoutSharedTripsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutSharedTripsInput, UserUncheckedCreateWithoutSharedTripsInput>
+  }
+
+  export type TripUpsertWithoutSharedWithInput = {
+    update: XOR<TripUpdateWithoutSharedWithInput, TripUncheckedUpdateWithoutSharedWithInput>
+    create: XOR<TripCreateWithoutSharedWithInput, TripUncheckedCreateWithoutSharedWithInput>
+    where?: TripWhereInput
+  }
+
+  export type TripUpdateToOneWithWhereWithoutSharedWithInput = {
+    where?: TripWhereInput
+    data: XOR<TripUpdateWithoutSharedWithInput, TripUncheckedUpdateWithoutSharedWithInput>
+  }
+
+  export type TripUpdateWithoutSharedWithInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    destination?: StringFieldUpdateOperationsInput | string
+    visibility?: EnumVisibilityFieldUpdateOperationsInput | $Enums.Visibility
+    owner?: UserUpdateOneRequiredWithoutTripsNestedInput
+  }
+
+  export type TripUncheckedUpdateWithoutSharedWithInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    destination?: StringFieldUpdateOperationsInput | string
+    visibility?: EnumVisibilityFieldUpdateOperationsInput | $Enums.Visibility
+    ownerId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type UserUpsertWithoutSharedTripsInput = {
+    update: XOR<UserUpdateWithoutSharedTripsInput, UserUncheckedUpdateWithoutSharedTripsInput>
+    create: XOR<UserCreateWithoutSharedTripsInput, UserUncheckedCreateWithoutSharedTripsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutSharedTripsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutSharedTripsInput, UserUncheckedUpdateWithoutSharedTripsInput>
+  }
+
+  export type UserUpdateWithoutSharedTripsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: StringFieldUpdateOperationsInput | string
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    Authenticator?: AuthenticatorUpdateManyWithoutUserNestedInput
+    trips?: TripUpdateManyWithoutOwnerNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutSharedTripsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: StringFieldUpdateOperationsInput | string
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    Authenticator?: AuthenticatorUncheckedUpdateManyWithoutUserNestedInput
+    trips?: TripUncheckedUpdateManyWithoutOwnerNestedInput
   }
 
   export type AccountCreateManyUserInput = {
@@ -8888,6 +12167,17 @@ export namespace Prisma {
     credentialDeviceType: string
     credentialBackedUp: boolean
     transports?: string | null
+  }
+
+  export type TripCreateManyOwnerInput = {
+    id?: string
+    destination: string
+    visibility?: $Enums.Visibility
+  }
+
+  export type SharedTripCreateManyUserInput = {
+    id?: string
+    tripId: string
   }
 
   export type AccountUpdateWithoutUserInput = {
@@ -8984,6 +12274,61 @@ export namespace Prisma {
     credentialDeviceType?: StringFieldUpdateOperationsInput | string
     credentialBackedUp?: BoolFieldUpdateOperationsInput | boolean
     transports?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type TripUpdateWithoutOwnerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    destination?: StringFieldUpdateOperationsInput | string
+    visibility?: EnumVisibilityFieldUpdateOperationsInput | $Enums.Visibility
+    sharedWith?: SharedTripUpdateManyWithoutTripNestedInput
+  }
+
+  export type TripUncheckedUpdateWithoutOwnerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    destination?: StringFieldUpdateOperationsInput | string
+    visibility?: EnumVisibilityFieldUpdateOperationsInput | $Enums.Visibility
+    sharedWith?: SharedTripUncheckedUpdateManyWithoutTripNestedInput
+  }
+
+  export type TripUncheckedUpdateManyWithoutOwnerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    destination?: StringFieldUpdateOperationsInput | string
+    visibility?: EnumVisibilityFieldUpdateOperationsInput | $Enums.Visibility
+  }
+
+  export type SharedTripUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    trip?: TripUpdateOneRequiredWithoutSharedWithNestedInput
+  }
+
+  export type SharedTripUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tripId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type SharedTripUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tripId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type SharedTripCreateManyTripInput = {
+    id?: string
+    userId: string
+  }
+
+  export type SharedTripUpdateWithoutTripInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    user?: UserUpdateOneRequiredWithoutSharedTripsNestedInput
+  }
+
+  export type SharedTripUncheckedUpdateWithoutTripInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type SharedTripUncheckedUpdateManyWithoutTripInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
   }
 
 

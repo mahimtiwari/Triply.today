@@ -29,6 +29,8 @@ model User {
  
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  trips       Trip[]       @relation("OwnerTrips")
+  sharedTrips SharedTrip[] @relation("SharedWithUser")
 }
  
 model Account {
@@ -84,4 +86,41 @@ model Authenticator {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
  
   @@id([userId, credentialID])
+}
+
+
+
+
+model Trip {
+  id          String       @id @default(uuid())
+  destination String
+  visibility  Visibility   @default(PRIVATE)
+  ownerId     String
+  owner       User         @relation("OwnerTrips", fields: [ownerId], references: [id], onDelete: Cascade)
+  sharedWith  SharedTrip[] 
+
+  basicData   Json?        
+  tripPlan    Json?        
+
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  @@index([ownerId])
+
+}
+
+model SharedTrip {
+  id     String   @id @default(uuid())
+  tripId String
+  userId String
+  trip   Trip     @relation(fields: [tripId], references: [id], onDelete: Cascade)
+  user   User     @relation("SharedWithUser", fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([tripId, userId])
+}
+
+enum Visibility {
+  PRIVATE
+  PUBLIC
+  SHARED
 }

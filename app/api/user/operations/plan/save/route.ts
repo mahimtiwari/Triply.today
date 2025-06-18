@@ -11,6 +11,14 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Unauthorized", success:false, }, { status: 401 });
   }
 
-
+  const { destination, visibility, sharedWith, metadata, plan  } = await req.json();
   
+  const trip = await prisma.trip.create({
+    data: {
+      destination: destination,
+      visibility: visibility,
+      ownerId: session.user.id,
+    }
+  })
+
 }

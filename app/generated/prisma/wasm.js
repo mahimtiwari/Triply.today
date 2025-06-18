@@ -171,6 +171,19 @@ exports.Prisma.AuthenticatorScalarFieldEnum = {
   transports: 'transports'
 };
 
+exports.Prisma.TripScalarFieldEnum = {
+  id: 'id',
+  destination: 'destination',
+  visibility: 'visibility',
+  ownerId: 'ownerId'
+};
+
+exports.Prisma.SharedTripScalarFieldEnum = {
+  id: 'id',
+  tripId: 'tripId',
+  userId: 'userId'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -185,14 +198,20 @@ exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
 };
-
+exports.Visibility = exports.$Enums.Visibility = {
+  PRIVATE: 'PRIVATE',
+  PUBLIC: 'PUBLIC',
+  SHARED: 'SHARED'
+};
 
 exports.Prisma.ModelName = {
   User: 'User',
   Account: 'Account',
   Session: 'Session',
   VerificationToken: 'VerificationToken',
-  Authenticator: 'Authenticator'
+  Authenticator: 'Authenticator',
+  Trip: 'Trip',
+  SharedTrip: 'SharedTrip'
 };
 
 /**
