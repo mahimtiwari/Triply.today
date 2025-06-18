@@ -750,14 +750,17 @@ async function saveTrip() {
           visibility: "PRIVATE",
           metadata: tripDetails,
           plan: dataJSON?.trip?.trip,
+          idT: tripId,
         }),
       });
 
       const responseJSON = await res.json();  // properly await JSON
 
       if (res.ok) {
-
-        router.push(`/user/plans/${responseJSON.tripId}`);
+    saveButton.current!.disabled = false;
+    saveText.current!.innerText = "save";
+    saveText.current!.classList.remove("animate-spin");
+        
 
       } else {
         saveButton.current!.disabled = false;

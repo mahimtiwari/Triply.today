@@ -11,10 +11,22 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Unauthorized", success:false, }, { status: 401 });
   }
 
-  const { destination, visibility, metadata, plan, currencyCode  } = await req.json();
+  const { destination, visibility, metadata, plan, currencyCode, idT  } = await req.json();
   
   const userId = session.user.id;
-  
+  if (idT){
+      const trip = await prisma.trip.update({
+        where: { id: idT },
+        data: {
+          destination: destination,
+          visibility: visibility,
+          metadata: metadata,
+          tripPlan: plan,
+          currencyCode: currencyCode,
+        }
+    });
+    return NextResponse.json({ success: true, tripId: trip.id }, { status: 200 });
+}
   const trip = await prisma.trip.create({
     data: {
       destination: destination,
