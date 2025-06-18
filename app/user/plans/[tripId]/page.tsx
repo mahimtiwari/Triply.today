@@ -1,25 +1,39 @@
 "use client";
 import React, { use, useEffect, useRef, useState } from 'react'
-import Header from '../components/header'; 
-import Map from '../components/map'; 
+import Header from '@/app/components/header'; 
+import Map from '@/app/components/map'; 
 import { set } from 'date-fns';
 import Image from 'next/image';
 import countryToCurrency from 'country-to-currency';
-import MiscComponent from '../components/miscComponent';
+import MiscComponent from '@/app/components/miscComponent';
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, LineChart, XAxis, CartesianGrid, YAxis, Legend, Line, BarChart, Bar } from 'recharts';
 import { get } from 'http';
-import PackingCard from '../components/packingCard';
+import PackingCard from '@/app/components/packingCard';
 import { off } from 'process';
-import BufferComponent from '../components/planpageLoader';
-import "../../public/css/plan.css"
+import BufferComponent from '@/app/components/planpageLoader';
+import "@/public/css/plan.css"
 import { Gentium_Book_Plus } from 'next/font/google';
 import { da } from 'date-fns/locale';
 import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
 import { time } from 'console';
+import { useRouter } from 'next/navigation';
 
-const PlanTrip = () => {
+interface PageProps {
+  params: Promise<{ tripId: string }>; 
+}
 
+export default function TripPage({ params }: PageProps) {
+  const { tripId } = use(params);
+
+  const [tripDetails, setTripDetails] = useState({
+    destination: '',
+    startDate: '',
+    endDate: '',
+    budget: '',
+    peopleType: '',
+    adults: '',
+    children: '',
+  });
 
 
 interface Place {
@@ -72,15 +86,7 @@ interface Trip {
 
 
 
- const [tripDetails, setTripDetails] = useState({
-    destination: '',
-    startDate: '',
-    endDate: '',
-    budget: '',
-    peopleType: '',
-    adults: '',
-    children: '',
-  });
+
 
 
 
@@ -272,38 +278,40 @@ const monthNames = [
   "Dec",
 ];
 
-const [bufferBool, setBufferBool] = useState(false);
+const [bufferBool, setBufferBool] = useState(true);
 const [serverResState, setServerResState] = useState(false);
 
 const placesNames = useRef<string[]>([]);
 const [currencySymbol, setCurrencySymbol] = useState<string | null>(null);
   useEffect(() => {
-    // Getting the data from /plantrip api
 
-    let locData: string;
-    fetch('https://ipinfo.io/json')
-      .then((res) => res.json())
-      .then((locationData) => {
-        locData = `${locationData.city}, ${locationData.region}, ${locationData.country}`;
+    window.addEventListener('mousemove', onDrag);
+    window.addEventListener('mouseup', stopDrag);
+
+    return () => {
+      window.removeEventListener('mousemove', onDrag);
+      window.removeEventListener('mouseup', stopDrag);
+    };
+
+  }, []);
+
+
+  useEffect(() => {
+
         
-        const countryCode:string = locationData.country;
-        const currencyCode: string = countryToCurrency[countryCode as keyof typeof countryToCurrency];
-        setCurrencySymbol(new Intl.NumberFormat('en-US', {
-          style: 'currency',
-          currency: currencyCode,
-        }).format(0).replace(/\d/g, '').trim().replace('.', ''));
-        // setCurrencySymbol("$")
-        console.log("Currency Code:", currencyCode);
-        fetch(`/api/plantrip?${params.toString()}&clientLocation=${locData}&curcode=${currencyCode}`)
+        fetch(`/api/user/operations/plan/fetch?id=${tripId}`)
           .then((response) => response.json())
           .then((data) => {
-            costDetailsRef.current = costProcessor(data);
+            console.log("Fetched Trip Data:", data);
+            setTripDetails(data.metadata);
+            setCurrencySymbol(data.currencyCode)
+            costDetailsRef.current = costProcessor(data.tripplan);
             setTotalCost(costDetailsRef.current.totalcost);
             updateGraphicalCostData(costDetailsRef.current);
 
-            placesNames.current.push(...Object.values(data.trip.trip).flatMap((day) => (day as Day).places.map(place => `${place.name}, ${ params.get('destination') || ''}`)));
+            placesNames.current.push(...Object.values(data.tripplan.trip.trip).flatMap((day) => (day as Day).places.map(place => `${place.name}, ${ params.get('destination') || ''}`)));
             console.log("Places Names:", placesNames.current);
-            setDataJSON(data);
+            setDataJSON(data.tripplan);
             setBufferBool(true);
           })
           .catch((error) => {
@@ -312,11 +320,9 @@ const [currencySymbol, setCurrencySymbol] = useState<string | null>(null);
               setServerResState(true);
             }
           });
-          })
 
-      .catch((err) => {
-        console.error("Error fetching location:", err);
-      });
+
+
       
     const params = new URLSearchParams(window.location.search);
     setTripDetails({
@@ -328,17 +334,7 @@ const [currencySymbol, setCurrencySymbol] = useState<string | null>(null);
       adults: params.get('adults') || '',
       children: params.get('children') || '',
     });
-    
-
-    window.addEventListener('mousemove', onDrag);
-    window.addEventListener('mouseup', stopDrag);
-
-    return () => {
-      window.removeEventListener('mousemove', onDrag);
-      window.removeEventListener('mouseup', stopDrag);
-    };
-
-  }, []);
+  }, [tripId]);
 
 
 
@@ -753,8 +749,7 @@ async function saveTrip() {
           destination: tripDetails.destination,
           visibility: "PRIVATE",
           metadata: tripDetails,
-          plan: dataJSON,
-          currencyCode: currencySymbol,
+          plan: dataJSON?.trip?.trip,
         }),
       });
 
@@ -900,6 +895,8 @@ async function saveTrip() {
         </div>
         <div className="flex font-[geist] flex-col h-full overflow-y-auto overflow-x-hidden w-full">
           <div className='flex justify-between flex-row h-[100px] w-full bg-white border-b-[1px] border-gray-300'>
+            {dataJSON?.trip?.trip && (
+                <>
             <div className='flex items-left my-auto flex-col p-2 pl-4 font-[geist] text-gray-700 font-bold '>
               {tripDetails.destination.split(",").length > 0 && (
               <>
@@ -914,7 +911,9 @@ async function saveTrip() {
                   {/* <span className={`text-right text-[13px] font-semibold ${tripDetails.budget === "Luxury" ? "bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-transparent bg-clip-text" : ""}`}>{tripDetails.budget}</span> */}
                 </div>
               )}
-</div>
+              </>
+)}
+            </div>
           {/* Itenary DIV */}
             <div className='bg-[#f9fcfd] w-full h-full'>
 
@@ -2407,4 +2406,3 @@ async function saveTrip() {
     </>
   )
 }
-export default PlanTrip

@@ -11,7 +11,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Unauthorized", success:false, }, { status: 401 });
   }
 
-  const { destination, visibility, metadata, plan  } = await req.json();
+  const { destination, visibility, metadata, plan, currencyCode  } = await req.json();
   
   const userId = session.user.id;
   
@@ -22,6 +22,7 @@ export async function POST(req: Request) {
       ownerId: userId,
       metadata: metadata,
       tripPlan: plan,
+      currencyCode: currencyCode,
     }
   })
   if (!trip) {

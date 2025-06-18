@@ -178,6 +178,7 @@ exports.Prisma.TripScalarFieldEnum = {
   ownerId: 'ownerId',
   metadata: 'metadata',
   tripPlan: 'tripPlan',
+  currencyCode: 'currencyCode',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };

@@ -101,6 +101,7 @@ model Trip {
 
   metadata   Json
   tripPlan    Json
+  currencyCode    String
 
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
