@@ -7107,6 +7107,8 @@ export namespace Prisma {
     destination: string | null
     visibility: $Enums.Visibility | null
     ownerId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
   }
 
   export type TripMaxAggregateOutputType = {
@@ -7114,6 +7116,8 @@ export namespace Prisma {
     destination: string | null
     visibility: $Enums.Visibility | null
     ownerId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
   }
 
   export type TripCountAggregateOutputType = {
@@ -7121,6 +7125,10 @@ export namespace Prisma {
     destination: number
     visibility: number
     ownerId: number
+    metadata: number
+    tripPlan: number
+    createdAt: number
+    updatedAt: number
     _all: number
   }
 
@@ -7130,6 +7138,8 @@ export namespace Prisma {
     destination?: true
     visibility?: true
     ownerId?: true
+    createdAt?: true
+    updatedAt?: true
   }
 
   export type TripMaxAggregateInputType = {
@@ -7137,6 +7147,8 @@ export namespace Prisma {
     destination?: true
     visibility?: true
     ownerId?: true
+    createdAt?: true
+    updatedAt?: true
   }
 
   export type TripCountAggregateInputType = {
@@ -7144,6 +7156,10 @@ export namespace Prisma {
     destination?: true
     visibility?: true
     ownerId?: true
+    metadata?: true
+    tripPlan?: true
+    createdAt?: true
+    updatedAt?: true
     _all?: true
   }
 
@@ -7224,6 +7240,10 @@ export namespace Prisma {
     destination: string
     visibility: $Enums.Visibility
     ownerId: string
+    metadata: JsonValue
+    tripPlan: JsonValue
+    createdAt: Date
+    updatedAt: Date
     _count: TripCountAggregateOutputType | null
     _min: TripMinAggregateOutputType | null
     _max: TripMaxAggregateOutputType | null
@@ -7248,6 +7268,10 @@ export namespace Prisma {
     destination?: boolean
     visibility?: boolean
     ownerId?: boolean
+    metadata?: boolean
+    tripPlan?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
     owner?: boolean | UserDefaultArgs<ExtArgs>
     sharedWith?: boolean | Trip$sharedWithArgs<ExtArgs>
     _count?: boolean | TripCountOutputTypeDefaultArgs<ExtArgs>
@@ -7258,6 +7282,10 @@ export namespace Prisma {
     destination?: boolean
     visibility?: boolean
     ownerId?: boolean
+    metadata?: boolean
+    tripPlan?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
     owner?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["trip"]>
 
@@ -7266,6 +7294,10 @@ export namespace Prisma {
     destination?: boolean
     visibility?: boolean
     ownerId?: boolean
+    metadata?: boolean
+    tripPlan?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
     owner?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["trip"]>
 
@@ -7274,9 +7306,13 @@ export namespace Prisma {
     destination?: boolean
     visibility?: boolean
     ownerId?: boolean
+    metadata?: boolean
+    tripPlan?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
   }
 
-  export type TripOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "destination" | "visibility" | "ownerId", ExtArgs["result"]["trip"]>
+  export type TripOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "destination" | "visibility" | "ownerId" | "metadata" | "tripPlan" | "createdAt" | "updatedAt", ExtArgs["result"]["trip"]>
   export type TripInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     owner?: boolean | UserDefaultArgs<ExtArgs>
     sharedWith?: boolean | Trip$sharedWithArgs<ExtArgs>
@@ -7300,6 +7336,10 @@ export namespace Prisma {
       destination: string
       visibility: $Enums.Visibility
       ownerId: string
+      metadata: Prisma.JsonValue
+      tripPlan: Prisma.JsonValue
+      createdAt: Date
+      updatedAt: Date
     }, ExtArgs["result"]["trip"]>
     composites: {}
   }
@@ -7729,6 +7769,10 @@ export namespace Prisma {
     readonly destination: FieldRef<"Trip", 'String'>
     readonly visibility: FieldRef<"Trip", 'Visibility'>
     readonly ownerId: FieldRef<"Trip", 'String'>
+    readonly metadata: FieldRef<"Trip", 'Json'>
+    readonly tripPlan: FieldRef<"Trip", 'Json'>
+    readonly createdAt: FieldRef<"Trip", 'DateTime'>
+    readonly updatedAt: FieldRef<"Trip", 'DateTime'>
   }
     
 
@@ -9291,7 +9335,11 @@ export namespace Prisma {
     id: 'id',
     destination: 'destination',
     visibility: 'visibility',
-    ownerId: 'ownerId'
+    ownerId: 'ownerId',
+    metadata: 'metadata',
+    tripPlan: 'tripPlan',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
   };
 
   export type TripScalarFieldEnum = (typeof TripScalarFieldEnum)[keyof typeof TripScalarFieldEnum]
@@ -9314,6 +9362,13 @@ export namespace Prisma {
   export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
 
 
+  export const JsonNullValueInput: {
+    JsonNull: typeof JsonNull
+  };
+
+  export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
+
+
   export const QueryMode: {
     default: 'default',
     insensitive: 'insensitive'
@@ -9328,6 +9383,15 @@ export namespace Prisma {
   };
 
   export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
+  export const JsonNullValueFilter: {
+    DbNull: typeof DbNull,
+    JsonNull: typeof JsonNull,
+    AnyNull: typeof AnyNull
+  };
+
+  export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 
 
   /**
@@ -9395,6 +9459,20 @@ export namespace Prisma {
    * Reference to a field of type 'Visibility[]'
    */
   export type ListEnumVisibilityFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Visibility[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'Json'
+   */
+  export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
+    
+
+
+  /**
+   * Reference to a field of type 'QueryMode'
+   */
+  export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
     
 
 
@@ -9769,6 +9847,10 @@ export namespace Prisma {
     destination?: StringFilter<"Trip"> | string
     visibility?: EnumVisibilityFilter<"Trip"> | $Enums.Visibility
     ownerId?: StringFilter<"Trip"> | string
+    metadata?: JsonFilter<"Trip">
+    tripPlan?: JsonFilter<"Trip">
+    createdAt?: DateTimeFilter<"Trip"> | Date | string
+    updatedAt?: DateTimeFilter<"Trip"> | Date | string
     owner?: XOR<UserScalarRelationFilter, UserWhereInput>
     sharedWith?: SharedTripListRelationFilter
   }
@@ -9778,6 +9860,10 @@ export namespace Prisma {
     destination?: SortOrder
     visibility?: SortOrder
     ownerId?: SortOrder
+    metadata?: SortOrder
+    tripPlan?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
     owner?: UserOrderByWithRelationInput
     sharedWith?: SharedTripOrderByRelationAggregateInput
   }
@@ -9790,6 +9876,10 @@ export namespace Prisma {
     destination?: StringFilter<"Trip"> | string
     visibility?: EnumVisibilityFilter<"Trip"> | $Enums.Visibility
     ownerId?: StringFilter<"Trip"> | string
+    metadata?: JsonFilter<"Trip">
+    tripPlan?: JsonFilter<"Trip">
+    createdAt?: DateTimeFilter<"Trip"> | Date | string
+    updatedAt?: DateTimeFilter<"Trip"> | Date | string
     owner?: XOR<UserScalarRelationFilter, UserWhereInput>
     sharedWith?: SharedTripListRelationFilter
   }, "id">
@@ -9799,6 +9889,10 @@ export namespace Prisma {
     destination?: SortOrder
     visibility?: SortOrder
     ownerId?: SortOrder
+    metadata?: SortOrder
+    tripPlan?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
     _count?: TripCountOrderByAggregateInput
     _max?: TripMaxOrderByAggregateInput
     _min?: TripMinOrderByAggregateInput
@@ -9812,6 +9906,10 @@ export namespace Prisma {
     destination?: StringWithAggregatesFilter<"Trip"> | string
     visibility?: EnumVisibilityWithAggregatesFilter<"Trip"> | $Enums.Visibility
     ownerId?: StringWithAggregatesFilter<"Trip"> | string
+    metadata?: JsonWithAggregatesFilter<"Trip">
+    tripPlan?: JsonWithAggregatesFilter<"Trip">
+    createdAt?: DateTimeWithAggregatesFilter<"Trip"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Trip"> | Date | string
   }
 
   export type SharedTripWhereInput = {
@@ -10241,6 +10339,10 @@ export namespace Prisma {
     id?: string
     destination: string
     visibility?: $Enums.Visibility
+    metadata: JsonNullValueInput | InputJsonValue
+    tripPlan: JsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
     owner: UserCreateNestedOneWithoutTripsInput
     sharedWith?: SharedTripCreateNestedManyWithoutTripInput
   }
@@ -10250,6 +10352,10 @@ export namespace Prisma {
     destination: string
     visibility?: $Enums.Visibility
     ownerId: string
+    metadata: JsonNullValueInput | InputJsonValue
+    tripPlan: JsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
     sharedWith?: SharedTripUncheckedCreateNestedManyWithoutTripInput
   }
 
@@ -10257,6 +10363,10 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     destination?: StringFieldUpdateOperationsInput | string
     visibility?: EnumVisibilityFieldUpdateOperationsInput | $Enums.Visibility
+    metadata?: JsonNullValueInput | InputJsonValue
+    tripPlan?: JsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     owner?: UserUpdateOneRequiredWithoutTripsNestedInput
     sharedWith?: SharedTripUpdateManyWithoutTripNestedInput
   }
@@ -10266,6 +10376,10 @@ export namespace Prisma {
     destination?: StringFieldUpdateOperationsInput | string
     visibility?: EnumVisibilityFieldUpdateOperationsInput | $Enums.Visibility
     ownerId?: StringFieldUpdateOperationsInput | string
+    metadata?: JsonNullValueInput | InputJsonValue
+    tripPlan?: JsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sharedWith?: SharedTripUncheckedUpdateManyWithoutTripNestedInput
   }
 
@@ -10274,12 +10388,20 @@ export namespace Prisma {
     destination: string
     visibility?: $Enums.Visibility
     ownerId: string
+    metadata: JsonNullValueInput | InputJsonValue
+    tripPlan: JsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type TripUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     destination?: StringFieldUpdateOperationsInput | string
     visibility?: EnumVisibilityFieldUpdateOperationsInput | $Enums.Visibility
+    metadata?: JsonNullValueInput | InputJsonValue
+    tripPlan?: JsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type TripUncheckedUpdateManyInput = {
@@ -10287,6 +10409,10 @@ export namespace Prisma {
     destination?: StringFieldUpdateOperationsInput | string
     visibility?: EnumVisibilityFieldUpdateOperationsInput | $Enums.Visibility
     ownerId?: StringFieldUpdateOperationsInput | string
+    metadata?: JsonNullValueInput | InputJsonValue
+    tripPlan?: JsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type SharedTripCreateInput = {
@@ -10762,12 +10888,39 @@ export namespace Prisma {
     notIn?: $Enums.Visibility[] | ListEnumVisibilityFieldRefInput<$PrismaModel>
     not?: NestedEnumVisibilityFilter<$PrismaModel> | $Enums.Visibility
   }
+  export type JsonFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
 
   export type TripCountOrderByAggregateInput = {
     id?: SortOrder
     destination?: SortOrder
     visibility?: SortOrder
     ownerId?: SortOrder
+    metadata?: SortOrder
+    tripPlan?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
   }
 
   export type TripMaxOrderByAggregateInput = {
@@ -10775,6 +10928,8 @@ export namespace Prisma {
     destination?: SortOrder
     visibility?: SortOrder
     ownerId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
   }
 
   export type TripMinOrderByAggregateInput = {
@@ -10782,6 +10937,8 @@ export namespace Prisma {
     destination?: SortOrder
     visibility?: SortOrder
     ownerId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
   }
 
   export type EnumVisibilityWithAggregatesFilter<$PrismaModel = never> = {
@@ -10792,6 +10949,32 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumVisibilityFilter<$PrismaModel>
     _max?: NestedEnumVisibilityFilter<$PrismaModel>
+  }
+  export type JsonWithAggregatesFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonWithAggregatesFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonWithAggregatesFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedJsonFilter<$PrismaModel>
+    _max?: NestedJsonFilter<$PrismaModel>
   }
 
   export type TripScalarRelationFilter = {
@@ -11415,6 +11598,29 @@ export namespace Prisma {
     _min?: NestedEnumVisibilityFilter<$PrismaModel>
     _max?: NestedEnumVisibilityFilter<$PrismaModel>
   }
+  export type NestedJsonFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<NestedJsonFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonFilterBase<$PrismaModel>>, 'path'>>,
+        Required<NestedJsonFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<NestedJsonFilterBase<$PrismaModel>>, 'path'>>
+
+  export type NestedJsonFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
 
   export type AccountCreateWithoutUserInput = {
     type: string
@@ -11514,6 +11720,10 @@ export namespace Prisma {
     id?: string
     destination: string
     visibility?: $Enums.Visibility
+    metadata: JsonNullValueInput | InputJsonValue
+    tripPlan: JsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
     sharedWith?: SharedTripCreateNestedManyWithoutTripInput
   }
 
@@ -11521,6 +11731,10 @@ export namespace Prisma {
     id?: string
     destination: string
     visibility?: $Enums.Visibility
+    metadata: JsonNullValueInput | InputJsonValue
+    tripPlan: JsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
     sharedWith?: SharedTripUncheckedCreateNestedManyWithoutTripInput
   }
 
@@ -11670,6 +11884,10 @@ export namespace Prisma {
     destination?: StringFilter<"Trip"> | string
     visibility?: EnumVisibilityFilter<"Trip"> | $Enums.Visibility
     ownerId?: StringFilter<"Trip"> | string
+    metadata?: JsonFilter<"Trip">
+    tripPlan?: JsonFilter<"Trip">
+    createdAt?: DateTimeFilter<"Trip"> | Date | string
+    updatedAt?: DateTimeFilter<"Trip"> | Date | string
   }
 
   export type SharedTripUpsertWithWhereUniqueWithoutUserInput = {
@@ -12025,6 +12243,10 @@ export namespace Prisma {
     id?: string
     destination: string
     visibility?: $Enums.Visibility
+    metadata: JsonNullValueInput | InputJsonValue
+    tripPlan: JsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
     owner: UserCreateNestedOneWithoutTripsInput
   }
 
@@ -12033,6 +12255,10 @@ export namespace Prisma {
     destination: string
     visibility?: $Enums.Visibility
     ownerId: string
+    metadata: JsonNullValueInput | InputJsonValue
+    tripPlan: JsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type TripCreateOrConnectWithoutSharedWithInput = {
@@ -12088,6 +12314,10 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     destination?: StringFieldUpdateOperationsInput | string
     visibility?: EnumVisibilityFieldUpdateOperationsInput | $Enums.Visibility
+    metadata?: JsonNullValueInput | InputJsonValue
+    tripPlan?: JsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     owner?: UserUpdateOneRequiredWithoutTripsNestedInput
   }
 
@@ -12096,6 +12326,10 @@ export namespace Prisma {
     destination?: StringFieldUpdateOperationsInput | string
     visibility?: EnumVisibilityFieldUpdateOperationsInput | $Enums.Visibility
     ownerId?: StringFieldUpdateOperationsInput | string
+    metadata?: JsonNullValueInput | InputJsonValue
+    tripPlan?: JsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type UserUpsertWithoutSharedTripsInput = {
@@ -12173,6 +12407,10 @@ export namespace Prisma {
     id?: string
     destination: string
     visibility?: $Enums.Visibility
+    metadata: JsonNullValueInput | InputJsonValue
+    tripPlan: JsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type SharedTripCreateManyUserInput = {
@@ -12280,6 +12518,10 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     destination?: StringFieldUpdateOperationsInput | string
     visibility?: EnumVisibilityFieldUpdateOperationsInput | $Enums.Visibility
+    metadata?: JsonNullValueInput | InputJsonValue
+    tripPlan?: JsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sharedWith?: SharedTripUpdateManyWithoutTripNestedInput
   }
 
@@ -12287,6 +12529,10 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     destination?: StringFieldUpdateOperationsInput | string
     visibility?: EnumVisibilityFieldUpdateOperationsInput | $Enums.Visibility
+    metadata?: JsonNullValueInput | InputJsonValue
+    tripPlan?: JsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sharedWith?: SharedTripUncheckedUpdateManyWithoutTripNestedInput
   }
 
@@ -12294,6 +12540,10 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     destination?: StringFieldUpdateOperationsInput | string
     visibility?: EnumVisibilityFieldUpdateOperationsInput | $Enums.Visibility
+    metadata?: JsonNullValueInput | InputJsonValue
+    tripPlan?: JsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type SharedTripUpdateWithoutUserInput = {

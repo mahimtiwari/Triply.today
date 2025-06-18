@@ -13,11 +13,13 @@ export async function POST(req: Request) {
 
   const { destination, visibility, sharedWith, metadata, plan  } = await req.json();
   
+  const userId = session.user.id;
+  
   const trip = await prisma.trip.create({
     data: {
       destination: destination,
       visibility: visibility,
-      ownerId: session.user.id,
+      ownerId: userId,
     }
   })
 

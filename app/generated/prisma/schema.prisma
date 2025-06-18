@@ -93,6 +93,14 @@ model Trip {
   ownerId     String
   owner       User         @relation("OwnerTrips", fields: [ownerId], references: [id], onDelete: Cascade)
   sharedWith  SharedTrip[]
+
+  metadata Json
+  tripPlan Json
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([ownerId])
 }
 
 model SharedTrip {

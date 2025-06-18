@@ -99,8 +99,8 @@ model Trip {
   owner       User         @relation("OwnerTrips", fields: [ownerId], references: [id], onDelete: Cascade)
   sharedWith  SharedTrip[] 
 
-  basicData   Json?        
-  tripPlan    Json?        
+  metadata   Json
+  tripPlan    Json
 
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt

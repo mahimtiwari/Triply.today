@@ -55,7 +55,9 @@ const UserComp = () => {
 
 
   return (
+    
           <div className="flex-1 flex flex-row font-[geist]">
+            
         <div className="p-5 min-w-[250px] bg-white border-r-1 border-gray-200">
           <div className="flex flex-col gap-3">
             <button className="cursor-pointer flex items-center w-full p-3 gap-2 rounded-2xl"
