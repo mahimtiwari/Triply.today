@@ -269,7 +269,7 @@ Important Guidelines:
 - If the user location is from the same city as the destination then "arriving" and "departing" cannot be included in the day object.
 - Price of hotel should given for each day separately *If applicable*.
 - Respond ONLY in valid JSON. Do not use triple backticks. Ensure all strings are quoted, all braces/brackets are closed, and no trailing commas are used.
-
+- Ensure the data passed to JSON.stringify is serializable, avoid undefined or circular references, and always await res.json() inside a try-catch after checking res.ok.
 JSON format to follow exactly:
 ${json_format}
 

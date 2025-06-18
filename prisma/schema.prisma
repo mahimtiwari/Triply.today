@@ -92,7 +92,7 @@ model Authenticator {
 
 
 model Trip {
-  id          String       @id @default(uuid())
+  id          String       @id @default(cuid())
   destination String
   visibility  Visibility   @default(PRIVATE)
   ownerId     String

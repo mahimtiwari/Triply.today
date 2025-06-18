@@ -11,7 +11,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Unauthorized", success:false, }, { status: 401 });
   }
 
-  const { destination, visibility, sharedWith, metadata, plan  } = await req.json();
+  const { destination, visibility, metadata, plan  } = await req.json();
   
   const userId = session.user.id;
   
@@ -20,7 +20,13 @@ export async function POST(req: Request) {
       destination: destination,
       visibility: visibility,
       ownerId: userId,
+      metadata: metadata,
+      tripPlan: plan,
     }
   })
+  if (!trip) {
+    return NextResponse.json({ error: "Failed to create trip", success:false }, { status: 500 });
+  }
+  return NextResponse.json({ success: true, tripId: trip.id }, { status: 200 });
 
 }

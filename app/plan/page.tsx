@@ -13,6 +13,10 @@ import { off } from 'process';
 import BufferComponent from '../components/planpageLoader';
 import "../../public/css/plan.css"
 import { Gentium_Book_Plus } from 'next/font/google';
+import { da } from 'date-fns/locale';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import { time } from 'console';
 
 const PlanTrip = () => {
 
@@ -727,6 +731,55 @@ function aiGeneratePackingList() {
     });
 }
 
+  const { data: session, status } = useSession();
+  const router = useRouter();
+  const saveButton = useRef<HTMLButtonElement>(null);
+  const saveText = useRef<HTMLSpanElement>(null);
+async function saveTrip() {
+
+
+  if ( status === 'authenticated') {
+    saveButton.current!.disabled = true;
+    saveText.current!.innerText = "cached";
+    saveText.current!.classList.add("animate-spin");
+
+    try {
+      const res = await fetch('/api/user/operations/plan/save', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          destination: tripDetails.destination,
+          visibility: "PRIVATE",
+          metadata: tripDetails,
+          plan: dataJSON?.trip?.trip,
+        }),
+      });
+
+      const responseJSON = await res.json();  // properly await JSON
+
+      if (res.ok) {
+
+        router.push(`/user/plans/${responseJSON.tripId}`);
+
+      } else {
+        saveButton.current!.disabled = false;
+        saveText.current!.innerText = "save";
+        saveButton.current!.style.backgroundColor = "red";
+        setTimeout(() => {
+          saveButton.current!.style.backgroundColor = "white";
+        }, 2000);
+        alert(`Failed to save trip: ${responseJSON.error || "Unknown error"}`);
+      }
+    } catch (error) {
+      console.error("Error saving trip:", error);
+      alert("Something went wrong while saving the trip.");
+    }
+  } else{
+    router.push('/user/signin');
+  }
+}
   
   return (
     <>
@@ -829,6 +882,19 @@ function aiGeneratePackingList() {
             />
             <span>Bag</span>
             </button>
+          </div>
+          <div className='text-gray-600 w-full mb-4 gap-5 flex flex-col font-semibold'>
+            {dataJSON?.trip?.trip && (
+
+                <button ref={saveButton} className='flex outline-0 justify-center mx-auto rounded-full p-2 w-fit flex-col cursor-pointer transition-all duration-200 ease-in-out hover:bg-gray-200' 
+                onClick={() => saveTrip()}
+                >
+                
+                <span ref={saveText} className='material-icons'>save</span>
+                
+                </button>
+
+            )}
           </div>
         </div>
         <div className="flex font-[geist] flex-col h-full overflow-y-auto overflow-x-hidden w-full">
@@ -1482,6 +1548,8 @@ function aiGeneratePackingList() {
             </div>
             </div>
           )}
+
+
           </div>
 
 
@@ -1532,7 +1600,7 @@ function aiGeneratePackingList() {
 )}
         
             
-            <div className={`flex-grow ${ sideSelected === "itin" || sideSelected === "plan" ? "block" : "hidden" }`}>
+            <div className={`flex-grow ${ sideSelected === "itin" || sideSelected === "plan" || sideSelected === "save" ? "block" : "hidden" }`}>
             
             { placesNames.current.length ===0 && (
             <Map 
