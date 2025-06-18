@@ -755,6 +755,7 @@ async function saveTrip() {
           metadata: tripDetails,
           plan: dataJSON,
           currencyCode: currencySymbol,
+          costO: costDetailsRef.current,
         }),
       });
 

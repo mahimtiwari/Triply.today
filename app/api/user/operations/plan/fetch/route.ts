@@ -27,6 +27,7 @@ export async function GET(req: Request) {
         tripplan: tripDB.tripPlan,
         metadata: tripDB.metadata,
         currencyCode: tripDB.currencyCode,
+        costObj: tripDB.costObj,
     }, { status: 200});
 
 }

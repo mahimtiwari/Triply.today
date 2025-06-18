@@ -7129,6 +7129,7 @@ export namespace Prisma {
     ownerId: number
     metadata: number
     tripPlan: number
+    costObj: number
     currencyCode: number
     createdAt: number
     updatedAt: number
@@ -7163,6 +7164,7 @@ export namespace Prisma {
     ownerId?: true
     metadata?: true
     tripPlan?: true
+    costObj?: true
     currencyCode?: true
     createdAt?: true
     updatedAt?: true
@@ -7248,6 +7250,7 @@ export namespace Prisma {
     ownerId: string
     metadata: JsonValue
     tripPlan: JsonValue
+    costObj: JsonValue
     currencyCode: string
     createdAt: Date
     updatedAt: Date
@@ -7277,6 +7280,7 @@ export namespace Prisma {
     ownerId?: boolean
     metadata?: boolean
     tripPlan?: boolean
+    costObj?: boolean
     currencyCode?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -7292,6 +7296,7 @@ export namespace Prisma {
     ownerId?: boolean
     metadata?: boolean
     tripPlan?: boolean
+    costObj?: boolean
     currencyCode?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -7305,6 +7310,7 @@ export namespace Prisma {
     ownerId?: boolean
     metadata?: boolean
     tripPlan?: boolean
+    costObj?: boolean
     currencyCode?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -7318,12 +7324,13 @@ export namespace Prisma {
     ownerId?: boolean
     metadata?: boolean
     tripPlan?: boolean
+    costObj?: boolean
     currencyCode?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type TripOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "destination" | "visibility" | "ownerId" | "metadata" | "tripPlan" | "currencyCode" | "createdAt" | "updatedAt", ExtArgs["result"]["trip"]>
+  export type TripOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "destination" | "visibility" | "ownerId" | "metadata" | "tripPlan" | "costObj" | "currencyCode" | "createdAt" | "updatedAt", ExtArgs["result"]["trip"]>
   export type TripInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     owner?: boolean | UserDefaultArgs<ExtArgs>
     sharedWith?: boolean | Trip$sharedWithArgs<ExtArgs>
@@ -7349,6 +7356,7 @@ export namespace Prisma {
       ownerId: string
       metadata: Prisma.JsonValue
       tripPlan: Prisma.JsonValue
+      costObj: Prisma.JsonValue
       currencyCode: string
       createdAt: Date
       updatedAt: Date
@@ -7783,6 +7791,7 @@ export namespace Prisma {
     readonly ownerId: FieldRef<"Trip", 'String'>
     readonly metadata: FieldRef<"Trip", 'Json'>
     readonly tripPlan: FieldRef<"Trip", 'Json'>
+    readonly costObj: FieldRef<"Trip", 'Json'>
     readonly currencyCode: FieldRef<"Trip", 'String'>
     readonly createdAt: FieldRef<"Trip", 'DateTime'>
     readonly updatedAt: FieldRef<"Trip", 'DateTime'>
@@ -9351,6 +9360,7 @@ export namespace Prisma {
     ownerId: 'ownerId',
     metadata: 'metadata',
     tripPlan: 'tripPlan',
+    costObj: 'costObj',
     currencyCode: 'currencyCode',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
@@ -9863,6 +9873,7 @@ export namespace Prisma {
     ownerId?: StringFilter<"Trip"> | string
     metadata?: JsonFilter<"Trip">
     tripPlan?: JsonFilter<"Trip">
+    costObj?: JsonFilter<"Trip">
     currencyCode?: StringFilter<"Trip"> | string
     createdAt?: DateTimeFilter<"Trip"> | Date | string
     updatedAt?: DateTimeFilter<"Trip"> | Date | string
@@ -9877,6 +9888,7 @@ export namespace Prisma {
     ownerId?: SortOrder
     metadata?: SortOrder
     tripPlan?: SortOrder
+    costObj?: SortOrder
     currencyCode?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -9894,6 +9906,7 @@ export namespace Prisma {
     ownerId?: StringFilter<"Trip"> | string
     metadata?: JsonFilter<"Trip">
     tripPlan?: JsonFilter<"Trip">
+    costObj?: JsonFilter<"Trip">
     currencyCode?: StringFilter<"Trip"> | string
     createdAt?: DateTimeFilter<"Trip"> | Date | string
     updatedAt?: DateTimeFilter<"Trip"> | Date | string
@@ -9908,6 +9921,7 @@ export namespace Prisma {
     ownerId?: SortOrder
     metadata?: SortOrder
     tripPlan?: SortOrder
+    costObj?: SortOrder
     currencyCode?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -9926,6 +9940,7 @@ export namespace Prisma {
     ownerId?: StringWithAggregatesFilter<"Trip"> | string
     metadata?: JsonWithAggregatesFilter<"Trip">
     tripPlan?: JsonWithAggregatesFilter<"Trip">
+    costObj?: JsonWithAggregatesFilter<"Trip">
     currencyCode?: StringWithAggregatesFilter<"Trip"> | string
     createdAt?: DateTimeWithAggregatesFilter<"Trip"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Trip"> | Date | string
@@ -10360,6 +10375,7 @@ export namespace Prisma {
     visibility?: $Enums.Visibility
     metadata: JsonNullValueInput | InputJsonValue
     tripPlan: JsonNullValueInput | InputJsonValue
+    costObj: JsonNullValueInput | InputJsonValue
     currencyCode: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -10374,6 +10390,7 @@ export namespace Prisma {
     ownerId: string
     metadata: JsonNullValueInput | InputJsonValue
     tripPlan: JsonNullValueInput | InputJsonValue
+    costObj: JsonNullValueInput | InputJsonValue
     currencyCode: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -10386,6 +10403,7 @@ export namespace Prisma {
     visibility?: EnumVisibilityFieldUpdateOperationsInput | $Enums.Visibility
     metadata?: JsonNullValueInput | InputJsonValue
     tripPlan?: JsonNullValueInput | InputJsonValue
+    costObj?: JsonNullValueInput | InputJsonValue
     currencyCode?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -10400,6 +10418,7 @@ export namespace Prisma {
     ownerId?: StringFieldUpdateOperationsInput | string
     metadata?: JsonNullValueInput | InputJsonValue
     tripPlan?: JsonNullValueInput | InputJsonValue
+    costObj?: JsonNullValueInput | InputJsonValue
     currencyCode?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -10413,6 +10432,7 @@ export namespace Prisma {
     ownerId: string
     metadata: JsonNullValueInput | InputJsonValue
     tripPlan: JsonNullValueInput | InputJsonValue
+    costObj: JsonNullValueInput | InputJsonValue
     currencyCode: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -10424,6 +10444,7 @@ export namespace Prisma {
     visibility?: EnumVisibilityFieldUpdateOperationsInput | $Enums.Visibility
     metadata?: JsonNullValueInput | InputJsonValue
     tripPlan?: JsonNullValueInput | InputJsonValue
+    costObj?: JsonNullValueInput | InputJsonValue
     currencyCode?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -10436,6 +10457,7 @@ export namespace Prisma {
     ownerId?: StringFieldUpdateOperationsInput | string
     metadata?: JsonNullValueInput | InputJsonValue
     tripPlan?: JsonNullValueInput | InputJsonValue
+    costObj?: JsonNullValueInput | InputJsonValue
     currencyCode?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -10945,6 +10967,7 @@ export namespace Prisma {
     ownerId?: SortOrder
     metadata?: SortOrder
     tripPlan?: SortOrder
+    costObj?: SortOrder
     currencyCode?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -11751,6 +11774,7 @@ export namespace Prisma {
     visibility?: $Enums.Visibility
     metadata: JsonNullValueInput | InputJsonValue
     tripPlan: JsonNullValueInput | InputJsonValue
+    costObj: JsonNullValueInput | InputJsonValue
     currencyCode: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -11763,6 +11787,7 @@ export namespace Prisma {
     visibility?: $Enums.Visibility
     metadata: JsonNullValueInput | InputJsonValue
     tripPlan: JsonNullValueInput | InputJsonValue
+    costObj: JsonNullValueInput | InputJsonValue
     currencyCode: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -11917,6 +11942,7 @@ export namespace Prisma {
     ownerId?: StringFilter<"Trip"> | string
     metadata?: JsonFilter<"Trip">
     tripPlan?: JsonFilter<"Trip">
+    costObj?: JsonFilter<"Trip">
     currencyCode?: StringFilter<"Trip"> | string
     createdAt?: DateTimeFilter<"Trip"> | Date | string
     updatedAt?: DateTimeFilter<"Trip"> | Date | string
@@ -12277,6 +12303,7 @@ export namespace Prisma {
     visibility?: $Enums.Visibility
     metadata: JsonNullValueInput | InputJsonValue
     tripPlan: JsonNullValueInput | InputJsonValue
+    costObj: JsonNullValueInput | InputJsonValue
     currencyCode: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -12290,6 +12317,7 @@ export namespace Prisma {
     ownerId: string
     metadata: JsonNullValueInput | InputJsonValue
     tripPlan: JsonNullValueInput | InputJsonValue
+    costObj: JsonNullValueInput | InputJsonValue
     currencyCode: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -12350,6 +12378,7 @@ export namespace Prisma {
     visibility?: EnumVisibilityFieldUpdateOperationsInput | $Enums.Visibility
     metadata?: JsonNullValueInput | InputJsonValue
     tripPlan?: JsonNullValueInput | InputJsonValue
+    costObj?: JsonNullValueInput | InputJsonValue
     currencyCode?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -12363,6 +12392,7 @@ export namespace Prisma {
     ownerId?: StringFieldUpdateOperationsInput | string
     metadata?: JsonNullValueInput | InputJsonValue
     tripPlan?: JsonNullValueInput | InputJsonValue
+    costObj?: JsonNullValueInput | InputJsonValue
     currencyCode?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -12445,6 +12475,7 @@ export namespace Prisma {
     visibility?: $Enums.Visibility
     metadata: JsonNullValueInput | InputJsonValue
     tripPlan: JsonNullValueInput | InputJsonValue
+    costObj: JsonNullValueInput | InputJsonValue
     currencyCode: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -12557,6 +12588,7 @@ export namespace Prisma {
     visibility?: EnumVisibilityFieldUpdateOperationsInput | $Enums.Visibility
     metadata?: JsonNullValueInput | InputJsonValue
     tripPlan?: JsonNullValueInput | InputJsonValue
+    costObj?: JsonNullValueInput | InputJsonValue
     currencyCode?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -12569,6 +12601,7 @@ export namespace Prisma {
     visibility?: EnumVisibilityFieldUpdateOperationsInput | $Enums.Visibility
     metadata?: JsonNullValueInput | InputJsonValue
     tripPlan?: JsonNullValueInput | InputJsonValue
+    costObj?: JsonNullValueInput | InputJsonValue
     currencyCode?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -12581,6 +12614,7 @@ export namespace Prisma {
     visibility?: EnumVisibilityFieldUpdateOperationsInput | $Enums.Visibility
     metadata?: JsonNullValueInput | InputJsonValue
     tripPlan?: JsonNullValueInput | InputJsonValue
+    costObj?: JsonNullValueInput | InputJsonValue
     currencyCode?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string

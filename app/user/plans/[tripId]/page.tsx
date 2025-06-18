@@ -305,7 +305,10 @@ const [currencySymbol, setCurrencySymbol] = useState<string | null>(null);
             console.log("Fetched Trip Data:", data);
             setTripDetails(data.metadata);
             setCurrencySymbol(data.currencyCode)
-            costDetailsRef.current = costProcessor(data.tripplan);
+            costDetailsRef.current = data.costObj;
+            if (!costDetailsRef.current) {
+              costDetailsRef.current = costProcessor(data.tripplan);
+            }
             setTotalCost(costDetailsRef.current.totalcost);
             updateGraphicalCostData(costDetailsRef.current);
 
@@ -749,8 +752,9 @@ async function saveTrip() {
           destination: tripDetails.destination,
           visibility: "PRIVATE",
           metadata: tripDetails,
-          plan: dataJSON?.trip?.trip,
+          plan: dataJSON,
           idT: tripId,
+          costO: costDetailsRef.current,
         }),
       });
 
