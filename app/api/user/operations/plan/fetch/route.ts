@@ -2,8 +2,6 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { NextResponse } from "next/server";
 import { prisma } from '@/lib/prisma';
-import { tr } from "date-fns/locale";
-import { metadata } from "@/app/layout";
 
 
 export async function GET(req: Request) {
@@ -18,16 +16,56 @@ export async function GET(req: Request) {
             id: tripId,
         },
     });
+    
 
     if (!tripDB) {
         return NextResponse.json({ error: "Trip not found" }, { status: 404 });
     }
+    
+    
 
-    return NextResponse.json({
-        tripplan: tripDB.tripPlan,
-        metadata: tripDB.metadata,
-        currencyCode: tripDB.currencyCode,
-        costObj: tripDB.costObj,
-    }, { status: 200});
+
+    const session = await getServerSession(authOptions);
+    if (session && session.user.id === tripDB.ownerId) {
+        return NextResponse.json({
+            tripplan: tripDB.tripPlan,
+            metadata: tripDB.metadata,
+            currencyCode: tripDB.currencyCode,
+            costObj: tripDB.costObj,
+            visibility: tripDB.visibility,
+        }, { status: 200});
+
+    }else if (tripDB.visibility === 'PUBLIC') {
+        return NextResponse.json({
+            tripplan: tripDB.tripPlan,
+            metadata: tripDB.metadata,
+            currencyCode: tripDB.currencyCode,
+            costObj: tripDB.costObj,
+            visibility: tripDB.visibility,
+        }, { status: 200});
+    }
+    else if (tripDB.visibility === 'SHARED') {
+        if (session) {
+            const sharedTrip = await prisma.sharedTrip.findFirst({
+                where: {
+                    tripId: tripId,
+                    userId: session.user.id,
+                },
+            });
+
+            if (sharedTrip) {
+                return NextResponse.json({
+                    tripplan: tripDB.tripPlan,
+                    metadata: tripDB.metadata,
+                    currencyCode: tripDB.currencyCode,
+                    costObj: tripDB.costObj,
+                    visibility: tripDB.visibility,
+                }, { status: 200 });
+            }
+    }
+    }
+
+        return NextResponse.json({ error: "Unauthorized access to private trip", status: 403 }, { status: 403 });
+
 
 }

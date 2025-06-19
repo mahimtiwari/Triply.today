@@ -17,6 +17,7 @@ import { da } from 'date-fns/locale';
 import { useSession } from 'next-auth/react';
 import { time } from 'console';
 import { useRouter } from 'next/navigation';
+import Sharepopup from '@/app/components/sharepopup';
 
 interface PageProps {
   params: Promise<{ tripId: string }>; 
@@ -295,6 +296,7 @@ const [currencySymbol, setCurrencySymbol] = useState<string | null>(null);
 
   }, []);
 
+  const [visib, setVisib] = useState("PRIVATE");
 
   useEffect(() => {
 
@@ -303,6 +305,7 @@ const [currencySymbol, setCurrencySymbol] = useState<string | null>(null);
           .then((response) => response.json())
           .then((data) => {
             console.log("Fetched Trip Data:", data);
+            setVisib(String(data.visibility).toUpperCase());
             setTripDetails(data.metadata);
             setCurrencySymbol(data.currencyCode)
             costDetailsRef.current = data.costObj;
@@ -783,10 +786,24 @@ async function saveTrip() {
     router.push('/user/signin');
   }
 }
+
+function shareTrip() {
+    if ( status === 'authenticated') {
+
+  } else{
+    router.push('/user/signin');
+  }
+}
+
+const [popShare, setPopShare] = useState<boolean>(false);
+
   
   return (
     <>
-
+  <Sharepopup id={tripId} open={popShare} val={visib} onClose={() => {
+    setPopShare(false);
+    
+  }}/>
 {serverResState && (
 <div className='absolute top-2 left-1/2 transform -translate-x-1/2 bg-red-300 border-1 border-red-500 rounded-2xl p-5 z-100'>
   <span>API is Currently Overloaded. Try again later (4-5min)</span>
@@ -886,9 +903,18 @@ async function saveTrip() {
             <span>Bag</span>
             </button>
           </div>
-          <div className='text-gray-600 w-full mb-4 gap-5 flex flex-col font-semibold'>
+          <div className='text-gray-600 w-full mb-4 gap-1 flex flex-col font-semibold'>
             {dataJSON?.trip?.trip && (
-
+                <>
+                <button  className='flex outline-0 justify-center mx-auto rounded-full p-2 w-fit flex-col cursor-pointer transition-all duration-200 ease-in-out hover:bg-gray-200' 
+                onClick={() => {
+                  setPopShare(true);
+                }}
+                >
+                
+                <span  className='material-icons'>person_add</span>
+                
+                </button>
                 <button ref={saveButton} className='flex outline-0 justify-center mx-auto rounded-full p-2 w-fit flex-col cursor-pointer transition-all duration-200 ease-in-out hover:bg-gray-200' 
                 onClick={() => saveTrip()}
                 >
@@ -896,7 +922,7 @@ async function saveTrip() {
                 <span ref={saveText} className='material-icons'>save</span>
                 
                 </button>
-
+                </>
             )}
           </div>
         </div>
