@@ -81,7 +81,7 @@ const UserComp = () => {
               <span className="material-icons">travel_explore</span>
               <span className="font-semibold">Trip Plans</span>
             </button>
-            <button className="cursor-pointer flex items-center w-full text-[#7a7a7a] p-3 gap-2 rounded-2xl"
+            {/* <button className="cursor-pointer flex items-center w-full text-[#7a7a7a] p-3 gap-2 rounded-2xl"
                 onClick={() => setSideSelect('travel-history')}
                 style={{
                     backgroundColor: sideSelect === 'travel-history' ? '#306aff' : 'transparent',
@@ -90,7 +90,7 @@ const UserComp = () => {
             >
               <span className="material-icons">timeline</span>
               <span className="font-semibold">Travel History</span>
-            </button>
+            </button> */}
           </div>
         </div>
         
