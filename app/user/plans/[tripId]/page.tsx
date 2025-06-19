@@ -761,7 +761,7 @@ async function saveTrip() {
         },
         body: JSON.stringify({
           destination: tripDetails.destination,
-          visibility: "PRIVATE",
+          visibility: visib,
           metadata: tripDetails,
           plan: dataJSON,
           idT: tripId,
