@@ -179,7 +179,7 @@ const UserComp = () => {
                 </div>
             )}
             {sideSelect === 'trip-plans' && (
-              <a href="/user/plans">View your Trip Plans</a>
+              <a href="/user/plans" className='text-blue-500 underline'>View your Trip Plans</a>
             )}
             {/* <div className="flex items-center space-x-4">
               <Image
