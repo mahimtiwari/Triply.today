@@ -1,12 +1,17 @@
 import React, { use, useEffect, useState } from 'react'
 
-const Sharepopup = ({ id, open, val, onClose }: { id: string, open:boolean, val: string, onClose:() => void }) => {
+const Sharepopup = ({ id, open, val, shEmails, onClose }: { id: string, open:boolean, val: string, shEmails:string, onClose:() => void }) => {
 
     const [shareSelected, setShareSelected] = useState(val);
+    const [shareSelectedEmails, setShareSelectedEmails] = useState<string>(shEmails);
+
 
     useEffect(() => {
         setShareSelected(val);
     }, [val]);
+    useEffect(() => {
+        setShareSelectedEmails(shEmails);
+    }, [shEmails]);
 
     const doneBtnRef = React.useRef<HTMLButtonElement>(null);
     console.log("Sharepopup val", shareSelected, "val", val);
@@ -23,7 +28,7 @@ function share(){
         body: JSON.stringify({
             id: id,
             type: shareSelected,
-            emails: "",
+            emails: shareSelectedEmails,
         }),
     }).then((res) => {
         if (res.ok) {
@@ -93,6 +98,22 @@ return (
                                 </button>
 
                         </div>
+                        {shareSelected === "SHARED" && (
+                        <div className='flex flex-col gap-2'>
+                                <span className='text-gray-600 text-sm'>Share with specific people</span>
+                                <input 
+                                        type="text" 
+                                        placeholder='Enter emails separated by commas'
+                                        value={shareSelectedEmails}
+                                        onChange={(e) => {
+                                                setShareSelectedEmails(e.target.value.trim());
+                                                const emails = e.target.value.trim();
+                                                setShareSelectedEmails(emails);
+                                        }}
+                                        className='border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500'
+                                />
+                        </div>
+                        )}
                 </div>
                 <div className='font-medium flex flex-row items-center justify-between mb-2'>
                         <button 

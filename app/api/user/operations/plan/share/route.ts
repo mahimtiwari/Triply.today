@@ -26,7 +26,9 @@ if (type === "SHARED") {
         where: { id: id },
         data: { visibility: 'SHARED' }, // or 'PUBLIC' if you're making it accessible to anyone
     });
-
+    await prisma.sharedTrip.deleteMany({
+        where: { tripId: id },
+    });
     let sharedIds = [];
     for (const email of emails.split(',')) {
         const users = await prisma.user.findUnique({

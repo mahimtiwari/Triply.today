@@ -281,7 +281,7 @@ const monthNames = [
 
 const [bufferBool, setBufferBool] = useState(true);
 const [serverResState, setServerResState] = useState(false);
-
+const [shareSelectedEmails, setshareSelectedEmails] = useState<string>("");
 const placesNames = useRef<string[]>([]);
 const [currencySymbol, setCurrencySymbol] = useState<string | null>(null);
   useEffect(() => {
@@ -298,13 +298,21 @@ const [currencySymbol, setCurrencySymbol] = useState<string | null>(null);
 
   const [visib, setVisib] = useState("PRIVATE");
 
+  const [ t403, setT403 ] = useState(false);
+  const [shareability, setShareability] = useState(false);
   useEffect(() => {
 
         
         fetch(`/api/user/operations/plan/fetch?id=${tripId}`)
           .then((response) => response.json())
           .then((data) => {
+            if (data.error){
+              setT403(true);
+              return;
+            }
+            if (data.share) setShareability(true);
             console.log("Fetched Trip Data:", data);
+            setshareSelectedEmails(data.sharedWith);
             setVisib(String(data.visibility).toUpperCase());
             setTripDetails(data.metadata);
             setCurrencySymbol(data.currencyCode)
@@ -797,10 +805,10 @@ function shareTrip() {
 
 const [popShare, setPopShare] = useState<boolean>(false);
 
-  
+
   return (
     <>
-  <Sharepopup id={tripId} open={popShare} val={visib} onClose={() => {
+  <Sharepopup id={tripId} open={popShare} val={visib} shEmails={shareSelectedEmails} onClose={() => {
     setPopShare(false);
     
   }}/>
@@ -906,15 +914,17 @@ const [popShare, setPopShare] = useState<boolean>(false);
           <div className='text-gray-600 w-full mb-4 gap-1 flex flex-col font-semibold'>
             {dataJSON?.trip?.trip && (
                 <>
-                <button  className='flex outline-0 justify-center mx-auto rounded-full p-2 w-fit flex-col cursor-pointer transition-all duration-200 ease-in-out hover:bg-gray-200' 
-                onClick={() => {
-                  setPopShare(true);
-                }}
-                >
-                
-                <span  className='material-icons'>person_add</span>
-                
-                </button>
+                {shareability && (
+                    <button  className='flex outline-0 justify-center mx-auto rounded-full p-2 w-fit flex-col cursor-pointer transition-all duration-200 ease-in-out hover:bg-gray-200' 
+                    onClick={() => {
+                    setPopShare(true);
+                    }}
+                    >
+                    
+                    <span  className='material-icons'>person_add</span>
+                    
+                    </button>
+                )}
                 <button ref={saveButton} className='flex outline-0 justify-center mx-auto rounded-full p-2 w-fit flex-col cursor-pointer transition-all duration-200 ease-in-out hover:bg-gray-200' 
                 onClick={() => saveTrip()}
                 >
@@ -952,6 +962,7 @@ const [popShare, setPopShare] = useState<boolean>(false);
 
 <div>
 </div>
+        
           {!bufSate && sideSelected !== "bag" && screenWidth!>900 && (
             <BufferComponent onComplete={() => {
               setBufState(true);
@@ -962,7 +973,8 @@ const [popShare, setPopShare] = useState<boolean>(false);
           )}
 
 
-
+          {!t403 ? (
+            <>
           {sideSelected === "itin" && bufSate && (
           <div className='h-full w-full bg-white'>
             <div>
@@ -1581,7 +1593,12 @@ const [popShare, setPopShare] = useState<boolean>(false);
             </div>
             </div>
           )}
-
+          </>
+          ) : (
+            <h1 className=''>
+            Trip Dosen't Exist or you are not authorized to view it
+            </h1>
+          )}
 
           </div>
 

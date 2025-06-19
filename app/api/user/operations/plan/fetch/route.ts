@@ -26,6 +26,32 @@ export async function GET(req: Request) {
 
 
     const session = await getServerSession(authOptions);
+
+     const shUsers = await prisma.sharedTrip.findMany({
+        where: {
+            tripId: tripId,
+        },
+        select: {
+            userId: true,
+        },
+    });
+    let shEmails = "";
+
+    for (const user of shUsers) {
+        const userData = await prisma.user.findUnique({
+            where: {
+                id: user.userId,
+            },
+            select: {
+                email: true,
+            },
+        });
+        if (userData) {
+            shEmails += userData.email + ",";
+        }
+    }
+
+
     if (session && session.user.id === tripDB.ownerId) {
         return NextResponse.json({
             tripplan: tripDB.tripPlan,
@@ -33,6 +59,8 @@ export async function GET(req: Request) {
             currencyCode: tripDB.currencyCode,
             costObj: tripDB.costObj,
             visibility: tripDB.visibility,
+            share: true,
+            sharedWith: shEmails,
         }, { status: 200});
 
     }else if (tripDB.visibility === 'PUBLIC') {
@@ -42,6 +70,7 @@ export async function GET(req: Request) {
             currencyCode: tripDB.currencyCode,
             costObj: tripDB.costObj,
             visibility: tripDB.visibility,
+            sharedWith: shEmails ? shEmails.slice(0, -1) : "",
         }, { status: 200});
     }
     else if (tripDB.visibility === 'SHARED') {
@@ -60,6 +89,7 @@ export async function GET(req: Request) {
                     currencyCode: tripDB.currencyCode,
                     costObj: tripDB.costObj,
                     visibility: tripDB.visibility,
+                    sharedWith: shEmails ? shEmails.slice(0, -1) : "",
                 }, { status: 200 });
             }
     }
