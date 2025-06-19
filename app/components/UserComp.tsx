@@ -178,7 +178,9 @@ const UserComp = () => {
                     )}
                 </div>
             )}
-            
+            {sideSelect === 'trip-plans' && (
+              <a href="/user/plans">View your Trip Plans</a>
+            )}
             {/* <div className="flex items-center space-x-4">
               <Image
               
