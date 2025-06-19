@@ -16,7 +16,7 @@ export async function POST(req: Request) {
   const userId = session.user.id;
   if (idT){
       const trip = await prisma.trip.update({
-        where: { id: idT },
+        where: { id: idT, ownerId: userId },
         data: {
           destination: destination,
           visibility: visibility,

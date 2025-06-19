@@ -60,6 +60,7 @@ export async function GET(req: Request) {
             costObj: tripDB.costObj,
             visibility: tripDB.visibility,
             share: true,
+            save: true,
             sharedWith: shEmails,
         }, { status: 200});
 

@@ -300,6 +300,7 @@ const [currencySymbol, setCurrencySymbol] = useState<string | null>(null);
 
   const [ t403, setT403 ] = useState(false);
   const [shareability, setShareability] = useState(false);
+  const [saveablity, setSaveablity] = useState(false);
   useEffect(() => {
 
         
@@ -311,6 +312,7 @@ const [currencySymbol, setCurrencySymbol] = useState<string | null>(null);
               return;
             }
             if (data.share) setShareability(true);
+            if (data.save) setSaveablity(true);
             console.log("Fetched Trip Data:", data);
             setshareSelectedEmails(data.sharedWith);
             setVisib(String(data.visibility).toUpperCase());
@@ -925,6 +927,7 @@ const [popShare, setPopShare] = useState<boolean>(false);
                     
                     </button>
                 )}
+                {saveablity && (
                 <button ref={saveButton} className='flex outline-0 justify-center mx-auto rounded-full p-2 w-fit flex-col cursor-pointer transition-all duration-200 ease-in-out hover:bg-gray-200' 
                 onClick={() => saveTrip()}
                 >
@@ -932,6 +935,7 @@ const [popShare, setPopShare] = useState<boolean>(false);
                 <span ref={saveText} className='material-icons'>save</span>
                 
                 </button>
+                )}
                 </>
             )}
           </div>
