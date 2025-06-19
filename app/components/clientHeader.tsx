@@ -86,9 +86,9 @@ export default function CHeader() {
           <a href="/user/plans" className="text-sm/6 font-semibold text-gray-900">
             Trip Plans
           </a>
-          <a href="#" className="text-sm/6 font-semibold text-gray-900">
+          {/* <a href="#" className="text-sm/6 font-semibold text-gray-900">
             Travel History
-          </a>
+          </a> */}
         </PopoverGroup>
         
           <div className="hidden lg:flex lg:flex-1 lg:justify-end">
@@ -154,7 +154,7 @@ export default function CHeader() {
                   </span>
                 Trip Plans
                 </a>
-                <a 
+                {/* <a 
                 href="" 
                 className="w-full p-3 flex items-center gap-2 text-[18px] font-semibold text-gray-500 rounded-xl  hover:bg-gray-100 transition duration-200"
                 >
@@ -164,7 +164,7 @@ export default function CHeader() {
                     timeline
                   </span>
                 Travel History
-                </a>
+                </a> */}
 
             </div>
 
