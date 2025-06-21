@@ -18,7 +18,7 @@ import { useSession } from 'next-auth/react';
 import { time } from 'console';
 import { useRouter } from 'next/navigation';
 import Sharepopup from '@/app/components/sharepopup';
-
+import BagSection from '@/app/components/bagsection';
 interface PageProps {
   params: Promise<{ tripId: string }>; 
 }
@@ -1510,92 +1510,14 @@ const [popShare, setPopShare] = useState<boolean>(false);
             <div>Animation Here</div>
           )}
           {sideSelected === "bag" && (
-            <div  className='h-full w-full bg-white p-5 flex flex-col gap-5'>
-            <div className='flex justify-between items-center'>
-            <div className="flex items-center gap-3">
-              <span className="text-2xl text-gray-800 font-bold">Packing List</span>
-    
-    <button
-      ref={buttonRef}
-      onMouseMove={aiGlowEffect}
-      className="relative group  cursor-pointer overflow-hidden rounded-3xl p-[2px] transition-all duration-200"
-      title="AI Suggestions"
-              onMouseLeave={() => {
-          gradientRef.current!.style.opacity = "0%";
-        }}
-        
-      onClick={() => aiGeneratePackingList() }    >
-      
-      <div
-        ref={gradientBgRefLoader}
-        className="absolute inset-0 animate-pulse hidden z-0 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500  transition-all duration-300"
-        
-      />
-
-      <div
-        ref={gradientRef}
-        className="absolute inset-0 z-0 opacity-0 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500  transition-all duration-300"
-        style={{
-          WebkitMaskImage:
-            'radial-gradient(120px at var(--x, 50%) var(--y, 50%), white 0%, transparent 60%)',
-          maskImage:
-            'radial-gradient(120px at var(--x, 50%) var(--y, 50%), white 0%, transparent 60%)',
-          WebkitMaskRepeat: 'no-repeat',
-          maskRepeat: 'no-repeat',
-
-        }}
-
-
-      />
-
-      <div className="relative z-10 flex items-center gap-2 px-4 py-2 bg-white border-1 border-gray-300 rounded-[inherit]">
-        <Image src="/img/ai.png" width={20} height={20} alt="AI Icon" />
-        <span className="text-sm font-medium text-black" >Generate</span>
-      </div>
-    </button>
-
-
-            </div>
-            <button
-              className="flex select-none items-center gap-2 text-green-600 cursor-pointer hover:text-green-800 font-medium rounded-lg px-2 py-1 transition-colors duration-200"
-              onClick={() => {
-                pckList.current = [...pckList.current, { name: "New Category", values: {data:[]} }];
-                setSumCards([...pckList.current]);
-              }}
-            >
-              <span className="text-xl leading-none ml-auto">+</span>
-              <span className='mr-auto'>Add</span>
-            </button>
-            </div>
-            <div  className='flex justify-center'>
-              {!genAiPackLoad && (
-              <div ref={packingCardContRef}  className='flex flex-row gap-3 justify-evenly flex-wrap mx-auto w-fit'>
-              {/* {pckList.current[0].values.data[0].name} */}
-              {/* <div>
-                {JSON.stringify(sumCards)}
-              </div> */}
-              { pckList.current.map((itm, idx) => (
-                <div key={idx} ref={(elem) => {if(packCardRef.current && elem) packCardRef.current[idx]=elem}} className='' onMouseDown={(e) => {
-                  drag_packCard(e, idx);
-                }}>
-                {/* <span className="text-gray-500 text-sm">{itm.values.data.map(item => item.name).join(", ")}</span> */}
-
-                <PackingCard name={itm.name} values={ itm.values } 
-                onChange={(values, cardN) => {
-                  pckList.current[idx].name = cardN;
-                  if (!pckList.current.some(item => item.name === itm.name)) {
-                    pckList.current.push({ name: itm.name, values });
-                  }else {
-                    pckList.current[idx].values = values;
-                  }
-                }}
-                />
-                </div>
-            ))}
-              </div>
-              )}
-            </div>
-            </div>
+            <BagSection
+            pckList={pckList.current}
+            destination={tripDetails.destination}
+            changePck={(pck) => {
+              pckList.current = pck;
+              setSumCards([...pckList.current]);
+            }}
+            />
           )}
           </>
           ) : (
