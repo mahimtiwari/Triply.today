@@ -225,7 +225,7 @@ function aiGeneratePackingList() {
                   drag_packCard(e, idx);
                 }}>
                 {/* <span className="text-gray-500 text-sm">{itm.values.data.map(item => item.name).join(", ")}</span> */}
-
+                
                 <PackingCard name={itm.name} values={ itm.values } 
                 onChange={(values, cardN) => {
                   pckList[idx].name = cardN;

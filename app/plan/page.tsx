@@ -18,8 +18,8 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { time } from 'console';
 import BagSection from '@/app/components/bagsection';
+import  ExportComp  from '@/app/components/exportComp';
 const PlanTrip = () => {
-
 
 
 interface Place {
@@ -801,7 +801,7 @@ async function saveTrip() {
   <div className="flex flex-row flex-grow ">
 
       <div className={`h-[100vh] flex `} style={
-        { width: `${["play", "bag"].includes(sideSelected) ? 100 : leftWidth}%`,
+        { width: `${["export", "bag"].includes(sideSelected) ? 100 : leftWidth}%`,
                   transition: !isDragging.current ? "width 0.7s ease-in-out": "",
                   minWidth: `${leftWidthConst}px`,
                   }}>
@@ -854,19 +854,19 @@ async function saveTrip() {
             </button>
             <button className='flex outline-0 justify-center py-2 w-full flex-col cursor-pointer transition-all duration-200 ease-in-out' 
             onClick={
-              () => setSideSelected("play")
+              () => setSideSelected("export")
             }
-              style={{ backgroundColor: sideSelected === "play" ? "#f0f0f0" : "transparent", borderTopLeftRadius: "50px", borderBottomLeftRadius: "50px", borderTopRightRadius: "0px", borderBottomRightRadius: "0px" }}
+              style={{ backgroundColor: sideSelected === "export" ? "#f0f0f0" : "transparent", borderTopLeftRadius: "50px", borderBottomLeftRadius: "50px", borderTopRightRadius: "0px", borderBottomRightRadius: "0px" }}
             >
             <Image 
-              src={'/img/play.webp'} 
+              src={'/img/export.png'} 
               width={20} 
               className='mx-auto'
               height={20} 
               alt='marker' 
               style={{ filter: 'invert(50%) sepia(0%) saturate(0%) brightness(80%)' }} // Adjust color to gray using CSS filter
             />
-            <span>Play</span>
+            <span>Exp</span>
             </button>
             <button className='flex outline-0 justify-center py-2 w-full flex-col cursor-pointer transition-all duration-200 ease-in-out' 
             onClick={
@@ -1459,8 +1459,8 @@ async function saveTrip() {
 
           )}
           
-          {sideSelected === "play" && bufSate && (
-            <div>Animation Here</div>
+          {sideSelected === "export" && bufSate && (
+            <ExportComp/>
           )}
           {sideSelected === "bag" && (
 
@@ -1482,7 +1482,7 @@ async function saveTrip() {
         </div>
 
       </div>
-{!["play", "bag"].includes(sideSelected) && (
+{!["export", "bag"].includes(sideSelected) && (
 <div
   className="relative w-[1px] bg-gray-300 cursor-grab z-20 group"
   onMouseDown={startDrag}
@@ -1742,10 +1742,10 @@ async function saveTrip() {
                   <span className='text-sm font-semibold'>Cost</span>
 
                 </button>
-                <button className={`bg-[#0000000d] col-span-3 otline-0 h-20 flex flex-col rounded-xl  items-center justify-center   ${sideSelected === "play" ? "bg-[#001eff13] text-[#004079] scale-101" : "text-[#292929]"} transition-all duration-200 ease-in-out`}
-                  onClick={() => setSideSelected("play")}>
+                <button className={`bg-[#0000000d] col-span-3 otline-0 h-20 flex flex-col rounded-xl  items-center justify-center   ${sideSelected === "export" ? "bg-[#001eff13] text-[#004079] scale-101" : "text-[#292929]"} transition-all duration-200 ease-in-out`}
+                  onClick={() => setSideSelected("export")}>
                   <span className="material-icons text-2xl">play_circle</span>
-                  <span className='text-sm font-semibold'>Play</span>
+                  <span className='text-sm font-semibold'>Export</span>
 
                 </button>
                 <button className={`bg-[#0000000d] col-span-3 otline-0 h-20 flex flex-col rounded-xl  items-center justify-center   ${sideSelected === "bag" ? "bg-[#001eff13] text-[#004079] scale-101" : "text-[#292929]"} transition-all duration-200 ease-in-out`}
@@ -2318,7 +2318,7 @@ async function saveTrip() {
 
           )}
           
-          {sideSelected === "play" && bufSate && (
+          {sideSelected === "export" && bufSate && (
             <div>Very Cool Animation Here</div>
           )}
 
