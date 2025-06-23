@@ -1460,7 +1460,8 @@ async function saveTrip() {
           )}
           
           {sideSelected === "export" && bufSate && (
-            <ExportComp/>
+            <ExportComp tripDetails={dataJSON!} metadata={tripDetails} pckList={pckList.current} costData={costDetailsRef.current!} />
+
           )}
           {sideSelected === "bag" && (
 
@@ -2319,7 +2320,8 @@ async function saveTrip() {
           )}
           
           {sideSelected === "export" && bufSate && (
-            <div>Very Cool Animation Here</div>
+            <ExportComp tripDetails={dataJSON!} metadata={tripDetails} pckList={pckList.current} costData={costDetailsRef.current!} />
+
           )}
 
         </div>
