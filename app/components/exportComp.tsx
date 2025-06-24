@@ -502,7 +502,80 @@ const TripPdfFormat = ({tripDetails, metadata, pckList, costData, currencySymbol
         </Text>
       </View>
 
+      <View style={{
 
+        width: '100%',
+        paddingHorizontal: '40px',
+        paddingVertical: '20px',
+
+      }}>
+        <View
+        style={{
+          justifyContent: 'space-between',
+          border: '1px solid #ccc',
+          borderRadius: '5px',        
+          display: 'flex',
+          flexDirection: 'row',
+          flexWrap: 'wrap',
+          padding: '15px',
+        }}
+        >
+        {pckList.map((item, index) => (
+          <View 
+          key={index} 
+          style={{
+            width: '50%',
+            padding: '10px',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '5px',
+          }}>
+            <Text
+              style={{
+                textAlign: 'center',
+                fontSize: 14,
+                fontFamily: 'Poppins SemiBold',
+              }}
+            >{item.name}</Text>
+          <View 
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              padding: '10px',
+
+              gap: '10px',
+            }}
+          >
+            {item.values.data.map((indItem, indIndex) => (
+              <View
+              key={indIndex}
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                gap: '5px',
+              }}
+              >
+                <View style={{
+                  height: '14px',
+                  width: '14px',
+                  borderRadius: '4px',
+                  border: '1px solid #666',
+                }}></View>
+                <Text
+                style={{
+                  fontSize: 12,
+                  fontFamily: 'Poppins Regular',
+                }}
+                >{indItem.name}</Text>
+                
+              </View>
+            ))}
+          </View>
+          </View>
+        ))}
+        </View>
+      </View>
 
       </Page>
     </Document>
