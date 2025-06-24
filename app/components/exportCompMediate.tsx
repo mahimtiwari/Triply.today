@@ -977,11 +977,11 @@ const ExportCompMediate = ({tripDetails, metadata, pckList, costData, currencySy
       <span className="ml-3 text-gray-700 text-base font-medium">Export as PDF</span>
     </button>
 
-<PDFViewer
+{/* <PDFViewer
   className="w-full h-[80vh] border-2 border-gray-300 rounded-lg shadow-lg"
   >
   <TripPdfFormat tripDetails={tripDetails} metadata={metadata} pckList={pckList} costData={costData} currencySymbol={currencySymbol} />
-</PDFViewer>
+</PDFViewer> */}
 
 </div>
 
