@@ -568,7 +568,7 @@ const TripPdfFormat = ({tripDetails, metadata, pckList, costData, currencySymbol
                   fontFamily: 'Poppins Regular',
                 }}
                 >{indItem.name}</Text>
-                
+
               </View>
             ))}
           </View>
@@ -576,6 +576,237 @@ const TripPdfFormat = ({tripDetails, metadata, pckList, costData, currencySymbol
         ))}
         </View>
       </View>
+
+      </Page>
+      <Page size="A4" style={{
+      paddingVertical: '30px',
+    }}>
+      <View style={{
+        display: 'flex',
+        flexDirection: 'row',
+        gap: '18px',
+        fontSize: 45,
+        paddingHorizontal: '40px',
+        paddingBottom: '10px',
+        width: '60%',
+        borderBottom: '2px solid #ff8a47',
+      }}>
+        <Text
+          style={{
+            fontFamily: 'Poppins SemiBold',
+
+          }}
+        >
+         Cost
+         
+        </Text>
+        <Text
+        style={{
+            fontFamily: 'Poppins Light',
+            color: '#555',
+        }}>
+          Analysis
+        </Text>
+      </View>
+      <View
+        style={{
+          paddingHorizontal: '40px',
+          paddingVertical: '20px',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '15px',
+        }}
+      >
+        {Object.entries(costData.days).map(([day, costInfo]) => (
+          <View
+            key={day}
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+            }}
+          >
+            <Text
+              style={{
+                fontFamily: 'Poppins SemiBold',
+                fontSize: 16,
+                color: '#333',
+                marginBottom: '2px',
+              }}
+            >Day {day.replace("day", "").trim()}</Text>
+            <View
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '2px',
+              }}
+            >
+              <View
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  fontFamily: 'Poppins Regular',
+                  fontSize: 12,
+                }}
+              >
+                <Text>Transportation:</Text>
+                <Text>{currencySymbol}{costInfo.subcosts.transportation}</Text>
+              </View>
+              <View
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  fontFamily: 'Poppins Regular',
+                  fontSize: 12,
+                }}
+              >
+                <Text>Hotel:</Text>
+                <Text>{currencySymbol}{costInfo.subcosts.hotel}</Text>
+              </View>
+              <View
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  fontFamily: 'Poppins Regular',
+                  fontSize: 12,
+                }}
+              >
+                <Text>Food:</Text>
+                <Text>{currencySymbol}{costInfo.subcosts.food}</Text>
+              </View>
+              <View
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  fontFamily: 'Poppins Regular',
+                  fontSize: 12,
+                }}
+              >
+                <Text>Sightseeing:</Text>
+                <Text>{currencySymbol}{costInfo.subcosts.sightseeing}</Text>
+              </View>
+              <View
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  fontFamily: 'Poppins Medium',
+                  fontSize: 12,
+                }}
+              >
+                <Text>Day Total:</Text>
+                <Text>{currencySymbol}{costInfo.subcosts.transportation}</Text>
+              </View>
+            </View>
+          </View>
+        ))}
+        <View
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+            }}
+          >
+            
+            <Text
+              style={{
+                fontFamily: 'Poppins SemiBold',
+                fontSize: 16,
+                color: '#333',
+                marginBottom: '2px',
+              }}
+            >Misc</Text>
+            <View
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '2px',
+              }}
+            >
+              <View
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  fontFamily: 'Poppins Regular',
+                  fontSize: 12,
+                }}
+              >
+                <Text>Shopping:</Text>
+                <Text>{currencySymbol}{costData.shopping || 0}</Text>
+              </View>
+              <View
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  fontFamily: 'Poppins Regular',
+                  fontSize: 12,
+                }}
+              >
+                <Text>Insurance:</Text>
+                <Text>{currencySymbol}{costData.insurance || 0}</Text>
+              </View>
+              <View
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  fontFamily: 'Poppins Regular',
+                  fontSize: 12,
+                }}
+              >
+                <Text>Visa:</Text>
+                <Text>{currencySymbol}{costData.visa || 0}</Text>
+              </View>
+              <View
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  fontFamily: 'Poppins Regular',
+                  fontSize: 12,
+                }}
+              >
+                <Text>Other:</Text>
+                <Text>{currencySymbol}{costData.other || 0}</Text>
+              </View>
+              <View
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  fontFamily: 'Poppins Medium',
+                  fontSize: 12,
+                }}
+              >
+                <Text>Misc Total:</Text>
+                <Text>{currencySymbol}{(costData.shopping || 0) + (costData.insurance || 0) + (costData.visa || 0) + (costData.other || 0)}</Text>
+              </View>
+            </View>
+        </View>
+        <View
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            fontFamily: 'Poppins Medium',
+            fontSize: 16,
+            marginTop: '10px',
+            paddingVertical: '10px',
+            paddingHorizontal: '10px',
+            borderTop: '1px solid #ccc',
+            borderBottom: '1px solid #ccc',
+          }}
+        >
+          <Text>Grand Total:</Text>
+          <Text>{currencySymbol}{costData.totalcost}</Text>
+        </View>
+
+      </View>
+
 
       </Page>
     </Document>
