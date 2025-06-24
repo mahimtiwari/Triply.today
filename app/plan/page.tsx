@@ -1529,7 +1529,7 @@ async function saveTrip() {
             
             <div className={`flex-grow ${ sideSelected === "itin" || sideSelected === "plan" || sideSelected === "save" ? "block" : "hidden" }`}>
             
-            { placesNames.current.length ===0 && (
+            { placesNames.current.length ===0 && screenWidth!>900 &&(
             <Map 
         placesNames={React.useMemo(() => placesNames.current, [placesNames.current])} 
               onClick={React.useCallback(
@@ -1543,7 +1543,7 @@ async function saveTrip() {
             )
             }
 
-            {placesNames.current.length > 0 && (
+            {placesNames.current.length > 0 && screenWidth!>900 && (
             <Map 
         placesNames={React.useMemo(() => placesNames.current, [placesNames.current])} 
               onClick={React.useCallback(
@@ -1762,16 +1762,32 @@ async function saveTrip() {
     <div className='absolute w-full h-[100vh] bg-amber-400 ' 
     onTouchMove={() => setControlMenuOpen(false)}
     onClick={() => setControlMenuOpen(false)}>
-      <Map 
-        placesNames={React.useMemo(() => ['San Francisco', 'Mountain View', 'Los Angeles'], [])} 
-        onClick={React.useCallback(
-        (placeName: string) => {
-          console.log("place:", placeName);
-        }, 
-        []
-        )}
-        controls={false} 
-      />
+            { placesNames.current.length ===0 && screenWidth!<=900 && (
+            <Map 
+        placesNames={React.useMemo(() => placesNames.current, [placesNames.current])} 
+              onClick={React.useCallback(
+              (placeName: string) => {
+                console.log("place:", placeName);
+              }, 
+              []
+              )} 
+              controls={false}
+            />
+            )
+            }
+
+            {placesNames.current.length > 0 && screenWidth!<=900 && (
+            <Map 
+        placesNames={React.useMemo(() => placesNames.current, [placesNames.current])} 
+              onClick={React.useCallback(
+              (placeName: string) => {
+                console.log("place:", placeName);
+              }, 
+              []
+              )} 
+              controls={false}
+            />
+            )}
     </div>
     <div className={`sticky bg-white z-50 top-[100vh] transition-all duration-300 overflow-y-auto`}
       style={
