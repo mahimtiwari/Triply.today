@@ -467,6 +467,40 @@ const TripPdfFormat = ({tripDetails, metadata, pckList, costData, currencySymbol
       </View>
 
       </Page>
+      <Page size="A4" style={{
+      paddingVertical: '30px',
+    }}>
+      <View style={{
+        display: 'flex',
+        flexDirection: 'row',
+        gap: '18px',
+        fontSize: 45,
+        paddingHorizontal: '40px',
+        paddingBottom: '10px',
+        width: '60%',
+        borderBottom: '2px solid #ff8a47',
+      }}>
+        <Text
+          style={{
+            fontFamily: 'Poppins SemiBold',
+
+          }}
+        >
+         Packing
+         
+        </Text>
+        <Text
+        style={{
+            fontFamily: 'Poppins Light',
+            color: '#555',
+        }}>
+          List
+        </Text>
+      </View>
+
+
+
+      </Page>
     </Document>
 
 
