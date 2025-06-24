@@ -101,7 +101,7 @@ const mapOptions: MapOptions = {
 
       // Center map on first valid place
       mapInstance.setCenter(places[0].coords);
-
+      mapInstance.setZoom(8);
       // Add GeoJSON source
       mapInstance.addSource('places', {
         type: 'geojson',
