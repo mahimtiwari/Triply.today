@@ -1460,7 +1460,7 @@ async function saveTrip() {
           )}
           
           {sideSelected === "export" && bufSate && (
-            <ExportComp tripDetails={dataJSON!} metadata={tripDetails} pckList={pckList.current} costData={costDetailsRef.current!} />
+            <ExportComp  currencySymbol={currencySymbol || "$"}  tripDetails={dataJSON!} metadata={tripDetails} pckList={pckList.current} costData={costDetailsRef.current!} />
 
           )}
           {sideSelected === "bag" && (
@@ -2320,7 +2320,7 @@ async function saveTrip() {
           )}
           
           {sideSelected === "export" && bufSate && (
-            <ExportComp tripDetails={dataJSON!} metadata={tripDetails} pckList={pckList.current} costData={costDetailsRef.current!} />
+            <ExportComp currencySymbol={currencySymbol || "$"} tripDetails={dataJSON!} metadata={tripDetails} pckList={pckList.current} costData={costDetailsRef.current!} />
 
           )}
 

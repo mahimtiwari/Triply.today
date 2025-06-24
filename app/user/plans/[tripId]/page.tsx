@@ -1508,7 +1508,7 @@ const [popShare, setPopShare] = useState<boolean>(false);
           )}
           
           {sideSelected === "export" && bufSate && (
-            <ExportComp tripDetails={dataJSON!} metadata={tripDetails} pckList={pckList.current} costData={costDetailsRef.current!} />
+            <ExportComp currencySymbol={currencySymbol || "$"} tripDetails={dataJSON!} metadata={tripDetails} pckList={pckList.current} costData={costDetailsRef.current!} />
           )}
           {sideSelected === "bag" && (
             <BagSection
@@ -2370,7 +2370,7 @@ const [popShare, setPopShare] = useState<boolean>(false);
           )}
           
           {sideSelected === "export" && bufSate && (
-            <ExportComp tripDetails={dataJSON!} metadata={tripDetails} pckList={pckList.current} costData={costDetailsRef.current!} />
+            <ExportComp currencySymbol={currencySymbol || "$"} tripDetails={dataJSON!} metadata={tripDetails} pckList={pckList.current} costData={costDetailsRef.current!} />
 
           )}
 

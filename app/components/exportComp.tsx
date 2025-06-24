@@ -113,6 +113,7 @@ interface PDFprops {
     metadata: Meta,
     pckList: PackingCardProps[],
     costData: CostDetailsType,
+    currencySymbol: string;
 }
 
 
@@ -176,8 +177,22 @@ const descripStyles = {
   }
 }
 
+const getTransportationCost = (transportation: Transportation[], from:string, to:string, prefOption:string): number => {
 
-const TripPdfFormat = ({tripDetails, metadata, pckList, costData}:PDFprops) => {
+  for (const transport of transportation) {
+    if (transport.from === from && transport.to === to) {
+      for (const option of transport.options) {
+        if (option.type === prefOption) {
+          return parseInt(option.cost.replace(/[^0-9.-]+/g, ""));
+        }
+      }
+    }
+  }
+  return 0;
+
+}  
+
+const TripPdfFormat = ({tripDetails, metadata, pckList, costData, currencySymbol}:PDFprops) => {
   return (
     <Document>
       <Page size="A4" style={{
@@ -275,23 +290,28 @@ const TripPdfFormat = ({tripDetails, metadata, pckList, costData}:PDFprops) => {
 {/* Day Views */}
         <View style={{
           marginTop: '30px',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '20px',
         }}>
-          
+          {Object.entries(tripDetails.trip.trip).map(([day, dayInfo]) => (
           <View
+          key={day}
           style={{
             backgroundColor: '#fef6f0',
             width: '100%',
-            minHeight: "150px",
             height: 'auto',
             borderRadius: '10px',
             display: 'flex',
             flexDirection: 'row',
+            alignItems: 'stretch',
+            
           }}
           >
             <View
               style={{
               backgroundColor: '#fc8c47',
-              width: '50px',
+              width: '55px',
               display: 'flex',
               height: '100%',
               justifyContent: 'center',
@@ -306,17 +326,17 @@ const TripPdfFormat = ({tripDetails, metadata, pckList, costData}:PDFprops) => {
                 fontFamily: 'Poppins SemiBold',
                 color: '#fff',
                 fontSize: 16,
+                width: '100%',
                 transform: 'rotate(-90deg)',
               }}
               >
-              DAY 1
+              DAY {day.replace('day', '').trim()}
               </Text>
             </View>
             <View style={{
               width: '100%',
               display: 'flex',
               flexDirection: 'column',
-              justifyContent: 'space-between',
 
             }}>
               <View>
@@ -332,28 +352,117 @@ const TripPdfFormat = ({tripDetails, metadata, pckList, costData}:PDFprops) => {
                     borderStyle: 'dotted',
                   }}
                 >
-                  {tripDetails.trip.trip.day1.destination.toUpperCase()}
+                  {dayInfo.destination.toUpperCase()}
                 </Text>
               </View>
-              <View>
-                {tripDetails.trip.trip.day1.places.map((place, index) => (
+              <View style={{
+                display: 'flex',
+                flexDirection: 'column',
+                padding: '10px',
+                gap: '10px',
+              }}>
+                {dayInfo.places.map((place, index) => (
                   <View key={index} style={{
-
+                    backgroundColor: '#ffecde',
+                    padding: '10px',
+                    borderRadius: '5px',
+                    border: '1px solid #ccc',
+                    borderStyle: 'dotted',
                   }}>
-                    <Image
-                      src={`/img/${place.category.toLowerCase()}.png`}
+                    <View
                       style={{
-                        width: '20px',
-                        height: '20px',
+                        display: 'flex',
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        marginBottom: '5px',
                       }}
-                    />
-                    <Text>{place.name} Category: {place.category}</Text>
+                    >
+                      <Text style={{
+                        fontFamily: 'Poppins SemiBold',
+                        color: '#222',
+                        fontSize: 14,
+                      }}>
+                        {place.name}
+                      </Text>
+                      <Text style={{
+                          backgroundColor: '#ffd8b5',
+                          color: '#333',
+                          paddingHorizontal: '10px',
+                          paddingVertical: '2px',
+                          borderRadius: '5px',
+                          fontFamily: 'Poppins Regular',
+                        fontSize: 12,
+                      }}>
+                        {place.cost}
+                      </Text>
+                    </View>
+                      <Text
+                        style={{
+                          fontFamily: 'Poppins Regular',
+                          color: '#555',
+                          fontSize: 12,
+                        }}
+                      >
+                        {place.time}
+                      </Text>
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          justifyContent: 'space-between',
+                          fontSize: 12,
+                          fontFamily: 'Poppins Regular',
+                          marginTop: '5px',
+                          color: '#555',
+                        }}
+                      >
+                        <View>
+                          <Text>From:</Text>
+                          <Text>{place.from}</Text>
+                        </View>
+
+                        <View>
+                          <Text>To:</Text>
+                          <Text>{place.from}</Text>
+                        </View>
+                      </View> 
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          justifyContent: 'space-between',
+                          fontSize: 12,
+                          fontFamily: 'Poppins Regular',
+                          marginTop: '5px',
+                          color: '#555',
+                        }}
+                      >
+                        <Text
+                          style={{
+                          backgroundColor: '#ffd8b5',
+                          color: '#333',
+                          paddingHorizontal: '10px',
+                          paddingVertical: '2px',
+                          borderRadius: '5px',
+                          fontFamily: 'Poppins Regular',
+                          }}
+                        >{place.preffered_transport}</Text>
+                        <Text
+                          style={{
+                          backgroundColor: '#ffd8b5',
+                          color: '#333',
+                          paddingHorizontal: '10px',
+                          paddingVertical: '2px',
+                          borderRadius: '5px',
+                          fontFamily: 'Poppins Regular',
+                          }}
+                        >{currencySymbol}{getTransportationCost(tripDetails.trip.transportation, place.from, place.to, place.preffered_transport)}</Text>
+                      </View>
                   </View>
                 ))}
               </View>
             </View>
           </View>
-
+          ))}
         </View>
       </View>
 
@@ -365,11 +474,11 @@ const TripPdfFormat = ({tripDetails, metadata, pckList, costData}:PDFprops) => {
 };
 
 
-const ExportComp = ({tripDetails, metadata, pckList, costData}:PDFprops) => {
+const ExportComp = ({tripDetails, metadata, pckList, costData, currencySymbol}:PDFprops) => {
   return (
     <div className='flex flex-col h-full bg-green'>
       <PDFDownloadLink
-        document={<TripPdfFormat tripDetails={tripDetails} metadata={metadata} pckList={pckList} costData={costData} />}
+        document={<TripPdfFormat currencySymbol={currencySymbol} tripDetails={tripDetails} metadata={metadata} pckList={pckList} costData={costData} />}
         fileName="Trip_Plan_Europe_Discovery.pdf"
         className="bg-blue-500 cursor-pointer w-fit text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors duration-300"
       >
@@ -381,7 +490,7 @@ const ExportComp = ({tripDetails, metadata, pckList, costData}:PDFprops) => {
       <div style={{ margin: '20px 0', width: '100%', height: '100%' }}>
         <span className="text-gray-600">or view it online:</span>
         <PDFViewer style={{ width: '100%', height: '100%' }}>
-          <TripPdfFormat tripDetails={tripDetails} metadata={metadata} pckList={pckList} costData={costData} />
+          <TripPdfFormat currencySymbol={currencySymbol} tripDetails={tripDetails} metadata={metadata} pckList={pckList} costData={costData} />
         </PDFViewer>
       </div>
     </div>
