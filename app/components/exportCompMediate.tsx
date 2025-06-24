@@ -359,6 +359,72 @@ const TripPdfFormat = ({tripDetails, metadata, pckList, costData, currencySymbol
                 padding: '10px',
                 gap: '10px',
               }}>
+                {dayInfo.arriving && (
+                  <View key={"arriving"} style={{
+                    backgroundColor: '#ffecde',
+                    padding: '10px',
+                    borderRadius: '5px',
+                    border: '1px solid #ccc',
+                    borderStyle: 'dotted',
+                  }}>
+
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          justifyContent: 'space-between',
+                          fontSize: 12,
+                          fontFamily: 'Poppins Regular',
+                          marginTop: '5px',
+                          color: '#555',
+                        }}
+                      >
+                        <View style={{
+                          maxWidth: '40%',
+                        }}>
+                          <Text>From:</Text>
+                          <Text>{dayInfo.arriving.from}</Text>
+                        </View>
+
+                        <View style={{
+                          maxWidth: '40%',
+                        }}>
+                          <Text>To:</Text>
+                          <Text>{dayInfo.arriving.to}</Text>
+                        </View>
+                      </View> 
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          justifyContent: 'space-between',
+                          fontSize: 12,
+                          fontFamily: 'Poppins Regular',
+                          marginTop: '5px',
+                          color: '#555',
+                        }}
+                      >
+                        <Text
+                          style={{
+                          backgroundColor: '#ffd8b5',
+                          color: '#333',
+                          paddingHorizontal: '10px',
+                          paddingVertical: '2px',
+                          borderRadius: '5px',
+                          fontFamily: 'Poppins Regular',
+                          }}
+                        >{dayInfo.arriving.preffered_transport}</Text>
+                        <Text
+                          style={{
+                          backgroundColor: '#ffd8b5',
+                          color: '#333',
+                          paddingHorizontal: '10px',
+                          paddingVertical: '2px',
+                          borderRadius: '5px',
+                          fontFamily: 'Poppins Regular',
+                          }}
+                        >{currencySymbol}{getTransportationCost(tripDetails.trip.transportation, dayInfo.arriving.from, dayInfo.arriving.to, dayInfo.arriving.preffered_transport)}</Text>
+                      </View>
+                  </View>
+                )}
                 {dayInfo.places.map((place, index) => (
                   <View key={index} style={{
                     backgroundColor: '#ffecde',
@@ -461,6 +527,73 @@ const TripPdfFormat = ({tripDetails, metadata, pckList, costData, currencySymbol
                       </View>
                   </View>
                 ))}
+                {dayInfo.departing && (
+                  <View key={"departing"} style={{
+                    backgroundColor: '#ffecde',
+                    padding: '10px',
+                    borderRadius: '5px',
+                    border: '1px solid #ccc',
+                    borderStyle: 'dotted',
+                  }}>
+
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          justifyContent: 'space-between',
+                          fontSize: 12,
+                          fontFamily: 'Poppins Regular',
+                          marginTop: '5px',
+                          color: '#555',
+                        }}
+                      >
+                        <View style={{
+                          maxWidth: '40%',
+                        }}>
+                          <Text>From:</Text>
+                          <Text>{dayInfo.departing.from}</Text>
+                        </View>
+
+                        <View style={{
+                          maxWidth: '40%',
+                        }}>
+                          <Text>To:</Text>
+                          <Text>{dayInfo.departing.to}</Text>
+                        </View>
+                      </View> 
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          justifyContent: 'space-between',
+                          fontSize: 12,
+                          fontFamily: 'Poppins Regular',
+                          marginTop: '5px',
+                          color: '#555',
+                        }}
+                      >
+                        <Text
+                          style={{
+                          backgroundColor: '#ffd8b5',
+                          color: '#333',
+                          paddingHorizontal: '10px',
+                          paddingVertical: '2px',
+                          borderRadius: '5px',
+                          fontFamily: 'Poppins Regular',
+                          }}
+                        >{dayInfo.departing.preffered_transport}</Text>
+                        <Text
+                          style={{
+                          backgroundColor: '#ffd8b5',
+                          color: '#333',
+                          paddingHorizontal: '10px',
+                          paddingVertical: '2px',
+                          borderRadius: '5px',
+                          fontFamily: 'Poppins Regular',
+                          }}
+                        >{currencySymbol}{getTransportationCost(tripDetails.trip.transportation, dayInfo.departing.from, dayInfo.departing.to, dayInfo.departing.preffered_transport)}</Text>
+                      </View>
+                  </View>
+                )}
+
               </View>
             </View>
           </View>
@@ -844,7 +977,11 @@ const ExportCompMediate = ({tripDetails, metadata, pckList, costData, currencySy
       <span className="ml-3 text-gray-700 text-base font-medium">Export as PDF</span>
     </button>
 
-
+<PDFViewer
+  className="w-full h-[80vh] border-2 border-gray-300 rounded-lg shadow-lg"
+  >
+  <TripPdfFormat tripDetails={tripDetails} metadata={metadata} pckList={pckList} costData={costData} currencySymbol={currencySymbol} />
+</PDFViewer>
 
 </div>
 
