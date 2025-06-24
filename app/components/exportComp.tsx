@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import ExportCompMediate from './exportCompMediate'
 
 
@@ -106,16 +106,17 @@ interface PDFprops {
 const exportComp = ({tripDetails, metadata, pckList, costData, currencySymbol}:PDFprops) => {
   const [isLoading, setIsLoading] = useState(true);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 2000);
+    }, 1000);
     return () => clearTimeout(timer);
   }, []);
 
   if (isLoading) {
     return (
-
+      
+      
       <div className="flex flex-col items-center justify-center h-full">
         <h1 className="text-xl font-semibold text-gray-700">Preparing Your Export</h1>
         <div className="mt-4 w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
@@ -124,10 +125,9 @@ const exportComp = ({tripDetails, metadata, pckList, costData, currencySymbol}:P
     );
   }
 
-  return (
 
+  return (
     <ExportCompMediate currencySymbol={currencySymbol} tripDetails={tripDetails} metadata={metadata} pckList={pckList} costData={costData} />
-  
   );
 }
 

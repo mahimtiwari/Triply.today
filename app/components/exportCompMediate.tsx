@@ -828,7 +828,7 @@ const ExportCompMediate = ({tripDetails, metadata, pckList, costData, currencySy
     </button>
   </PDFDownloadLink>
 
-  <div className="flex flex-col items-center w-full max-w-4xl mt-4 gap-2">
+  {/* <div className="flex flex-col items-center w-full max-w-4xl mt-4 gap-2">
     <span className="text-gray-500 text-sm">or view it online:</span>
     <div className="w-full h-[600px] border border-gray-300 rounded-lg overflow-hidden">
       <PDFViewer style={{ width: '100%', height: '100%' }}>
@@ -841,7 +841,7 @@ const ExportCompMediate = ({tripDetails, metadata, pckList, costData, currencySy
         />
       </PDFViewer>
     </div>
-  </div>
+  </div> */}
 
 </div>
 
