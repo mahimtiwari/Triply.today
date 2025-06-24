@@ -104,26 +104,26 @@ interface PDFprops {
 
 
 const exportComp = ({tripDetails, metadata, pckList, costData, currencySymbol}:PDFprops) => {
-  const [isLoading, setIsLoading] = useState(true);
+  // const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 1000);
-    return () => clearTimeout(timer);
-  }, []);
+  // useEffect(() => {
+  //   const timer = setTimeout(() => {
+  //     setIsLoading(false);
+  //   }, 1000);
+  //   return () => clearTimeout(timer);
+  // }, []);
 
-  if (isLoading) {
-    return (
+  // if (isLoading) {
+  //   return (
       
       
-      <div className="flex flex-col items-center justify-center h-full">
-        <h1 className="text-xl font-semibold text-gray-700">Preparing Your Export</h1>
-        <div className="mt-4 w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-      </div>
+  //     <div className="flex flex-col items-center justify-center h-full">
+  //       <h1 className="text-xl font-semibold text-gray-700">Preparing Your Export</h1>
+  //       <div className="mt-4 w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+  //     </div>
 
-    );
-  }
+  //   );
+  // }
 
 
   return (

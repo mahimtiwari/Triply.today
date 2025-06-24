@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { PDFDownloadLink, PDFViewer } from '@react-pdf/renderer';
+import { pdf, PDFDownloadLink, PDFViewer } from '@react-pdf/renderer';
 
 
 import {
@@ -815,33 +815,36 @@ const TripPdfFormat = ({tripDetails, metadata, pckList, costData, currencySymbol
 
 
 const ExportCompMediate = ({tripDetails, metadata, pckList, costData, currencySymbol}:PDFprops) => {
+  
+  const exportPDF = async () => {
+    const blob = await pdf(<TripPdfFormat tripDetails={tripDetails} metadata={metadata} pckList={pckList} costData={costData} currencySymbol={currencySymbol} />).toBlob();
+    const url = URL.createObjectURL(blob);
+
+    // Create a temporary link to trigger download
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `${metadata.destination} Trip Plan.pdf`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    // Free up memory
+    URL.revokeObjectURL(url);
+  };
+  
   return (
+
 <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 p-6 gap-6">
 
-  <PDFDownloadLink
-    document={<TripPdfFormat currencySymbol={currencySymbol} tripDetails={tripDetails} metadata={metadata} pckList={pckList} costData={costData} />}
-    fileName={`${metadata.destination} Trip Plan.pdf`}
-  >
-    <button className="flex items-center justify-center cursor-pointer bg-white rounded-full h-14 px-6 border border-gray-300 hover:bg-gray-100 transition-colors duration-200">
+
+    <button 
+    onClick={() => {exportPDF()}}
+    className="flex items-center justify-center cursor-pointer bg-white rounded-full h-14 px-6 border border-gray-300 hover:bg-gray-100 transition-colors duration-200">
       <span className="material-icons text-2xl text-gray-700">picture_as_pdf</span>
       <span className="ml-3 text-gray-700 text-base font-medium">Export as PDF</span>
     </button>
-  </PDFDownloadLink>
 
-  {/* <div className="flex flex-col items-center w-full max-w-4xl mt-4 gap-2">
-    <span className="text-gray-500 text-sm">or view it online:</span>
-    <div className="w-full h-[600px] border border-gray-300 rounded-lg overflow-hidden">
-      <PDFViewer style={{ width: '100%', height: '100%' }}>
-        <TripPdfFormat
-          currencySymbol={currencySymbol}
-          tripDetails={tripDetails}
-          metadata={metadata}
-          pckList={pckList}
-          costData={costData}
-        />
-      </PDFViewer>
-    </div>
-  </div> */}
+
 
 </div>
 
