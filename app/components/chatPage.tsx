@@ -11,7 +11,7 @@ interface ChatHistoryProps {
 const ChatPage = ({chatId}:{chatId:string}) => {
 
 
-
+    const [chatType, setChatType] = useState<string>(chatId);
     const chatLogs = useRef<HTMLDivElement>(null);
     const [prompt, setPrompt] = useState<string>("");
     const [chatDisplay, setChatDisplay] = useState<ChatHistoryProps[]>([]);
@@ -98,13 +98,72 @@ const ChatPage = ({chatId}:{chatId:string}) => {
         </div>
         </div>
     */}
-    <div className='flex flex-row h-screen w-screen bg-[#181a1e] items-center justify-center'>
+    <div className='flex flex-row h-screen w-screen font-[Poppins] bg-[#212121]'>
         {/* <div className='w-[336px]'>
 
         </div> */}
-        <div className='flex flex-col items-center justify-center text-5xl text-center'>
-            <span className='text-[#999a9d]'>Good to See You!</span>
-            <span className='bg-gradient-to-r bg-clip-text text-transparent from-[#b2b2b4] via-[white] to-[#b2b2b4]'>Your perfect trip starts here.</span>
+        <div className='mx-auto my-auto '>
+            <div className='flex flex-col mb-10 items-center justify-center text-4xl text-center'>
+                <span className='text-[#999a9d]'>Good to See You!</span>
+                <span className='bg-gradient-to-r bg-clip-text text-transparent from-[#b2b2b4] via-[white] to-[#b2b2b4]'>Your perfect trip starts here.</span>
+            </div>
+            <div className='w-full rounded-3xl bg-[#303030] p-4'>
+                <input type="text" className='text-white outline-0' placeholder='Ask Anything...'/>
+                <div className=' flex flex-row justify-between items-center  mt-4'>
+                    <div className='flex flex-row gap-2'>
+                        <button className='gap-2 min-h-10 min-w-10 flex items-center justify-center border-[#d3d3d3] rounded-full hover:bg-[#50505039] cursor-pointer transition-colors shadow-lg'
+                            onClick={() => {
+                                setChatType("Build");
+                            }}
+                            style={{
+                                border: chatType === "Build" ? "2px solid #007bff" : "2px solid transparent",
+                                color: chatType === "Build" ? "#007bff" : "#d3d3d3",
+                                paddingLeft: chatType === "Build" ? "16px" : "0",
+                                paddingRight: chatType === "Build" ? "16px" : "0",
+                            }}
+                        >
+                            <span className='material-icons' style={{ fontSize: 20 }}>build</span>
+                                {chatType === "Build" && (
+                                <span className='text-[14px] font-medium'>Build</span>
+)}
+                        </button>
+                        <button className='gap-2 min-h-10 min-w-10 flex items-center justify-center border-[#d3d3d3] rounded-full hover:bg-[#50505039] cursor-pointer transition-colors shadow-lg'
+                            onClick={() => {
+                                setChatType("Edit");
+                            }}
+                            style={{
+                                border: chatType === "Edit" ? "2px solid #007bff" : "2px solid transparent",
+                                color: chatType === "Edit" ? "#007bff" : "#d3d3d3",
+                                paddingLeft: chatType === "Edit" ? "16px" : "0",
+                                paddingRight: chatType === "Edit" ? "16px" : "0",
+                            }}
+                        >
+                            <span className='material-icons' style={{ fontSize: 20 }}>edit</span>
+                                {chatType === "Edit" && (
+                                <span className='text-[14px] font-medium'>Edit</span>
+)}
+                        </button>
+                        <button className='gap-2 min-h-10 min-w-10 flex items-center justify-center border-[#d3d3d3] rounded-full hover:bg-[#50505039] cursor-pointer transition-colors shadow-lg'
+                            onClick={() => {
+                                setChatType("Analyze");
+                            }}
+                            style={{
+                                border: chatType === "Analyze" ? "2px solid #007bff" : "2px solid transparent",
+                                color: chatType === "Analyze" ? "#007bff" : "#d3d3d3",
+                                paddingLeft: chatType === "Analyze" ? "16px" : "0",
+                                paddingRight: chatType === "Analyze" ? "16px" : "0",
+                            }}
+                        >
+                            <span className='material-icons' style={{ fontSize: 20 }}>bar_chart</span>
+                                {chatType === "Analyze" && (
+                                <span className='text-[14px] font-medium'>Analyze</span>
+)}
+                        </button>
+                    </div>
+                    <button className='material-icons bg-white rounded-full p-1.5'>arrow_upward</button>
+
+                </div>
+            </div>
         </div>
     </div>
     </>
