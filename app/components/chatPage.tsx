@@ -3,12 +3,20 @@ import { set } from 'date-fns';
 import { tr } from 'date-fns/locale';
 import React, { useRef, useState } from 'react'
 
+interface ChatHistoryProps {
+    msg: string;
+    sender: string;
+}
+
 const ChatPage = ({chatId}:{chatId:string}) => {
+
+
 
     const chatLogs = useRef<HTMLDivElement>(null);
     const [prompt, setPrompt] = useState<string>("");
-    const [chatDisplay, setChatDisplay] = useState<string[]>([]);
+    const [chatDisplay, setChatDisplay] = useState<ChatHistoryProps[]>([]);
     async function  msgSend() {
+        setChatDisplay([...chatDisplay, {msg: prompt, sender: "user"}]);
         if (prompt !== "") {
         const convStreamFetch = await fetch("/api/conversation", {
             method: "POST",
@@ -30,6 +38,8 @@ const ChatPage = ({chatId}:{chatId:string}) => {
         const reader = stream.getReader();
         const decoder = new TextDecoder();
         let dmsg = true;
+        setChatDisplay((prev) => [...prev, {msg: "", sender: "bot"}]);
+
         while (true) {
             const { done, value } = await reader.read();
 
@@ -37,16 +47,14 @@ const ChatPage = ({chatId}:{chatId:string}) => {
                 break;
             }
             const text = decoder.decode(value, { stream: true });
-            if (dmsg) {
-                setChatDisplay((prev) => [...prev, text]);
-                dmsg = false;
-            }else {
-                setChatDisplay((prev) => {
-                    const newChat = [...prev];
-                    newChat[newChat.length - 1] += text;
-                    return newChat;
-                });
-            }
+            console.log(text);
+            setChatDisplay((prev) => {
+                const newChat = [...prev];
+                newChat[newChat.length - 1].msg += text;
+                console.log(newChat);
+                return newChat;
+            });
+
         }
         
 
@@ -75,7 +83,7 @@ const ChatPage = ({chatId}:{chatId:string}) => {
                 <div className="space-y-2" ref={chatLogs}>
                     {chatDisplay.map((msg, index) => (
                         <div key={index} id={`lastChatLog`} className="p-2 bg-white rounded shadow">
-                            {msg}
+                            {msg.sender}: {msg.msg}
                         </div>
                     ))}
                 </div>
