@@ -1,5 +1,6 @@
 "use client";
 import { set } from 'date-fns';
+import { tr } from 'date-fns/locale';
 import React, { useRef, useState } from 'react'
 
 const ChatPage = ({chatId}:{chatId:string}) => {
@@ -28,14 +29,24 @@ const ChatPage = ({chatId}:{chatId:string}) => {
         }
         const reader = stream.getReader();
         const decoder = new TextDecoder();
-        
+        let dmsg = true;
         while (true) {
             const { done, value } = await reader.read();
+
             if (done) {
                 break;
             }
             const text = decoder.decode(value, { stream: true });
-            setChatDisplay(prev => prev.length > 0 ? [...[...prev].splice(0, prev.length-1), prev[prev.length - 1] + text] : [text]);
+            if (dmsg) {
+                setChatDisplay((prev) => [...prev, text]);
+                dmsg = false;
+            }else {
+                setChatDisplay((prev) => {
+                    const newChat = [...prev];
+                    newChat[newChat.length - 1] += text;
+                    return newChat;
+                });
+            }
         }
         
 
@@ -57,14 +68,14 @@ const ChatPage = ({chatId}:{chatId:string}) => {
             <header className="p-4 bg-gray-100 border-b border-gray-300">
                 <h1 className="text-lg font-bold">Chat</h1>
             </header>
-            <main className="flex-1 p-4 overflow-y-auto" ref={chatLogs}>
+            <main className="flex-1 p-4 overflow-y-auto">
                 {chatDisplay.length === 0 ? (
                 <p>Welcome to the chat({chatId})!</p>
                 ):(
-                <div className="space-y-2">
+                <div className="space-y-2" ref={chatLogs}>
                     {chatDisplay.map((msg, index) => (
-                        <div key={index} className="p-2 bg-white rounded shadow">
-                            <p>{msg}</p>
+                        <div key={index} id={`lastChatLog`} className="p-2 bg-white rounded shadow">
+                            {msg}
                         </div>
                     ))}
                 </div>
