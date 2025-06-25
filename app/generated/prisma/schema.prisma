@@ -125,6 +125,7 @@ enum Visibility {
 model Conversations {
   conversation_id  String   @id @unique @default(uuid())
   userId           String
+  name             String
   created_at       DateTime @default(now())
   last_interaction DateTime
 

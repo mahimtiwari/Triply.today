@@ -193,6 +193,7 @@ exports.Prisma.SharedTripScalarFieldEnum = {
 exports.Prisma.ConversationsScalarFieldEnum = {
   conversation_id: 'conversation_id',
   userId: 'userId',
+  name: 'name',
   created_at: 'created_at',
   last_interaction: 'last_interaction'
 };
