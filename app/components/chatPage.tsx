@@ -108,11 +108,15 @@ const ChatPage = ({chatId}:{chatId:string}) => {
                 <span className='bg-gradient-to-r bg-clip-text text-transparent from-[#b2b2b4] via-[white] to-[#b2b2b4]'>Your perfect trip starts here.</span>
             </div>
             <div className='w-full rounded-3xl bg-[#303030] p-4'>
-                <input type="text" className='text-white outline-0' placeholder='Ask Anything...'/>
+                <textarea  className='text-white resize-none overflow-hidden w-full outline-0' placeholder='Ask Anything...'/>
                 <div className=' flex flex-row justify-between items-center  mt-4'>
                     <div className='flex flex-row gap-2'>
                         <button className='gap-2 min-h-10 min-w-10 flex items-center justify-center border-[#d3d3d3] rounded-full hover:bg-[#50505039] cursor-pointer transition-colors shadow-lg'
                             onClick={() => {
+                                if (chatType === "Build") {
+                                    setChatType("");
+                                    return;
+                                }
                                 setChatType("Build");
                             }}
                             style={{
@@ -129,6 +133,10 @@ const ChatPage = ({chatId}:{chatId:string}) => {
                         </button>
                         <button className='gap-2 min-h-10 min-w-10 flex items-center justify-center border-[#d3d3d3] rounded-full hover:bg-[#50505039] cursor-pointer transition-colors shadow-lg'
                             onClick={() => {
+                                if (chatType === "Edit") {
+                                    setChatType("");
+                                    return;
+                                }
                                 setChatType("Edit");
                             }}
                             style={{
@@ -145,6 +153,10 @@ const ChatPage = ({chatId}:{chatId:string}) => {
                         </button>
                         <button className='gap-2 min-h-10 min-w-10 flex items-center justify-center border-[#d3d3d3] rounded-full hover:bg-[#50505039] cursor-pointer transition-colors shadow-lg'
                             onClick={() => {
+                                if (chatType === "Analyze") {
+                                    setChatType("");
+                                    return;
+                                }
                                 setChatType("Analyze");
                             }}
                             style={{
@@ -160,7 +172,7 @@ const ChatPage = ({chatId}:{chatId:string}) => {
 )}
                         </button>
                     </div>
-                    <button className='material-icons bg-white rounded-full p-1.5'>arrow_upward</button>
+                    <button className='material-icons bg-white rounded-full p-1.5 hover:bg-gray-100 transition-colors duration-300 cursor-pointer'>arrow_upward</button>
 
                 </div>
             </div>
