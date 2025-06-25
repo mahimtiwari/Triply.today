@@ -35,9 +35,7 @@ const ChatPage = ({chatId}:{chatId:string}) => {
                 break;
             }
             const text = decoder.decode(value, { stream: true });
-            setChatDisplay([...chatDisplay,
-                chatDisplay.length > 0 ? chatDisplay[chatDisplay.length - 1] + text : text
-            ])
+            setChatDisplay(prev => prev.length > 0 ? [...[...prev].splice(0, prev.length-1), prev[prev.length - 1] + text] : [text]);
         }
         
 
