@@ -38,7 +38,8 @@ const ChatPage = ({chatId}:{chatId:string}) => {
         const reader = stream.getReader();
         const decoder = new TextDecoder();
         let dmsg = true;
-        setChatDisplay((prev) => [...prev, {msg: "", sender: "bot"}]);
+        let fMsg = "";
+        setChatDisplay((prev) => [...prev, {msg: fMsg, sender: "bot"}]);
 
         while (true) {
             const { done, value } = await reader.read();
@@ -47,10 +48,10 @@ const ChatPage = ({chatId}:{chatId:string}) => {
                 break;
             }
             const text = decoder.decode(value, { stream: true });
-            console.log(text);
-            setChatDisplay((prev) => {
+            fMsg+=text;
+            setChatDisplay((prev) => { 
                 const newChat = [...prev];
-                newChat[newChat.length - 1].msg += text;
+                newChat[newChat.length - 1].msg = fMsg;
                 console.log(newChat);
                 return newChat;
             });

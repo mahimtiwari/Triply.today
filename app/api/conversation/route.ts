@@ -12,7 +12,7 @@ export async function POST(request: NextRequest){
         async start(controller) {
             for (let i of "abcdefghijklmnopqrstuvwxyz".split("")) {
                 controller.enqueue(encd.encode(i));
-                await new Promise(resolve => setTimeout(resolve, 100));
+                await new Promise(resolve => setTimeout(resolve, 500));
             }
             controller.close();
         }
