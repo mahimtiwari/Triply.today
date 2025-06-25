@@ -52,7 +52,6 @@ const ChatPage = ({chatId}:{chatId:string}) => {
             setChatDisplay((prev) => { 
                 const newChat = [...prev];
                 newChat[newChat.length - 1].msg = fMsg;
-                console.log(newChat);
                 return newChat;
             });
 
@@ -63,18 +62,11 @@ const ChatPage = ({chatId}:{chatId:string}) => {
     }
 
   return (
-<div className='flex flex-row h-screen bg-gray-50 w-full'>
-        <div>
-            <nav className="p-4 w-50 bg-gray-100 border-b h-full border-gray-300">
-                <ul className="space-y-2">
-                    <li><a href="/chat/1" className="text-blue-600 hover:underline">Chat 1</a></li>
-                    <li><a href="/chat/2" className="text-blue-600 hover:underline">Chat 2</a></li>
-                    <li><a href="/chat/3" className="text-blue-600 hover:underline">Chat 3</a></li>
-                </ul>
-            </nav>
-        </div>
+    <>
+    {/*
+        <div className='flex flex-row h-screen bg-black text-white w-full'>
         <div className="flex flex-col h-screen w-full">
-            <header className="p-4 bg-gray-100 border-b border-gray-300">
+            <header className="p-4 bg-gray-800 border-b border-gray-300">
                 <h1 className="text-lg font-bold">Chat</h1>
             </header>
             <main className="flex-1 p-4 overflow-y-auto">
@@ -83,14 +75,14 @@ const ChatPage = ({chatId}:{chatId:string}) => {
                 ):(
                 <div className="space-y-2" ref={chatLogs}>
                     {chatDisplay.map((msg, index) => (
-                        <div key={index} id={`lastChatLog`} className="p-2 bg-white rounded shadow">
+                        <div key={index} id={`lastChatLog`} className="p-2 bg-gray-600 rounded shadow">
                             {msg.sender}: {msg.msg}
                         </div>
                     ))}
                 </div>
                 )}
             </main>
-            <footer className="p-4 flex flex-row gap-3 bg-gray-100 border-t border-gray-300">
+            <footer className="p-4 flex flex-row gap-3 bg-gray-800 border-t border-gray-300">
                 <input
                     type="text"
                     placeholder="Type your message..."
@@ -105,6 +97,17 @@ const ChatPage = ({chatId}:{chatId:string}) => {
             </footer>
         </div>
         </div>
+    */}
+    <div className='flex flex-row h-screen w-screen bg-[#181a1e] items-center justify-center'>
+        {/* <div className='w-[336px]'>
+
+        </div> */}
+        <div className='flex flex-col items-center justify-center text-5xl text-center'>
+            <span className='text-[#999a9d]'>Good to See You!</span>
+            <span className='bg-gradient-to-r bg-clip-text text-transparent from-[#b2b2b4] via-[white] to-[#b2b2b4]'>Your perfect trip starts here.</span>
+        </div>
+    </div>
+    </>
   )
 }
 
