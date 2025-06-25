@@ -190,6 +190,21 @@ exports.Prisma.SharedTripScalarFieldEnum = {
   userId: 'userId'
 };
 
+exports.Prisma.ConversationsScalarFieldEnum = {
+  conversation_id: 'conversation_id',
+  userId: 'userId',
+  created_at: 'created_at',
+  last_interaction: 'last_interaction'
+};
+
+exports.Prisma.MessagesScalarFieldEnum = {
+  message_id: 'message_id',
+  conversation_id: 'conversation_id',
+  sender: 'sender',
+  message_text: 'message_text',
+  created_at: 'created_at'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -220,6 +235,11 @@ exports.Visibility = exports.$Enums.Visibility = {
   SHARED: 'SHARED'
 };
 
+exports.SenderType = exports.$Enums.SenderType = {
+  MODEL: 'MODEL',
+  USER: 'USER'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
   Account: 'Account',
@@ -227,7 +247,9 @@ exports.Prisma.ModelName = {
   VerificationToken: 'VerificationToken',
   Authenticator: 'Authenticator',
   Trip: 'Trip',
-  SharedTrip: 'SharedTrip'
+  SharedTrip: 'SharedTrip',
+  Conversations: 'Conversations',
+  Messages: 'Messages'
 };
 
 /**

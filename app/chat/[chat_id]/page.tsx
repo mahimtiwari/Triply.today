@@ -1,6 +1,7 @@
 import React from 'react';
-
-const ChatPage = () => {
+const ChatPage = async ({params}:{params:{chat_id:string}}) => {
+    const chatId = (await params).chat_id;
+    
     return (
         <div className='flex flex-row h-screen bg-gray-50 w-full'>
         <div>
@@ -17,7 +18,7 @@ const ChatPage = () => {
                 <h1 className="text-lg font-bold">Chat</h1>
             </header>
             <main className="flex-1 p-4 overflow-y-auto">
-                <p>Welcome to the chat!</p>
+                <p>Welcome to the chat({chatId})!</p>
             </main>
             <footer className="p-4 bg-gray-100 border-t border-gray-300">
                 <input

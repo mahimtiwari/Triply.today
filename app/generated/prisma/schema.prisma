@@ -25,10 +25,11 @@ model User {
   // Optional for WebAuthn support
   Authenticator Authenticator[]
 
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
-  trips       Trip[]       @relation("OwnerTrips")
-  sharedTrips SharedTrip[] @relation("SharedWithUser")
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  trips         Trip[]          @relation("OwnerTrips")
+  sharedTrips   SharedTrip[]    @relation("SharedWithUser")
+  conversations Conversations[] @relation("User Chat")
 }
 
 model Account {
@@ -119,4 +120,29 @@ enum Visibility {
   PRIVATE
   PUBLIC
   SHARED
+}
+
+model Conversations {
+  conversation_id  String   @id @unique @default(uuid())
+  userId           String
+  created_at       DateTime @default(now())
+  last_interaction DateTime
+
+  user     User       @relation("User Chat", fields: [userId], references: [id], onDelete: Cascade)
+  messages Messages[] @relation("Conversation Messages")
+}
+
+model Messages {
+  message_id      String     @id @unique @default(uuid())
+  conversation_id String
+  sender          SenderType
+  message_text    String
+  created_at      DateTime   @default(now())
+
+  conversations Conversations @relation("Conversation Messages", fields: [conversation_id], references: [conversation_id], onDelete: Cascade)
+}
+
+enum SenderType {
+  MODEL
+  USER
 }
