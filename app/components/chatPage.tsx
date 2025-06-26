@@ -98,85 +98,201 @@ const ChatPage = ({chatId}:{chatId:string}) => {
         </div>
         </div>
     */}
-    <div className='flex flex-row h-screen w-screen font-[Poppins] bg-[#212121]'>
-        {/* <div className='w-[336px]'>
+    <div className='flex flex-row h-screen w-screen text-white overflow-hidden font-[Poppins] bg-[#212121]'>
+        <div className='w-[270px] bg-black overflow-y-auto'
+            style={{
+                scrollbarColor: "#444 #000",
+                
+            }}
+        >
 
-        </div> */}
-        <div className='mx-auto my-auto '>
-            <div className='flex flex-col mb-10 items-center justify-center text-4xl text-center'>
-                <span className='text-[#999a9d]'>Good to See You!</span>
-                <span className='bg-gradient-to-r bg-clip-text text-transparent from-[#b2b2b4] via-[white] to-[#b2b2b4]'>Your perfect trip starts here.</span>
-            </div>
-            <div className='w-full rounded-3xl bg-[#303030] p-4'>
-                <textarea  className='text-white resize-none overflow-hidden w-full outline-0' placeholder='Ask Anything...'/>
-                <div className=' flex flex-row justify-between items-center  mt-4'>
-                    <div className='flex flex-row gap-2'>
-                        <button className='gap-2 min-h-10 min-w-10 flex items-center justify-center border-[#d3d3d3] rounded-full hover:bg-[#50505039] cursor-pointer transition-colors shadow-lg'
-                            onClick={() => {
-                                if (chatType === "Build") {
-                                    setChatType("");
-                                    return;
-                                }
-                                setChatType("Build");
-                            }}
-                            style={{
-                                border: chatType === "Build" ? "2px solid #007bff" : "2px solid transparent",
-                                color: chatType === "Build" ? "#007bff" : "#d3d3d3",
-                                paddingLeft: chatType === "Build" ? "16px" : "0",
-                                paddingRight: chatType === "Build" ? "16px" : "0",
-                            }}
-                        >
-                            <span className='material-icons' style={{ fontSize: 20 }}>build</span>
-                                {chatType === "Build" && (
-                                <span className='text-[14px] font-medium'>Build</span>
-)}
-                        </button>
-                        <button className='gap-2 min-h-10 min-w-10 flex items-center justify-center border-[#d3d3d3] rounded-full hover:bg-[#50505039] cursor-pointer transition-colors shadow-lg'
-                            onClick={() => {
-                                if (chatType === "Edit") {
-                                    setChatType("");
-                                    return;
-                                }
-                                setChatType("Edit");
-                            }}
-                            style={{
-                                border: chatType === "Edit" ? "2px solid #007bff" : "2px solid transparent",
-                                color: chatType === "Edit" ? "#007bff" : "#d3d3d3",
-                                paddingLeft: chatType === "Edit" ? "16px" : "0",
-                                paddingRight: chatType === "Edit" ? "16px" : "0",
-                            }}
-                        >
-                            <span className='material-icons' style={{ fontSize: 20 }}>edit</span>
-                                {chatType === "Edit" && (
-                                <span className='text-[14px] font-medium'>Edit</span>
-)}
-                        </button>
-                        <button className='gap-2 min-h-10 min-w-10 flex items-center justify-center border-[#d3d3d3] rounded-full hover:bg-[#50505039] cursor-pointer transition-colors shadow-lg'
-                            onClick={() => {
-                                if (chatType === "Analyze") {
-                                    setChatType("");
-                                    return;
-                                }
-                                setChatType("Analyze");
-                            }}
-                            style={{
-                                border: chatType === "Analyze" ? "2px solid #007bff" : "2px solid transparent",
-                                color: chatType === "Analyze" ? "#007bff" : "#d3d3d3",
-                                paddingLeft: chatType === "Analyze" ? "16px" : "0",
-                                paddingRight: chatType === "Analyze" ? "16px" : "0",
-                            }}
-                        >
-                            <span className='material-icons' style={{ fontSize: 20 }}>bar_chart</span>
-                                {chatType === "Analyze" && (
-                                <span className='text-[14px] font-medium'>Analyze</span>
-)}
-                        </button>
+            <div className='flex sticky top-0 flex-col bg-[inherit] '>
+                <div className='flex flex-row p-3 px-4 justify-between w-full items-center'>
+                    <div className="flex items-center gap-2">
+                        <span className="text-3xl font-semibold text-gray-400 select-none">t</span>
                     </div>
-                    <button className='material-icons bg-white rounded-full p-1.5 hover:bg-gray-100 transition-colors duration-300 cursor-pointer'>arrow_upward</button>
+                    <button className='p-2 rounded-xl cursor-pointer flex items-center hover:bg-[#333333] transition-colors duration-300'>
+                        <span className="material-symbols-outlined text-gray-200 ">
+                            dual_screen
+                        </span>
+                    </button>
+                </div>
+                <div className='px-2 flex flex-col'>
+                <button className='w-full flex flex-row cursor-pointer items-center gap-2 text-left px-3 py-2.5 hover:bg-[#333333] rounded-lg transition-colors duration-200 shadow-md'>
+                    <span className="material-symbols-outlined" style={{
+                        fontSize: 19,
+                        fontWeight: 300,
+                        color: "#ffffff",
+                    }}>
+                        add_comment
+                    </span>
+                    <span className='text-white font-regular text-[13px]'>Start a New Chat</span>
+                </button>
+                <button className='w-full flex flex-row cursor-pointer items-center gap-2 text-left px-3 py-2.5 hover:bg-[#333333] rounded-lg transition-colors duration-200 shadow-md'>
+                    <span className="material-symbols-outlined" style={{
+                        fontSize: 19,
+                        fontWeight: 300,
+                        color: "#ffffff",
+                    }}>
+                        search
+                    </span>
+                    <span className='text-white font-regular text-[13px]'>Search chats</span>
+                </button>
+                </div>
 
+            </div>
+            <div className='text-white  flex flex-col px-2 py-3 gap-1'>
+                <span className='text-[#999] text-[14px] px-3'>Hsitory</span>
+                <div className=''>
+                    <button className='hover:bg-[#2d2d2d] cursor-pointer flex flex-row justify-between w-full text-[14px] px-3 py-1.5 rounded-lg'>
+                        <span>New Chat</span>
+
+                    </button>
                 </div>
             </div>
         </div>
+        <div className='flex-1 flex overflow-y-auto flex-col h-screen w-full items-center text-white bg-[#212121] '>
+            <div className='w-full sticky top-0 bg-[inherit] justify-between flex items-center px-4 py-2'>
+                <div className='flex flex-row gap-1'>
+                    <button className='flex items-center cursor-pointer gap-2 p-2 rounded-xl hover:bg-[#333333] transition-colors duration-300'>
+                        <span className="material-symbols-outlined"
+                        style={{
+                            fontSize:20,
+                        }}
+                        >
+                        ios_share
+                        </span>
+                    </button>
+                    <button className='flex items-center cursor-pointer gap-2 p-2 rounded-xl hover:bg-[#333333] transition-colors duration-300'>
+                        <span className='material-icons'>more_horiz</span>
+                    </button>
+                </div>
+                <div className='bg-gray-600 h-8 w-8 rounded-full'>
+                    
+                </div>
+            </div>
+
+            <div className='h-full w-full p-4 flex flex-col max-w-[700px] mx-auto '
+                style={{
+                    justifyContent: chatDisplay.length === 0 ? "center" : "initial",
+                    alignItems: chatDisplay.length === 0 ? "center" : "initial"
+                }}
+            >
+                {chatDisplay.length === 0 ? (
+                <div className='flex flex-col mb-10 items-center justify-center text-4xl text-center'>
+                    <span className='text-[#999a9d]'>Good to See You!</span>
+                    <span className='bg-gradient-to-r bg-clip-text text-transparent from-[#b2b2b4] via-[white] to-[#b2b2b4]'>Your perfect trip starts here.</span>
+                </div>
+                ) : (
+                <div className="space-y-2 flex flex-col gap-2" ref={chatLogs}>
+                    {chatDisplay.map((msg, index) => (
+                        <div key={index} className='w-fit' style={{
+                            maxWidth: msg.sender === "user" ? "500px" : "intial",
+                            backgroundColor: msg.sender === "user" ? "#007bff" : "#444",
+                            borderRadius: "20px",
+                            borderTopRightRadius: msg.sender === "user" ? "0" : "20px",
+                            borderTopLeftRadius: msg.sender === "user" ? "20px" : "0",
+
+                            padding: "10px 15px",
+                            marginLeft: msg.sender === "user" ? "auto" : "0",
+                        }}>
+                            {msg.msg}
+                        </div>
+                    ))}
+                </div>
+                )}
+
+                <div className='w-full rounded-3xl bg-[#303030] p-4  '
+                    style={{
+                        position: chatDisplay.length === 0 ? "initial": "sticky",
+                        bottom: "0",
+                        marginTop: chatDisplay.length === 0 ? "0": "auto",
+                    }}
+                >
+                    <input 
+                        className='text-white resize-none ml-2 overflow-hidden w-full outline-0'
+                        placeholder='Ask Anything...'
+                        value={prompt}
+                        onKeyDown={(e) => {
+                            if (e.key === "Enter") {
+                                msgSend();
+                            }
+                        }}
+                        onChange={(e) => setPrompt(e.target.value)}
+                    />
+                    <div className=' flex flex-row justify-between items-center  mt-4'>
+                        <div className='flex flex-row gap-2'>
+                            <button className='gap-2 min-h-10 min-w-10 flex items-center justify-center border-[#d3d3d3] rounded-full hover:bg-[#50505039] cursor-pointer transition-colors shadow-lg'
+                                onClick={() => {
+                                    if (chatType === "Build") {
+                                        setChatType("");
+                                        return;
+                                    }
+                                    setChatType("Build");
+                                }}
+                                style={{
+                                    border: chatType === "Build" ? "2px solid #007bff" : "2px solid transparent",
+                                    color: chatType === "Build" ? "#007bff" : "#d3d3d3",
+                                    paddingLeft: chatType === "Build" ? "16px" : "0",
+                                    paddingRight: chatType === "Build" ? "16px" : "0",
+                                }}
+                            >
+                                <span className='material-icons' style={{ fontSize: 20 }}>build</span>
+                                    {chatType === "Build" && (
+                                    <span className='text-[14px] font-medium'>Build</span>
+    )}
+                            </button>
+                            <button className='gap-2 min-h-10 min-w-10 flex items-center justify-center border-[#d3d3d3] rounded-full hover:bg-[#50505039] cursor-pointer transition-colors shadow-lg'
+                                onClick={() => {
+                                    if (chatType === "Edit") {
+                                        setChatType("");
+                                        return;
+                                    }
+                                    setChatType("Edit");
+                                }}
+                                style={{
+                                    border: chatType === "Edit" ? "2px solid #007bff" : "2px solid transparent",
+                                    color: chatType === "Edit" ? "#007bff" : "#d3d3d3",
+                                    paddingLeft: chatType === "Edit" ? "16px" : "0",
+                                    paddingRight: chatType === "Edit" ? "16px" : "0",
+                                }}
+                            >
+                                <span className='material-icons' style={{ fontSize: 20 }}>edit</span>
+                                    {chatType === "Edit" && (
+                                    <span className='text-[14px] font-medium'>Edit</span>
+    )}
+                            </button>
+                            <button className='gap-2 min-h-10 min-w-10 flex items-center justify-center border-[#d3d3d3] rounded-full hover:bg-[#50505039] cursor-pointer transition-colors shadow-lg'
+                                onClick={() => {
+                                    if (chatType === "Analyze") {
+                                        setChatType("");
+                                        return;
+                                    }
+                                    setChatType("Analyze");
+                                }}
+                                style={{
+                                    border: chatType === "Analyze" ? "2px solid #007bff" : "2px solid transparent",
+                                    color: chatType === "Analyze" ? "#007bff" : "#d3d3d3",
+                                    paddingLeft: chatType === "Analyze" ? "16px" : "0",
+                                    paddingRight: chatType === "Analyze" ? "16px" : "0",
+                                }}
+                            >
+                                <span className='material-icons' style={{ fontSize: 20 }}>bar_chart</span>
+                                    {chatType === "Analyze" && (
+                                    <span className='text-[14px] font-medium'>Analyze</span>
+    )}
+                            </button>
+                        </div>
+                        <button 
+                        onClick={msgSend}
+                        className='material-icons bg-white text-black rounded-full p-1.5 hover:bg-gray-100 transition-colors duration-300 cursor-pointer'>arrow_upward</button>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
     </div>
     </>
   )
