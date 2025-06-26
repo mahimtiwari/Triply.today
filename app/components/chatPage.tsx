@@ -151,7 +151,7 @@ const ChatPage = ({chatId}:{chatId:string}) => {
                 </div>
             </div>
         </div>
-        <div className='flex-1 flex overflow-y-auto flex-col h-screen w-full items-center text-white bg-[#212121] '>
+        <div className='flex-1 flex flex-col h-screen w-full items-center text-white bg-[#212121] overflow-y-auto'>
             <div className='w-full sticky top-0 bg-[inherit] justify-between flex items-center px-4 py-2'>
                 <div className='flex flex-row gap-1'>
                     <button className='flex items-center cursor-pointer gap-2 p-2 rounded-xl hover:bg-[#333333] transition-colors duration-300'>
@@ -172,10 +172,10 @@ const ChatPage = ({chatId}:{chatId:string}) => {
                 </div>
             </div>
 
-            <div className='h-full w-full p-4 flex flex-col max-w-[700px] mx-auto '
+            <div className='h-full w-full p-4 pb-0 flex flex-col max-w-[700px] mx-auto '
                 style={{
-                    justifyContent: chatDisplay.length === 0 ? "center" : "initial",
-                    alignItems: chatDisplay.length === 0 ? "center" : "initial"
+justifyContent: chatDisplay.length === 0 ? "center" : "initial",
+alignItems: chatDisplay.length === 0 ? "center" : "initial"
                 }}
             >
                 {chatDisplay.length === 0 ? (
@@ -184,7 +184,7 @@ const ChatPage = ({chatId}:{chatId:string}) => {
                     <span className='bg-gradient-to-r bg-clip-text text-transparent from-[#b2b2b4] via-[white] to-[#b2b2b4]'>Your perfect trip starts here.</span>
                 </div>
                 ) : (
-                <div className="space-y-2 flex flex-col gap-2" ref={chatLogs}>
+                <div className="space-y-2 mb-[calc(15px+100px)] flex flex-col gap-2" ref={chatLogs}>
                     {chatDisplay.map((msg, index) => (
                         <div key={index} className='w-fit' style={{
                             maxWidth: msg.sender === "user" ? "500px" : "intial",
@@ -201,11 +201,10 @@ const ChatPage = ({chatId}:{chatId:string}) => {
                     ))}
                 </div>
                 )}
-
                 <div className='w-full rounded-3xl bg-[#303030] p-4  '
                     style={{
                         position: chatDisplay.length === 0 ? "initial": "sticky",
-                        bottom: "0",
+                        bottom: "15px",
                         marginTop: chatDisplay.length === 0 ? "0": "auto",
                     }}
                 >
