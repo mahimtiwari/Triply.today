@@ -14,9 +14,28 @@ const ChatPage = ({chatId}:{chatId:string}) => {
     const [chatType, setChatType] = useState<string>(chatId);
     const chatLogs = useRef<HTMLDivElement>(null);
     const [prompt, setPrompt] = useState<string>("");
+    const sendBtn = useRef<HTMLButtonElement>(null);
     const [chatDisplay, setChatDisplay] = useState<ChatHistoryProps[]>([]);
+    function changeSendBtnSatus(accept: boolean) {
+    if (sendBtn.current) {
+        sendBtn.current.disabled = !accept;
+        if (accept) {
+            sendBtn.current.classList.remove("animate-pulse");
+            sendBtn.current.classList.remove("animate-spin");
+            sendBtn.current.innerHTML = "arrow_upward";
+            sendBtn.current.style.backgroundColor = "#ffffff";
+        }else{
+            sendBtn.current.classList.add("animate-pulse");
+            sendBtn.current.classList.add("animate-spin");
+            sendBtn.current.innerHTML = "<span class='material-symbols-outlined'>progress_activity</span>";
+            sendBtn.current.style.backgroundColor = "#888";
+        }
+    }
+    }
     async function  msgSend() {
+        changeSendBtnSatus(false);
         setChatDisplay([...chatDisplay, {msg: prompt, sender: "user"}]);
+
         if (prompt !== "") {
         const convStreamFetch = await fetch("/api/conversation", {
             method: "POST",
@@ -45,6 +64,7 @@ const ChatPage = ({chatId}:{chatId:string}) => {
             const { done, value } = await reader.read();
 
             if (done) {
+                changeSendBtnSatus(true);
                 break;
             }
             const text = decoder.decode(value, { stream: true });
@@ -151,7 +171,12 @@ const ChatPage = ({chatId}:{chatId:string}) => {
                 </div>
             </div>
         </div>
-        <div className='flex-1 flex flex-col h-screen w-full items-center text-white bg-[#212121] overflow-y-auto'>
+        <div 
+        className='flex-1 flex flex-col h-screen w-full items-center text-white bg-[#212121] overflow-y-auto'
+        style={{
+            scrollbarColor: "#444 #000",
+        }}
+        >
             <div className='w-full sticky top-0 bg-[inherit] justify-between flex items-center px-4 py-2'>
                 <div className='flex flex-row gap-1'>
                     <button className='flex items-center cursor-pointer gap-2 p-2 rounded-xl hover:bg-[#333333] transition-colors duration-300'>
@@ -208,6 +233,7 @@ alignItems: chatDisplay.length === 0 ? "center" : "initial"
                         marginTop: chatDisplay.length === 0 ? "0": "auto",
                     }}
                 >
+
                     <input 
                         className='text-white resize-none ml-2 overflow-hidden w-full outline-0'
                         placeholder='Ask Anything...'
@@ -284,6 +310,7 @@ alignItems: chatDisplay.length === 0 ? "center" : "initial"
                         </div>
                         <button 
                         onClick={msgSend}
+                        ref={sendBtn}
                         className='material-icons bg-white text-black rounded-full p-1.5 hover:bg-gray-100 transition-colors duration-300 cursor-pointer'>arrow_upward</button>
 
                     </div>
