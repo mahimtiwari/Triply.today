@@ -213,10 +213,8 @@ alignItems: chatDisplay.length === 0 ? "center" : "initial"
                     {chatDisplay.map((msg, index) => (
                         <div key={index} className='w-fit' style={{
                             maxWidth: msg.sender === "user" ? "500px" : "intial",
-                            backgroundColor: msg.sender === "user" ? "#007bff" : "#444",
-                            borderRadius: "20px",
-                            borderTopRightRadius: msg.sender === "user" ? "0" : "20px",
-                            borderTopLeftRadius: msg.sender === "user" ? "20px" : "0",
+                            backgroundColor: msg.sender === "user" ? "#444" : "initial",
+                            borderRadius: "30px",
 
                             padding: "10px 15px",
                             marginLeft: msg.sender === "user" ? "auto" : "0",
