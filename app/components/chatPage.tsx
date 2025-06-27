@@ -22,16 +22,17 @@ const ChatPage = ({chatId, sessionObj}:{chatId?:string, sessionObj:Session}) => 
     const sendBtn = useRef<HTMLButtonElement>(null);
     const [chatDisplay, setChatDisplay] = useState<ChatHistoryProps[]>([]);
     
-    useEffect(() => {
+    const processedRef = useRef(false);
 
-        if (pendingMessage && chatId) {
+    useEffect(() => {
+        if (pendingMessage && chatId && !processedRef.current) {
+            processedRef.current = true;
             msgSend(pendingMessage);
             clearPendingMessage();
 
         }
     }, [pendingMessage, chatId]);
-    
-    
+
     function changeSendBtnSatus(accept: boolean) {
     if (sendBtn.current) {
         sendBtn.current.disabled = !accept;
