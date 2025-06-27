@@ -1,21 +1,37 @@
 "use client";
-import { set } from 'date-fns';
-import { tr } from 'date-fns/locale';
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
+import { Session } from "next-auth";
+import { useRouter } from 'next/navigation';
+import { useMsgStore } from '@/app/store/chatMsgStore';
 
 interface ChatHistoryProps {
     msg: string;
     sender: string;
 }
 
-const ChatPage = ({chatId}:{chatId:string}) => {
 
 
-    const [chatType, setChatType] = useState<string>(chatId);
+const ChatPage = ({chatId, sessionObj}:{chatId?:string, sessionObj:Session}) => {
+
+    const router = useRouter();
+    const { pendingMessage, setPendingMessage, clearPendingMessage } = useMsgStore();
+
+    const [chatType, setChatType] = useState<string>("");
     const chatLogs = useRef<HTMLDivElement>(null);
     const [prompt, setPrompt] = useState<string>("");
     const sendBtn = useRef<HTMLButtonElement>(null);
     const [chatDisplay, setChatDisplay] = useState<ChatHistoryProps[]>([]);
+    
+    useEffect(() => {
+
+        if (pendingMessage && chatId) {
+            msgSend(pendingMessage);
+            clearPendingMessage();
+
+        }
+    }, [pendingMessage, chatId]);
+    
+    
     function changeSendBtnSatus(accept: boolean) {
     if (sendBtn.current) {
         sendBtn.current.disabled = !accept;
@@ -32,11 +48,20 @@ const ChatPage = ({chatId}:{chatId:string}) => {
         }
     }
     }
-    async function  msgSend() {
-        changeSendBtnSatus(false);
-        setChatDisplay([...chatDisplay, {msg: prompt, sender: "user"}]);
+    async function  msgSend(nIdPrompt?: string) {
+        const msg = nIdPrompt || prompt;
 
-        if (prompt !== "") {
+        if (!chatId) {
+            setPendingMessage(msg);
+            const newChatId = Math.random().toString(36).substring(2, 9);
+            router.push(`/chat/${newChatId}`);
+            return;
+        }
+
+        changeSendBtnSatus(false);
+        setChatDisplay([...chatDisplay, {msg: msg, sender: "user"}]);
+
+        if (msg !== "") {
         const convStreamFetch = await fetch("/api/conversation", {
             method: "POST",
             headers: {
@@ -44,7 +69,7 @@ const ChatPage = ({chatId}:{chatId:string}) => {
             },
             body: JSON.stringify({
                 conversationId: chatId,
-                message: prompt,
+                message: msg,
             }),
         })
         setPrompt("");
@@ -193,7 +218,6 @@ const ChatPage = ({chatId}:{chatId:string}) => {
                     </button>
                 </div>
                 <div className='bg-gray-600 h-8 w-8 rounded-full'>
-                    
                 </div>
             </div>
 
@@ -307,7 +331,7 @@ alignItems: chatDisplay.length === 0 ? "center" : "initial"
                             </button>
                         </div>
                         <button 
-                        onClick={msgSend}
+                        onClick={() => msgSend()}
                         ref={sendBtn}
                         className='material-icons bg-white text-black rounded-full p-1.5 hover:bg-gray-100 transition-colors duration-300 cursor-pointer'>arrow_upward</button>
 
