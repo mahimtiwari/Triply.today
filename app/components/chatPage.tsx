@@ -3,6 +3,7 @@ import React, { useRef, useState, useEffect } from 'react'
 import { Session } from "next-auth";
 import { useRouter } from 'next/navigation';
 import { useMsgStore } from '@/app/store/chatMsgStore';
+import { useConversationHistoryStore } from '../store/chatHistoryStore';
 
 interface ChatHistoryProps {
     msg: string;
@@ -15,6 +16,7 @@ const ChatPage = ({chatId, sessionObj}:{chatId?:string, sessionObj:Session}) => 
 
     const router = useRouter();
     const { pendingMessage, setPendingMessage, clearPendingMessage } = useMsgStore();
+    const { conversations, addConversation, setConversations } = useConversationHistoryStore();
 
     const [chatType, setChatType] = useState<string>("");
     const chatLogs = useRef<HTMLDivElement>(null);
@@ -49,20 +51,81 @@ const ChatPage = ({chatId, sessionObj}:{chatId?:string, sessionObj:Session}) => 
         }
     }
     }
-    async function  msgSend(nIdPrompt?: string) {
-        const msg = nIdPrompt || prompt;
 
-        if (!chatId) {
-            setPendingMessage(msg);
-            const convFetch = await fetch("/api/conversation/register", {
+    // async function getChats() {
+    //     const convFetch = await fetch("/api/conversation/fetch", {
+    //         method: "POST",
+    //         headers: {
+    //             "Content-Type": "application/json",
+    //         },
+
+    //     });
+    //     const convData = await convFetch.json();
+    //     const conversations = convData.conversations.map((conversation: any) => {
+    //         return {
+    //         chatId: conversation.conversation_id,
+    //         name: conversation.name,
+    //         };
+    //     });
+
+
+    //     return conversations;
+    // }
+    const [chats, setChats] = useState<any[]>([]);
+
+    useEffect(() => {
+        async function fetchConversations() {
+            const convFetch = await fetch("/api/conversation/fetch", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
             });
             const convData = await convFetch.json();
-            router.push(`/chat/${convData.chat_id}`);
-            alert(convData.chat_id);
+            const convs = convData.conversations.map((conversation: any) => {
+                return {
+                    chatId: conversation.conversation_id,
+                    name: conversation.name,
+                };
+            });
+            setChats(convs);
+            setConversations(convs);
+            return convs;
+        }
+        if (conversations.length === 0) {
+            fetchConversations();
+        }
+        else {
+            setChats(conversations);
+        }
+
+
+    }, []);
+
+    async function registerChat() {
+        const convFetch = await fetch("/api/conversation/register", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+        const convData = await convFetch.json();
+        if (!convData.chat_id) {
+            console.error("Error: chat_id not found in response");
+            return;
+        }
+        addConversation(convData.chat_id, "New Chat");
+        router.push(`/chat/${convData.chat_id}`);
+
+    }
+
+
+    async function  msgSend(nIdPrompt?: string) {
+        const msg = nIdPrompt || prompt;
+
+        if (!chatId) {
+            setPendingMessage(msg);
+            registerChat();
             return;
         }
 
@@ -171,7 +234,12 @@ const ChatPage = ({chatId, sessionObj}:{chatId?:string, sessionObj:Session}) => 
                     </button>
                 </div>
                 <div className='px-2 flex flex-col'>
-                <button className='w-full flex flex-row cursor-pointer items-center gap-2 text-left px-3 py-2.5 hover:bg-[#333333] rounded-lg transition-colors duration-200 shadow-md'>
+                <button 
+                className='w-full flex flex-row cursor-pointer items-center gap-2 text-left px-3 py-2.5 hover:bg-[#333333] rounded-lg transition-colors duration-200 shadow-md'
+                onClick={() => {
+                    registerChat();
+                }}
+                >
                     <span className="material-symbols-outlined" style={{
                         fontSize: 19,
                         fontWeight: 300,
@@ -197,10 +265,23 @@ const ChatPage = ({chatId, sessionObj}:{chatId?:string, sessionObj:Session}) => 
             <div className='text-white  flex flex-col px-2 py-3 gap-1'>
                 <span className='text-[#999] text-[14px] px-3'>Hsitory</span>
                 <div className=''>
-                    <button className='hover:bg-[#2d2d2d] cursor-pointer flex flex-row justify-between w-full text-[14px] px-3 py-1.5 rounded-lg'>
-                        <span>New Chat</span>
+                    {conversations.map((chat, index)=> (
+                    <button key={index} 
+                    className='hover:bg-[#2d2d2d] cursor-pointer flex flex-row justify-between w-full text-[14px] px-3 py-1.5 rounded-lg'
+                    onClick={() => {
+                        if (chat.chatId === chatId) {
+                            return;
+                        }
+                        router.push(`/chat/${chat.chatId}`);
+                        setChatDisplay([]);
+                        setPrompt("");
+                    }}
+                    >
+                        <span>{chat.name}</span>
 
                     </button>
+                    ))}
+
                 </div>
             </div>
         </div>
