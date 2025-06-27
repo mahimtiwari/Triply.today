@@ -133,7 +133,7 @@ model Conversations {
   userId            String
   name              String
   created_at        DateTime    @default(now())
-  last_interaction  DateTime
+  last_interaction  DateTime    @default(now())
 
   user              User        @relation("User Chat", fields: [userId], references: [id], onDelete: Cascade)
   messages          Messages[]  @relation("Conversation Messages")

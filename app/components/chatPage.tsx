@@ -54,8 +54,15 @@ const ChatPage = ({chatId, sessionObj}:{chatId?:string, sessionObj:Session}) => 
 
         if (!chatId) {
             setPendingMessage(msg);
-            const newChatId = Math.random().toString(36).substring(2, 9);
-            router.push(`/chat/${newChatId}`);
+            const convFetch = await fetch("/api/conversation/register", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+            const convData = await convFetch.json();
+            router.push(`/chat/${convData.chat_id}`);
+            alert(convData.chat_id);
             return;
         }
 
@@ -63,7 +70,7 @@ const ChatPage = ({chatId, sessionObj}:{chatId?:string, sessionObj:Session}) => 
         setChatDisplay([...chatDisplay, {msg: msg, sender: "user"}]);
 
         if (msg !== "") {
-        const convStreamFetch = await fetch("/api/conversation", {
+        const convStreamFetch = await fetch("/api/conversation/messages/send", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

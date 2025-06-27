@@ -13071,7 +13071,7 @@ export namespace Prisma {
     conversation_id?: string
     name: string
     created_at?: Date | string
-    last_interaction: Date | string
+    last_interaction?: Date | string
     user: UserCreateNestedOneWithoutConversationsInput
     messages?: MessagesCreateNestedManyWithoutConversationsInput
   }
@@ -13081,7 +13081,7 @@ export namespace Prisma {
     userId: string
     name: string
     created_at?: Date | string
-    last_interaction: Date | string
+    last_interaction?: Date | string
     messages?: MessagesUncheckedCreateNestedManyWithoutConversationsInput
   }
 
@@ -13108,7 +13108,7 @@ export namespace Prisma {
     userId: string
     name: string
     created_at?: Date | string
-    last_interaction: Date | string
+    last_interaction?: Date | string
   }
 
   export type ConversationsUpdateManyMutationInput = {
@@ -14729,7 +14729,7 @@ export namespace Prisma {
     conversation_id?: string
     name: string
     created_at?: Date | string
-    last_interaction: Date | string
+    last_interaction?: Date | string
     messages?: MessagesCreateNestedManyWithoutConversationsInput
   }
 
@@ -14737,7 +14737,7 @@ export namespace Prisma {
     conversation_id?: string
     name: string
     created_at?: Date | string
-    last_interaction: Date | string
+    last_interaction?: Date | string
     messages?: MessagesUncheckedCreateNestedManyWithoutConversationsInput
   }
 
@@ -15542,7 +15542,7 @@ export namespace Prisma {
     conversation_id?: string
     name: string
     created_at?: Date | string
-    last_interaction: Date | string
+    last_interaction?: Date | string
     user: UserCreateNestedOneWithoutConversationsInput
   }
 
@@ -15551,7 +15551,7 @@ export namespace Prisma {
     userId: string
     name: string
     created_at?: Date | string
-    last_interaction: Date | string
+    last_interaction?: Date | string
   }
 
   export type ConversationsCreateOrConnectWithoutMessagesInput = {
@@ -15639,7 +15639,7 @@ export namespace Prisma {
     conversation_id?: string
     name: string
     created_at?: Date | string
-    last_interaction: Date | string
+    last_interaction?: Date | string
   }
 
   export type AccountUpdateWithoutUserInput = {
