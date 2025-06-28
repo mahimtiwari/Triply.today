@@ -57,6 +57,17 @@ export async function POST(request: NextRequest){
             },
         });
     }
+    
+
+    await prisma.conversations.update({
+        where: {
+            conversation_id: requestParams.conversationId,
+        },
+        data: {
+            last_interaction: new Date(),
+        },
+    });
+    
 
     registerMessage(requestParams.conversationId, requestParams.message, senders.USER)
     let resp = "";
