@@ -338,9 +338,11 @@ const ChatPage = ({chatId, sessionObj}:{chatId?:string, sessionObj:Session}) => 
                         ios_share
                         </span>
                     </button>
+
                     <button className='flex items-center cursor-pointer gap-2 p-2 rounded-xl hover:bg-[#333333] transition-colors duration-300'>
                         <span className='material-icons'>more_horiz</span>
                     </button>
+
                 </div>
                 <div className='bg-gray-600 h-8 w-8 rounded-full'>
                 </div>
