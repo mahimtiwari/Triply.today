@@ -333,9 +333,9 @@ const ChatPage = ({chatId, sessionObj}:{chatId?:string, sessionObj:Session}) => 
             <div className='flex sticky top-0 flex-col bg-[inherit] '>
                 <div className='flex flex-row p-3 px-4 justify-between w-full items-center'>
                     {sideMenuOpen && (
-                        <div className="flex items-center gap-2">
+                        <a className="flex items-center gap-2" href='/'>
                             <span className="text-3xl font-semibold text-gray-400 select-none">t</span>
-                        </div>
+                        </a>
                     )}
                     <button 
                     className='p-2 rounded-xl cursor-pointer flex items-center hover:bg-[#333333] transition-colors duration-300'
