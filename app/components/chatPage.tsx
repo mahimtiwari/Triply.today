@@ -26,6 +26,7 @@ const ChatPage = ({chatId, sessionObj}:{chatId?:string, sessionObj:Session}) => 
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const processedRef = useRef(false);
 
+
     useEffect(() => {
         if (pendingMessage && chatId && !processedRef.current) {
             processedRef.current = true;
@@ -98,6 +99,12 @@ const ChatPage = ({chatId, sessionObj}:{chatId?:string, sessionObj:Session}) => 
         }
 
         async function fetchSetMessages(chatId: string) {
+
+            setIsLoading(true);
+            if (sendBtn.current) {
+                sendBtn.current.disabled = true;
+            }
+
             const messageFetchObj = await fetch("/api/conversation/messages/fetch", {
                 method: "POST",
                 headers: {
@@ -118,8 +125,15 @@ const ChatPage = ({chatId, sessionObj}:{chatId?:string, sessionObj:Session}) => 
                     sender: message.sender === "USER" ? "user" : "bot",
                 };
             });
-            setChatDisplay(messages);
 
+            setIsLoading(false);
+            if (sendBtn.current) {
+                sendBtn.current.disabled = false;
+            }
+
+            if (messages.length !== 0) {
+            setChatDisplay(messages);
+            }
 
 
         }
@@ -131,7 +145,7 @@ const ChatPage = ({chatId, sessionObj}:{chatId?:string, sessionObj:Session}) => 
             setChats(conversations);
         }
 
-        if (chatId) {
+        if (chatId && !processedRef.current) {
             fetchSetMessages(chatId);
         }
 
