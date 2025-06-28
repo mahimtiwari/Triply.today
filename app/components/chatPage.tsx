@@ -92,12 +92,46 @@ const ChatPage = ({chatId, sessionObj}:{chatId?:string, sessionObj:Session}) => 
             setConversations(convs);
             return convs;
         }
+
+        async function fetchSetMessages(chatId: string) {
+            const messageFetchObj = await fetch("/api/conversation/messages/fetch", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    conversationId: chatId,
+                }),
+            })
+            const msgJson = await messageFetchObj.json();
+            if (!msgJson.messages) {
+                console.error("Error: messages not found in response");
+                return;
+            }
+            const messages = msgJson.messages.map((message: any) => {
+                return {
+                    msg: message.message_text,
+                    sender: message.sender === "USER" ? "user" : "bot",
+                };
+            });
+            setChatDisplay(messages);
+
+
+
+        }
+
         if (conversations.length === 0) {
             fetchConversations();
         }
         else {
             setChats(conversations);
         }
+
+        if (chatId) {
+            fetchSetMessages(chatId);
+        }
+
+
 
 
     }, []);
@@ -175,6 +209,8 @@ const ChatPage = ({chatId, sessionObj}:{chatId?:string, sessionObj:Session}) => 
         
 
         }
+
+
     }
 
   return (
@@ -237,7 +273,7 @@ const ChatPage = ({chatId, sessionObj}:{chatId?:string, sessionObj:Session}) => 
                 <button 
                 className='w-full flex flex-row cursor-pointer items-center gap-2 text-left px-3 py-2.5 hover:bg-[#333333] rounded-lg transition-colors duration-200 shadow-md'
                 onClick={() => {
-                    registerChat();
+                    router.push("/chat");
                 }}
                 >
                     <span className="material-symbols-outlined" style={{
@@ -312,11 +348,11 @@ const ChatPage = ({chatId, sessionObj}:{chatId?:string, sessionObj:Session}) => 
 
             <div className='h-full w-full p-4 pb-0 flex flex-col max-w-[700px] mx-auto '
                 style={{
-justifyContent: chatDisplay.length === 0 ? "center" : "initial",
-alignItems: chatDisplay.length === 0 ? "center" : "initial"
+justifyContent: chatDisplay.length === 0 && !chatId ? "center" : "initial",
+alignItems: chatDisplay.length === 0 && !chatId ? "center" : "initial"
                 }}
             >
-                {chatDisplay.length === 0 ? (
+                {chatDisplay.length === 0 && !chatId ? (
                 <div className='flex flex-col mb-10 items-center justify-center text-4xl text-center'>
                     <span className='text-[#999a9d]'>Good to See You!</span>
                     <span className='bg-gradient-to-r bg-clip-text text-transparent from-[#b2b2b4] via-[white] to-[#b2b2b4]'>Your perfect trip starts here.</span>
@@ -337,11 +373,12 @@ alignItems: chatDisplay.length === 0 ? "center" : "initial"
                     ))}
                 </div>
                 )}
+
                 <div className='w-full rounded-3xl bg-[#303030] p-4  '
                     style={{
-                        position: chatDisplay.length === 0 ? "initial": "sticky",
+                        position: chatDisplay.length === 0 && !chatId  ? "initial": "sticky",
                         bottom: "15px",
-                        marginTop: chatDisplay.length === 0 ? "0": "auto",
+                        marginTop: chatDisplay.length === 0 && !chatId ? "0": "auto",
                     }}
                 >
 
