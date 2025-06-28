@@ -4,7 +4,7 @@ import { Session } from "next-auth";
 import { useRouter } from 'next/navigation';
 import { useMsgStore } from '@/app/store/chatMsgStore';
 import { useConversationHistoryStore } from '../store/chatHistoryStore';
-
+import Image from 'next/image';
 interface ChatHistoryProps {
     msg: string;
     sender: string;
@@ -429,8 +429,15 @@ const ChatPage = ({chatId, sessionObj}:{chatId?:string, sessionObj:Session}) => 
                     )}
                 </div>
                 
-                <div className='bg-gray-600 h-8 w-8 rounded-full'>
-                </div>
+
+                <Image
+                src={sessionObj?.user?.image || ''}
+                alt="User Profile"
+                width={35}
+                height={35}
+                className="rounded-full"
+                />
+
             </div>
 
             <div className='h-full w-full p-4 pb-0 flex flex-col max-w-[700px] mx-auto '
