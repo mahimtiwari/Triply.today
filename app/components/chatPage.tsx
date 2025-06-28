@@ -174,13 +174,14 @@ const ChatPage = ({chatId, sessionObj}:{chatId?:string, sessionObj:Session}) => 
 
     async function  msgSend(nIdPrompt?: string) {
         const msg = nIdPrompt || prompt;
-
+        
         if (!chatId) {
             setPendingMessage(msg);
             registerChat();
             return;
         }
 
+        setPrompt("");
         changeSendBtnSatus(false);
         setChatDisplay([...chatDisplay, {msg: msg, sender: "user"}]);
 
@@ -195,7 +196,7 @@ const ChatPage = ({chatId, sessionObj}:{chatId?:string, sessionObj:Session}) => 
                 message: msg,
             }),
         })
-        setPrompt("");
+        
 
         const stream = convStreamFetch.body;
         if (!stream) {
@@ -268,6 +269,19 @@ const ChatPage = ({chatId, sessionObj}:{chatId?:string, sessionObj:Session}) => 
 
     }
 
+    const sideMenu = useRef<HTMLDivElement>(null);
+    const [sideMenuOpen, setSideMenuOpen] = useState<boolean>(true);
+    function toggleSideMenu() {
+        if (sideMenu.current) {
+            if (sideMenuOpen) {
+                sideMenu.current.style.width = "fit-content";
+            } else {
+                sideMenu.current.style.width = "270px";
+            }
+            setSideMenuOpen(!sideMenuOpen);
+        }
+    }
+
 
   return (
     <>
@@ -309,7 +323,7 @@ const ChatPage = ({chatId, sessionObj}:{chatId?:string, sessionObj:Session}) => 
 
     
     <div className='flex flex-row h-screen w-screen text-white overflow-hidden font-[Poppins] bg-[#212121]'>
-        <div className='w-[270px] bg-black overflow-y-auto'
+        <div ref={sideMenu} className='w-[270px] bg-black overflow-y-auto'
             style={{
                 scrollbarColor: "#444 #000",
                 
@@ -318,18 +332,30 @@ const ChatPage = ({chatId, sessionObj}:{chatId?:string, sessionObj:Session}) => 
 
             <div className='flex sticky top-0 flex-col bg-[inherit] '>
                 <div className='flex flex-row p-3 px-4 justify-between w-full items-center'>
-                    <div className="flex items-center gap-2">
-                        <span className="text-3xl font-semibold text-gray-400 select-none">t</span>
-                    </div>
-                    <button className='p-2 rounded-xl cursor-pointer flex items-center hover:bg-[#333333] transition-colors duration-300'>
+                    {sideMenuOpen && (
+                        <div className="flex items-center gap-2">
+                            <span className="text-3xl font-semibold text-gray-400 select-none">t</span>
+                        </div>
+                    )}
+                    <button 
+                    className='p-2 rounded-xl cursor-pointer flex items-center hover:bg-[#333333] transition-colors duration-300'
+                    onClick={() => toggleSideMenu()}
+                    >
                         <span className="material-symbols-outlined text-gray-200 ">
                             dual_screen
                         </span>
                     </button>
                 </div>
-                <div className='px-2 flex flex-col'>
+                <div className='px-2 flex flex-col'
+                style={{
+                    alignItems: sideMenuOpen ? "initial" : "center",
+                }}
+                >
                 <button 
                 className='w-full flex flex-row cursor-pointer items-center gap-2 text-left px-3 py-2.5 hover:bg-[#333333] rounded-lg transition-colors duration-200 shadow-md'
+                style={{
+                    width: sideMenuOpen ? "100%" : "fit-content",
+                }}
                 onClick={() => {
                     router.push("/chat");
                 }}
@@ -341,9 +367,15 @@ const ChatPage = ({chatId, sessionObj}:{chatId?:string, sessionObj:Session}) => 
                     }}>
                         add_comment
                     </span>
+                    {sideMenuOpen && (
                     <span className='text-white font-regular text-[13px]'>Start a New Chat</span>
+                    )}        
                 </button>
-                <button className='w-full flex flex-row cursor-pointer items-center gap-2 text-left px-3 py-2.5 hover:bg-[#333333] rounded-lg transition-colors duration-200 shadow-md'>
+                <button 
+                style={{
+                    width: sideMenuOpen ? "100%" : "fit-content",
+                }}
+                className='w-full flex flex-row cursor-pointer items-center gap-2 text-left px-3 py-2.5 hover:bg-[#333333] rounded-lg transition-colors duration-200 shadow-md'>
                     <span className="material-symbols-outlined" style={{
                         fontSize: 19,
                         fontWeight: 300,
@@ -351,11 +383,14 @@ const ChatPage = ({chatId, sessionObj}:{chatId?:string, sessionObj:Session}) => 
                     }}>
                         search
                     </span>
+                    {sideMenuOpen && (
                     <span className='text-white font-regular text-[13px]'>Search chats</span>
+                    )}
                 </button>
                 </div>
 
             </div>
+            { sideMenuOpen && (
             <div className='text-white  flex flex-col px-2 py-3 gap-1'>
                 <span className='text-[#999] text-[14px] px-3'>Hsitory</span>
                 <div className=''>
@@ -378,6 +413,7 @@ const ChatPage = ({chatId, sessionObj}:{chatId?:string, sessionObj:Session}) => 
 
                 </div>
             </div>
+            )}
         </div>
         <div 
         className='flex-1 flex flex-col h-screen w-full items-center text-white bg-[#212121] overflow-y-auto'
