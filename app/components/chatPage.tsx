@@ -23,7 +23,7 @@ const ChatPage = ({chatId, sessionObj}:{chatId?:string, sessionObj:Session}) => 
     const [prompt, setPrompt] = useState<string>("");
     const sendBtn = useRef<HTMLButtonElement>(null);
     const [chatDisplay, setChatDisplay] = useState<ChatHistoryProps[]>([]);
-    
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     const processedRef = useRef(false);
 
     useEffect(() => {
@@ -36,14 +36,17 @@ const ChatPage = ({chatId, sessionObj}:{chatId?:string, sessionObj:Session}) => 
     }, [pendingMessage, chatId]);
 
     function changeSendBtnSatus(accept: boolean) {
+        
     if (sendBtn.current) {
         sendBtn.current.disabled = !accept;
         if (accept) {
+            setIsLoading(false);
             sendBtn.current.classList.remove("animate-pulse");
             sendBtn.current.classList.remove("animate-spin");
             sendBtn.current.innerHTML = "arrow_upward";
             sendBtn.current.style.backgroundColor = "#ffffff";
         }else{
+            setIsLoading(true);
             sendBtn.current.classList.add("animate-pulse");
             sendBtn.current.classList.add("animate-spin");
             sendBtn.current.innerHTML = "<span class='material-symbols-outlined'>progress_activity</span>";
@@ -51,6 +54,7 @@ const ChatPage = ({chatId, sessionObj}:{chatId?:string, sessionObj:Session}) => 
         }
     }
     }
+
 
     // async function getChats() {
     //     const convFetch = await fetch("/api/conversation/fetch", {
@@ -199,6 +203,7 @@ const ChatPage = ({chatId, sessionObj}:{chatId?:string, sessionObj:Session}) => 
             }
             const text = decoder.decode(value, { stream: true });
             fMsg+=text;
+            
             setChatDisplay((prev) => { 
                 const newChat = [...prev];
                 newChat[newChat.length - 1].msg = fMsg;
@@ -455,7 +460,7 @@ alignItems: chatDisplay.length === 0 && !chatId ? "center" : "initial"
                         placeholder='Ask Anything...'
                         value={prompt}
                         onKeyDown={(e) => {
-                            if (e.key === "Enter") {
+                            if (e.key === "Enter" && !isLoading) {
                                 msgSend();
                             }
                         }}
