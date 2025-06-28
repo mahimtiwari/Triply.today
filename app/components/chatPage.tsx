@@ -16,7 +16,7 @@ const ChatPage = ({chatId, sessionObj}:{chatId?:string, sessionObj:Session}) => 
 
     const router = useRouter();
     const { pendingMessage, setPendingMessage, clearPendingMessage } = useMsgStore();
-    const { conversations, addConversation, setConversations } = useConversationHistoryStore();
+    const { conversations, addConversation, setConversations, removeConversation } = useConversationHistoryStore();
 
     const [chatType, setChatType] = useState<string>("");
     const chatLogs = useRef<HTMLDivElement>(null);
@@ -213,6 +213,43 @@ const ChatPage = ({chatId, sessionObj}:{chatId?:string, sessionObj:Session}) => 
 
     }
 
+    const [showPopup, setShowPopup] = useState(false);
+    const clkOut = () => {
+        setShowPopup(false);
+    }
+
+    useEffect(() => {
+
+        if (showPopup) {
+            document.addEventListener('click', clkOut);
+        }else {
+            document.removeEventListener('click', clkOut);
+        }
+        return () => {
+            document.removeEventListener('click', clkOut);
+        }
+    }, [showPopup]);
+
+    async function deleteConv(){
+        if (!chatId) {
+            console.error("Error: chatId is not defined");
+            return;
+        }
+        fetch(`/api/conversation/remove`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                conversationId: chatId,
+            }),
+        });
+        removeConversation(chatId);
+        router.push("/chat");
+
+    }
+
+
   return (
     <>
     {/*
@@ -250,6 +287,8 @@ const ChatPage = ({chatId, sessionObj}:{chatId?:string, sessionObj:Session}) => 
         </div>
         </div>
     */}
+
+    
     <div className='flex flex-row h-screen w-screen text-white overflow-hidden font-[Poppins] bg-[#212121]'>
         <div className='w-[270px] bg-black overflow-y-auto'
             style={{
@@ -327,23 +366,50 @@ const ChatPage = ({chatId, sessionObj}:{chatId?:string, sessionObj:Session}) => 
             scrollbarColor: "#444 #000",
         }}
         >
-            <div className='w-full sticky top-0 bg-[inherit] justify-between flex items-center px-4 py-2'>
+            <div className='w-full h-[65px] sticky top-0 bg-[inherit] justify-between flex items-center px-4 py-2'>
+                
                 <div className='flex flex-row gap-1'>
-                    <button className='flex items-center cursor-pointer gap-2 p-2 rounded-xl hover:bg-[#333333] transition-colors duration-300'>
-                        <span className="material-symbols-outlined"
-                        style={{
-                            fontSize:20,
-                        }}
-                        >
-                        ios_share
-                        </span>
-                    </button>
+                    {chatId && (
+                        <>
+                            <button className='flex items-center cursor-pointer gap-2 p-2 rounded-xl hover:bg-[#333333] transition-colors duration-300'>
+                                <span className="material-symbols-outlined"
+                                style={{
+                                    fontSize:20,
+                                }}
+                                >
+                                ios_share
+                                </span>
+                            </button>
 
-                    <button className='flex items-center cursor-pointer gap-2 p-2 rounded-xl hover:bg-[#333333] transition-colors duration-300'>
-                        <span className='material-icons'>more_horiz</span>
-                    </button>
 
+                            <div className="relative inline-block"> 
+                                    <button onClick={() => setShowPopup(!showPopup)} className='flex items-center cursor-pointer gap-2 p-2 rounded-xl hover:bg-[#333333] transition-colors duration-300'>
+                                        <span className='material-icons'>more_horiz</span>
+                                    </button>
+
+                                    {showPopup && (
+                                            <div className="absolute top-full left-0 bg-[#353535] rounded-xl p-1.25 z-10">
+                                                <button className="flex flex-row items-center cursor-pointer rounded-lg text-red-400 hover:bg-red-500/10 text-sm gap-2 px-3 py-1.75"
+                                                    onClick={() => {
+                                                        deleteConv();
+                                                    }}
+                                                >
+                                                    <span className="material-symbols-outlined"
+                                                        style={{
+                                                            fontSize: 20,
+                                                        }}
+                                                    >
+                                                        delete
+                                                    </span>
+                                                    <span>Delete</span>
+                                                </button>
+                                            </div>
+                                        )}
+                            </div>
+                        </>
+                    )}
                 </div>
+                
                 <div className='bg-gray-600 h-8 w-8 rounded-full'>
                 </div>
             </div>
