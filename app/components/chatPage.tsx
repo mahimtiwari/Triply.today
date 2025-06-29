@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useMsgStore } from '@/app/store/chatMsgStore';
 import { useConversationHistoryStore } from '../store/chatHistoryStore';
 import Image from 'next/image';
+import ChatSearch from './chatSearch';
 interface ChatHistoryProps {
     msg: string;
     sender: string;
@@ -177,6 +178,7 @@ const ChatPage = ({chatId, sessionObj}:{chatId?:string, sessionObj:Session}) => 
         
         if (!chatId) {
             setPendingMessage(msg);
+            setChatDisplay([...chatDisplay, {msg: msg, sender: "user"}]);
             registerChat();
             return;
         }
@@ -283,8 +285,25 @@ const ChatPage = ({chatId, sessionObj}:{chatId?:string, sessionObj:Session}) => 
     }
 
 
+    const [searchOpen, setSearchOpen] = useState<boolean>(false);
+
+
   return (
     <>
+    {searchOpen && (
+        <ChatSearch
+            onClose={() => setSearchOpen(false)}
+            conversations={chats}
+            chnageConversation={(id) => {
+                if (id === chatId) {
+                    return;
+                }
+                router.push(`/chat/${id}`);
+                setChatDisplay([]);
+                setPrompt("");
+            }}
+        />
+    )}
     {/*
         <div className='flex flex-row h-screen bg-black text-white w-full'>
         <div className="flex flex-col h-screen w-full">
@@ -375,6 +394,7 @@ const ChatPage = ({chatId, sessionObj}:{chatId?:string, sessionObj:Session}) => 
                 style={{
                     width: sideMenuOpen ? "100%" : "fit-content",
                 }}
+                onClick={() => setSearchOpen(true)}
                 className='w-full flex flex-row cursor-pointer items-center gap-2 text-left px-3 py-2.5 hover:bg-[#333333] rounded-lg transition-colors duration-200 shadow-md'>
                     <span className="material-symbols-outlined" style={{
                         fontSize: 19,
