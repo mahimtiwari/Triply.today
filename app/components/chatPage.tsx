@@ -485,14 +485,17 @@ const ChatPage = ({chatId, sessionObj}:{chatId?:string, sessionObj:Session}) => 
                     )}
                 </div>
                 
-
-                <Image
-                src={sessionObj?.user?.image || ''}
-                alt="User Profile"
-                width={35}
-                height={35}
-                className="rounded-full"
-                />
+                
+                <a href="/user">
+                    <Image
+                    src={sessionObj?.user?.image || ''}
+                    alt="User Profile"
+                    width={35}
+                    height={35}
+                    className="rounded-full"
+                    />
+                </a>
+                
 
             </div>
 
