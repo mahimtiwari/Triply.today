@@ -93,7 +93,7 @@ const ChatShare = ({onClose, chatID, visibility}:ChatShareProps) => {
                 ref={shareRef}
                 onClick={(e)=>{
                     if(shareSelected !== "GLOBAL") return;
-                    navigator.clipboard.writeText(`${window.location.origin}/chat/${chatID}`);
+                    navigator.clipboard.writeText(`${window.location.origin}/chat/share/${chatID}`);
                     if (shareRef.current) {
                         shareRef.current.style.backgroundColor = "#00afef";
                         shareRef.current.innerHTML = "Link Copied!";

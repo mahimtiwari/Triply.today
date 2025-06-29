@@ -12,23 +12,15 @@ export async function POST(request: NextRequest){
     const session = await getServerSession(authOptions);
     const requestParams: RequestParams = await request.json();
     
-    if (!session?.user?.email) {
-        return new Response(JSON.stringify({ error: "Unauthorized" }), {
-            status: 401,
-            headers: {
-                "Content-Type": "application/json",
-            },
-        });
-    }
 
     const conv = await prisma.conversations.findUnique({
         where: {
-            userId: session.user.id,
             conversation_id: requestParams.conversationId,
 
         },
         
     })
+    
     if (!conv) {
         return new Response(JSON.stringify({ error: "Conversation not found" }), {
             status: 404,
@@ -37,6 +29,15 @@ export async function POST(request: NextRequest){
             },
         });
     }
+    if (conv.visibility === Visibility.PRIVATE && conv.userId !== session.user.id) {
+        return new Response(JSON.stringify({ error: "Unauthorized to access this conversation" }), {
+            status: 403,
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+    }
+
     const messages = await prisma.messages.findMany({
         where: {
             conversation_id: conv.conversation_id,
@@ -46,9 +47,14 @@ export async function POST(request: NextRequest){
             created_at: 'asc',
         },
     });
+    let userBool = true;
+    if (!session?.user?.email) {
+        userBool = false;
+    }else if (conv.userId !== session.user.id) {
+        userBool = false;
+    }
 
-
-    return new Response(JSON.stringify({messages:messages, visibility:conv.visibility}), {
+    return new Response(JSON.stringify({messages:messages, visibility:conv.visibility, user:userBool}), {
         status: 200,
         headers: {
             "Content-Type": "application/json",

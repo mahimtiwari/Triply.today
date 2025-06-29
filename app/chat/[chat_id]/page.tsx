@@ -7,11 +7,11 @@ import { redirect } from 'next/navigation';
 const Chat = async ({params}:{params:{chat_id:string}}) => {
     const chatId = (await params).chat_id;
     const session = await getServerSession(authOptions);
-    if (!session?.user?.email) {
-        redirect('/user/signin');
-    }
+    // if (!session?.user?.email) {
+    //     redirect('/user/signin');
+    // }
     return (
-        <ChatPage chatId={chatId} sessionObj={session}/>
+        <ChatPage chatId={chatId} sessionObj={session} share={true}/>
     );
 };
 
