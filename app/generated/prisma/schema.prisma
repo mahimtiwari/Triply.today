@@ -122,10 +122,17 @@ enum Visibility {
   SHARED
 }
 
+enum ChatVisibility {
+  PRIVATE
+  GLOBAL
+}
+
 model Conversations {
-  conversation_id  String   @id @unique @default(uuid())
-  userId           String
-  name             String
+  conversation_id String         @id @unique @default(uuid())
+  userId          String
+  name            String
+  visibility      ChatVisibility @default(PRIVATE)
+
   created_at       DateTime @default(now())
   last_interaction DateTime @default(now())
 

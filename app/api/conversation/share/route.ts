@@ -2,16 +2,20 @@ import { NextRequest } from "next/server";
 import { prisma } from '@/lib/prisma';
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import { Visibility } from "@/app/generated/prisma";
-
 
 interface RequestParams {
     conversationId: string;
+    visibility: Visibility;
 }
+
+enum Visibility {
+    PRIVATE = "PRIVATE",
+    GLOBAL = "GLOBAL",
+}
+
 export async function POST(request: NextRequest){
     const session = await getServerSession(authOptions);
-    const requestParams: RequestParams = await request.json();
-    
+
     if (!session?.user?.email) {
         return new Response(JSON.stringify({ error: "Unauthorized" }), {
             status: 401,
@@ -21,13 +25,17 @@ export async function POST(request: NextRequest){
         });
     }
 
-    const conv = await prisma.conversations.findUnique({
-        where: {
-            userId: session.user.id,
+    const requestParams: RequestParams = await request.json();
+    const conv = await prisma.conversations.update({
+        where:{
             conversation_id: requestParams.conversationId,
+            userId: session.user.id,
+        },
+        data: {
+            
+            visibility: requestParams.visibility,
 
         },
-        
     })
     if (!conv) {
         return new Response(JSON.stringify({ error: "Conversation not found" }), {
@@ -37,18 +45,10 @@ export async function POST(request: NextRequest){
             },
         });
     }
-    const messages = await prisma.messages.findMany({
-        where: {
-            conversation_id: conv.conversation_id,
-            
-        },
-        orderBy: {
-            created_at: 'asc',
-        },
-    });
 
 
-    return new Response(JSON.stringify({messages:messages, visibility:conv.visibility}), {
+    
+    return new Response(JSON.stringify({}), {
         status: 200,
         headers: {
             "Content-Type": "application/json",

@@ -72,6 +72,14 @@ export namespace $Enums {
 export type Visibility = (typeof Visibility)[keyof typeof Visibility]
 
 
+export const ChatVisibility: {
+  PRIVATE: 'PRIVATE',
+  GLOBAL: 'GLOBAL'
+};
+
+export type ChatVisibility = (typeof ChatVisibility)[keyof typeof ChatVisibility]
+
+
 export const SenderType: {
   MODEL: 'MODEL',
   USER: 'USER'
@@ -84,6 +92,10 @@ export type SenderType = (typeof SenderType)[keyof typeof SenderType]
 export type Visibility = $Enums.Visibility
 
 export const Visibility: typeof $Enums.Visibility
+
+export type ChatVisibility = $Enums.ChatVisibility
+
+export const ChatVisibility: typeof $Enums.ChatVisibility
 
 export type SenderType = $Enums.SenderType
 
@@ -9549,6 +9561,7 @@ export namespace Prisma {
     conversation_id: string | null
     userId: string | null
     name: string | null
+    visibility: $Enums.ChatVisibility | null
     created_at: Date | null
     last_interaction: Date | null
   }
@@ -9557,6 +9570,7 @@ export namespace Prisma {
     conversation_id: string | null
     userId: string | null
     name: string | null
+    visibility: $Enums.ChatVisibility | null
     created_at: Date | null
     last_interaction: Date | null
   }
@@ -9565,6 +9579,7 @@ export namespace Prisma {
     conversation_id: number
     userId: number
     name: number
+    visibility: number
     created_at: number
     last_interaction: number
     _all: number
@@ -9575,6 +9590,7 @@ export namespace Prisma {
     conversation_id?: true
     userId?: true
     name?: true
+    visibility?: true
     created_at?: true
     last_interaction?: true
   }
@@ -9583,6 +9599,7 @@ export namespace Prisma {
     conversation_id?: true
     userId?: true
     name?: true
+    visibility?: true
     created_at?: true
     last_interaction?: true
   }
@@ -9591,6 +9608,7 @@ export namespace Prisma {
     conversation_id?: true
     userId?: true
     name?: true
+    visibility?: true
     created_at?: true
     last_interaction?: true
     _all?: true
@@ -9672,6 +9690,7 @@ export namespace Prisma {
     conversation_id: string
     userId: string
     name: string
+    visibility: $Enums.ChatVisibility
     created_at: Date
     last_interaction: Date
     _count: ConversationsCountAggregateOutputType | null
@@ -9697,6 +9716,7 @@ export namespace Prisma {
     conversation_id?: boolean
     userId?: boolean
     name?: boolean
+    visibility?: boolean
     created_at?: boolean
     last_interaction?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -9708,6 +9728,7 @@ export namespace Prisma {
     conversation_id?: boolean
     userId?: boolean
     name?: boolean
+    visibility?: boolean
     created_at?: boolean
     last_interaction?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -9717,6 +9738,7 @@ export namespace Prisma {
     conversation_id?: boolean
     userId?: boolean
     name?: boolean
+    visibility?: boolean
     created_at?: boolean
     last_interaction?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -9726,11 +9748,12 @@ export namespace Prisma {
     conversation_id?: boolean
     userId?: boolean
     name?: boolean
+    visibility?: boolean
     created_at?: boolean
     last_interaction?: boolean
   }
 
-  export type ConversationsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"conversation_id" | "userId" | "name" | "created_at" | "last_interaction", ExtArgs["result"]["conversations"]>
+  export type ConversationsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"conversation_id" | "userId" | "name" | "visibility" | "created_at" | "last_interaction", ExtArgs["result"]["conversations"]>
   export type ConversationsInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     messages?: boolean | Conversations$messagesArgs<ExtArgs>
@@ -9753,6 +9776,7 @@ export namespace Prisma {
       conversation_id: string
       userId: string
       name: string
+      visibility: $Enums.ChatVisibility
       created_at: Date
       last_interaction: Date
     }, ExtArgs["result"]["conversations"]>
@@ -10183,6 +10207,7 @@ export namespace Prisma {
     readonly conversation_id: FieldRef<"Conversations", 'String'>
     readonly userId: FieldRef<"Conversations", 'String'>
     readonly name: FieldRef<"Conversations", 'String'>
+    readonly visibility: FieldRef<"Conversations", 'ChatVisibility'>
     readonly created_at: FieldRef<"Conversations", 'DateTime'>
     readonly last_interaction: FieldRef<"Conversations", 'DateTime'>
   }
@@ -11790,6 +11815,7 @@ export namespace Prisma {
     conversation_id: 'conversation_id',
     userId: 'userId',
     name: 'name',
+    visibility: 'visibility',
     created_at: 'created_at',
     last_interaction: 'last_interaction'
   };
@@ -11927,6 +11953,20 @@ export namespace Prisma {
    * Reference to a field of type 'QueryMode'
    */
   export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
+    
+
+
+  /**
+   * Reference to a field of type 'ChatVisibility'
+   */
+  export type EnumChatVisibilityFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ChatVisibility'>
+    
+
+
+  /**
+   * Reference to a field of type 'ChatVisibility[]'
+   */
+  export type ListEnumChatVisibilityFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ChatVisibility[]'>
     
 
 
@@ -12449,6 +12489,7 @@ export namespace Prisma {
     conversation_id?: StringFilter<"Conversations"> | string
     userId?: StringFilter<"Conversations"> | string
     name?: StringFilter<"Conversations"> | string
+    visibility?: EnumChatVisibilityFilter<"Conversations"> | $Enums.ChatVisibility
     created_at?: DateTimeFilter<"Conversations"> | Date | string
     last_interaction?: DateTimeFilter<"Conversations"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -12459,6 +12500,7 @@ export namespace Prisma {
     conversation_id?: SortOrder
     userId?: SortOrder
     name?: SortOrder
+    visibility?: SortOrder
     created_at?: SortOrder
     last_interaction?: SortOrder
     user?: UserOrderByWithRelationInput
@@ -12472,6 +12514,7 @@ export namespace Prisma {
     NOT?: ConversationsWhereInput | ConversationsWhereInput[]
     userId?: StringFilter<"Conversations"> | string
     name?: StringFilter<"Conversations"> | string
+    visibility?: EnumChatVisibilityFilter<"Conversations"> | $Enums.ChatVisibility
     created_at?: DateTimeFilter<"Conversations"> | Date | string
     last_interaction?: DateTimeFilter<"Conversations"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -12482,6 +12525,7 @@ export namespace Prisma {
     conversation_id?: SortOrder
     userId?: SortOrder
     name?: SortOrder
+    visibility?: SortOrder
     created_at?: SortOrder
     last_interaction?: SortOrder
     _count?: ConversationsCountOrderByAggregateInput
@@ -12496,6 +12540,7 @@ export namespace Prisma {
     conversation_id?: StringWithAggregatesFilter<"Conversations"> | string
     userId?: StringWithAggregatesFilter<"Conversations"> | string
     name?: StringWithAggregatesFilter<"Conversations"> | string
+    visibility?: EnumChatVisibilityWithAggregatesFilter<"Conversations"> | $Enums.ChatVisibility
     created_at?: DateTimeWithAggregatesFilter<"Conversations"> | Date | string
     last_interaction?: DateTimeWithAggregatesFilter<"Conversations"> | Date | string
   }
@@ -13070,6 +13115,7 @@ export namespace Prisma {
   export type ConversationsCreateInput = {
     conversation_id?: string
     name: string
+    visibility?: $Enums.ChatVisibility
     created_at?: Date | string
     last_interaction?: Date | string
     user: UserCreateNestedOneWithoutConversationsInput
@@ -13080,6 +13126,7 @@ export namespace Prisma {
     conversation_id?: string
     userId: string
     name: string
+    visibility?: $Enums.ChatVisibility
     created_at?: Date | string
     last_interaction?: Date | string
     messages?: MessagesUncheckedCreateNestedManyWithoutConversationsInput
@@ -13088,6 +13135,7 @@ export namespace Prisma {
   export type ConversationsUpdateInput = {
     conversation_id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    visibility?: EnumChatVisibilityFieldUpdateOperationsInput | $Enums.ChatVisibility
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     last_interaction?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutConversationsNestedInput
@@ -13098,6 +13146,7 @@ export namespace Prisma {
     conversation_id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    visibility?: EnumChatVisibilityFieldUpdateOperationsInput | $Enums.ChatVisibility
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     last_interaction?: DateTimeFieldUpdateOperationsInput | Date | string
     messages?: MessagesUncheckedUpdateManyWithoutConversationsNestedInput
@@ -13107,6 +13156,7 @@ export namespace Prisma {
     conversation_id?: string
     userId: string
     name: string
+    visibility?: $Enums.ChatVisibility
     created_at?: Date | string
     last_interaction?: Date | string
   }
@@ -13114,6 +13164,7 @@ export namespace Prisma {
   export type ConversationsUpdateManyMutationInput = {
     conversation_id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    visibility?: EnumChatVisibilityFieldUpdateOperationsInput | $Enums.ChatVisibility
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     last_interaction?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -13122,6 +13173,7 @@ export namespace Prisma {
     conversation_id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    visibility?: EnumChatVisibilityFieldUpdateOperationsInput | $Enums.ChatVisibility
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     last_interaction?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -13745,6 +13797,13 @@ export namespace Prisma {
     userId?: SortOrder
   }
 
+  export type EnumChatVisibilityFilter<$PrismaModel = never> = {
+    equals?: $Enums.ChatVisibility | EnumChatVisibilityFieldRefInput<$PrismaModel>
+    in?: $Enums.ChatVisibility[] | ListEnumChatVisibilityFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ChatVisibility[] | ListEnumChatVisibilityFieldRefInput<$PrismaModel>
+    not?: NestedEnumChatVisibilityFilter<$PrismaModel> | $Enums.ChatVisibility
+  }
+
   export type MessagesListRelationFilter = {
     every?: MessagesWhereInput
     some?: MessagesWhereInput
@@ -13759,6 +13818,7 @@ export namespace Prisma {
     conversation_id?: SortOrder
     userId?: SortOrder
     name?: SortOrder
+    visibility?: SortOrder
     created_at?: SortOrder
     last_interaction?: SortOrder
   }
@@ -13767,6 +13827,7 @@ export namespace Prisma {
     conversation_id?: SortOrder
     userId?: SortOrder
     name?: SortOrder
+    visibility?: SortOrder
     created_at?: SortOrder
     last_interaction?: SortOrder
   }
@@ -13775,8 +13836,19 @@ export namespace Prisma {
     conversation_id?: SortOrder
     userId?: SortOrder
     name?: SortOrder
+    visibility?: SortOrder
     created_at?: SortOrder
     last_interaction?: SortOrder
+  }
+
+  export type EnumChatVisibilityWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ChatVisibility | EnumChatVisibilityFieldRefInput<$PrismaModel>
+    in?: $Enums.ChatVisibility[] | ListEnumChatVisibilityFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ChatVisibility[] | ListEnumChatVisibilityFieldRefInput<$PrismaModel>
+    not?: NestedEnumChatVisibilityWithAggregatesFilter<$PrismaModel> | $Enums.ChatVisibility
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumChatVisibilityFilter<$PrismaModel>
+    _max?: NestedEnumChatVisibilityFilter<$PrismaModel>
   }
 
   export type EnumSenderTypeFilter<$PrismaModel = never> = {
@@ -14263,6 +14335,10 @@ export namespace Prisma {
     connect?: MessagesWhereUniqueInput | MessagesWhereUniqueInput[]
   }
 
+  export type EnumChatVisibilityFieldUpdateOperationsInput = {
+    set?: $Enums.ChatVisibility
+  }
+
   export type UserUpdateOneRequiredWithoutConversationsNestedInput = {
     create?: XOR<UserCreateWithoutConversationsInput, UserUncheckedCreateWithoutConversationsInput>
     connectOrCreate?: UserCreateOrConnectWithoutConversationsInput
@@ -14558,6 +14634,23 @@ export namespace Prisma {
     not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
   }
 
+  export type NestedEnumChatVisibilityFilter<$PrismaModel = never> = {
+    equals?: $Enums.ChatVisibility | EnumChatVisibilityFieldRefInput<$PrismaModel>
+    in?: $Enums.ChatVisibility[] | ListEnumChatVisibilityFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ChatVisibility[] | ListEnumChatVisibilityFieldRefInput<$PrismaModel>
+    not?: NestedEnumChatVisibilityFilter<$PrismaModel> | $Enums.ChatVisibility
+  }
+
+  export type NestedEnumChatVisibilityWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ChatVisibility | EnumChatVisibilityFieldRefInput<$PrismaModel>
+    in?: $Enums.ChatVisibility[] | ListEnumChatVisibilityFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ChatVisibility[] | ListEnumChatVisibilityFieldRefInput<$PrismaModel>
+    not?: NestedEnumChatVisibilityWithAggregatesFilter<$PrismaModel> | $Enums.ChatVisibility
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumChatVisibilityFilter<$PrismaModel>
+    _max?: NestedEnumChatVisibilityFilter<$PrismaModel>
+  }
+
   export type NestedEnumSenderTypeFilter<$PrismaModel = never> = {
     equals?: $Enums.SenderType | EnumSenderTypeFieldRefInput<$PrismaModel>
     in?: $Enums.SenderType[] | ListEnumSenderTypeFieldRefInput<$PrismaModel>
@@ -14728,6 +14821,7 @@ export namespace Prisma {
   export type ConversationsCreateWithoutUserInput = {
     conversation_id?: string
     name: string
+    visibility?: $Enums.ChatVisibility
     created_at?: Date | string
     last_interaction?: Date | string
     messages?: MessagesCreateNestedManyWithoutConversationsInput
@@ -14736,6 +14830,7 @@ export namespace Prisma {
   export type ConversationsUncheckedCreateWithoutUserInput = {
     conversation_id?: string
     name: string
+    visibility?: $Enums.ChatVisibility
     created_at?: Date | string
     last_interaction?: Date | string
     messages?: MessagesUncheckedCreateNestedManyWithoutConversationsInput
@@ -14923,6 +15018,7 @@ export namespace Prisma {
     conversation_id?: StringFilter<"Conversations"> | string
     userId?: StringFilter<"Conversations"> | string
     name?: StringFilter<"Conversations"> | string
+    visibility?: EnumChatVisibilityFilter<"Conversations"> | $Enums.ChatVisibility
     created_at?: DateTimeFilter<"Conversations"> | Date | string
     last_interaction?: DateTimeFilter<"Conversations"> | Date | string
   }
@@ -15541,6 +15637,7 @@ export namespace Prisma {
   export type ConversationsCreateWithoutMessagesInput = {
     conversation_id?: string
     name: string
+    visibility?: $Enums.ChatVisibility
     created_at?: Date | string
     last_interaction?: Date | string
     user: UserCreateNestedOneWithoutConversationsInput
@@ -15550,6 +15647,7 @@ export namespace Prisma {
     conversation_id?: string
     userId: string
     name: string
+    visibility?: $Enums.ChatVisibility
     created_at?: Date | string
     last_interaction?: Date | string
   }
@@ -15573,6 +15671,7 @@ export namespace Prisma {
   export type ConversationsUpdateWithoutMessagesInput = {
     conversation_id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    visibility?: EnumChatVisibilityFieldUpdateOperationsInput | $Enums.ChatVisibility
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     last_interaction?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutConversationsNestedInput
@@ -15582,6 +15681,7 @@ export namespace Prisma {
     conversation_id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    visibility?: EnumChatVisibilityFieldUpdateOperationsInput | $Enums.ChatVisibility
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     last_interaction?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -15638,6 +15738,7 @@ export namespace Prisma {
   export type ConversationsCreateManyUserInput = {
     conversation_id?: string
     name: string
+    visibility?: $Enums.ChatVisibility
     created_at?: Date | string
     last_interaction?: Date | string
   }
@@ -15794,6 +15895,7 @@ export namespace Prisma {
   export type ConversationsUpdateWithoutUserInput = {
     conversation_id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    visibility?: EnumChatVisibilityFieldUpdateOperationsInput | $Enums.ChatVisibility
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     last_interaction?: DateTimeFieldUpdateOperationsInput | Date | string
     messages?: MessagesUpdateManyWithoutConversationsNestedInput
@@ -15802,6 +15904,7 @@ export namespace Prisma {
   export type ConversationsUncheckedUpdateWithoutUserInput = {
     conversation_id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    visibility?: EnumChatVisibilityFieldUpdateOperationsInput | $Enums.ChatVisibility
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     last_interaction?: DateTimeFieldUpdateOperationsInput | Date | string
     messages?: MessagesUncheckedUpdateManyWithoutConversationsNestedInput
@@ -15810,6 +15913,7 @@ export namespace Prisma {
   export type ConversationsUncheckedUpdateManyWithoutUserInput = {
     conversation_id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    visibility?: EnumChatVisibilityFieldUpdateOperationsInput | $Enums.ChatVisibility
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     last_interaction?: DateTimeFieldUpdateOperationsInput | Date | string
   }

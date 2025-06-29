@@ -6,6 +6,8 @@ import { useMsgStore } from '@/app/store/chatMsgStore';
 import { useConversationHistoryStore } from '../store/chatHistoryStore';
 import Image from 'next/image';
 import ChatSearch from './chatSearch';
+import ChatShare from './chatShare';
+import { set } from 'date-fns';
 interface ChatHistoryProps {
     msg: string;
     sender: string;
@@ -78,7 +80,7 @@ const ChatPage = ({chatId, sessionObj}:{chatId?:string, sessionObj:Session}) => 
     //     return conversations;
     // }
     const [chats, setChats] = useState<any[]>([]);
-
+    const [ visib, setVisib ] = useState<string>("");
     useEffect(() => {
         async function fetchConversations() {
             const convFetch = await fetch("/api/conversation/fetch", {
@@ -116,6 +118,7 @@ const ChatPage = ({chatId, sessionObj}:{chatId?:string, sessionObj:Session}) => 
                 }),
             })
             const msgJson = await messageFetchObj.json();
+            setVisib(msgJson.visibility);
             if (!msgJson.messages) {
                 console.error("Error: messages not found in response");
                 return;
@@ -286,6 +289,8 @@ const ChatPage = ({chatId, sessionObj}:{chatId?:string, sessionObj:Session}) => 
 
 
     const [searchOpen, setSearchOpen] = useState<boolean>(false);
+    const [shareOpen, setShareOpen] = useState<boolean>(false);
+    
 
 
   return (
@@ -304,6 +309,15 @@ const ChatPage = ({chatId, sessionObj}:{chatId?:string, sessionObj:Session}) => 
             }}
         />
     )}
+
+    {shareOpen && visib!== "" && (
+        <ChatShare
+            onClose={() => setShareOpen(false)}
+            chatID={chatId}
+            visibility={visib}
+        />
+    )}
+
     {/*
         <div className='flex flex-row h-screen bg-black text-white w-full'>
         <div className="flex flex-col h-screen w-full">
@@ -446,7 +460,11 @@ const ChatPage = ({chatId, sessionObj}:{chatId?:string, sessionObj:Session}) => 
                 <div className='flex flex-row gap-1'>
                     {chatId && (
                         <>
-                            <button className='flex items-center cursor-pointer gap-2 p-2 rounded-xl hover:bg-[#333333] transition-colors duration-300'>
+                            <button 
+                            onClick={()=>{
+                                setShareOpen(true);
+                            }}
+                            className='flex items-center cursor-pointer gap-2 p-2 rounded-xl hover:bg-[#333333] transition-colors duration-300'>
                                 <span className="material-symbols-outlined"
                                 style={{
                                     fontSize:20,

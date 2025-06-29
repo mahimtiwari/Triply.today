@@ -26,12 +26,13 @@ const ChatSearch = ({onClose, conversations, chnageConversation}:ChatSearchProps
 
   const searchRef = useRef<HTMLInputElement>(null)
 
+  
   useEffect(() => {
     searchRef.current?.focus();
   }, []);
 
   return (
-    <div className='absolute top-0 left-0 w-full h-full  z-50 flex items-center justify-center'>
+    <div className='absolute top-0 left-0 w-full h-full font-[Poppins] z-50 flex items-center justify-center'>
         <div className='backdrop-blur-xl text-white bg-[#2f2f2f] w-[50%] min-w-[500px] max-w-[700px] rounded-3xl '>
             <div className='py-3 px-6 border-b-1 border-[#4f4f4f] flex flex-row items-center'>
               <input type="text" 
@@ -72,9 +73,17 @@ const ChatSearch = ({onClose, conversations, chnageConversation}:ChatSearchProps
 
                         chnageConversation(conv.chatId);
                         onClose();
-                        
+
                       }}
+                      className='w-full text-left p-3 cursor-pointer hover:bg-[#4f4f4f] transition-colors duration-200 rounded-xl flex flex-row gap-3 items-center'
                     >
+                      <span className="material-symbols-outlined"
+                        style={{
+                          fontSize: 20,
+                        }}
+                      >
+                      chat_bubble
+                      </span>
                       <span>{conv.name}</span>
                     </button>
                   ))}

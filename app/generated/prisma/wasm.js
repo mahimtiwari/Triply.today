@@ -194,6 +194,7 @@ exports.Prisma.ConversationsScalarFieldEnum = {
   conversation_id: 'conversation_id',
   userId: 'userId',
   name: 'name',
+  visibility: 'visibility',
   created_at: 'created_at',
   last_interaction: 'last_interaction'
 };
@@ -234,6 +235,11 @@ exports.Visibility = exports.$Enums.Visibility = {
   PRIVATE: 'PRIVATE',
   PUBLIC: 'PUBLIC',
   SHARED: 'SHARED'
+};
+
+exports.ChatVisibility = exports.$Enums.ChatVisibility = {
+  PRIVATE: 'PRIVATE',
+  GLOBAL: 'GLOBAL'
 };
 
 exports.SenderType = exports.$Enums.SenderType = {
