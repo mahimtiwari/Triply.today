@@ -1,12 +1,15 @@
 "use client";
 import React, { useEffect, useRef, useState } from 'react';
+import ReactDOM from 'react-dom';
+
+
 
 interface suggestion_Type {
     search: string;
     region: string;
 }
 
-const SearchBarAutocomplete = (parameters: any) => {
+const SearchBarAutocomplete = ({placeholder}:{placeholder:string}) => {
     const [query, setQuery] = useState('');
     const [boolSuggestions, setBoolSuggestions] = useState(false);
     const [filteredSuggestions, setFilteredSuggestions] = useState<suggestion_Type[]>([]);
@@ -38,17 +41,32 @@ const SearchBarAutocomplete = (parameters: any) => {
         };
     }, [query]);
 
+  const [screenWidth, setScreenWidth] = useState<number | null>(null);
+
+
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
             if (event.target !== document.getElementById('default-search')) {
                 setBoolSuggestions(false);
             }
         };
+
+        const updateWidth = () => setScreenWidth(window.innerWidth);
+        updateWidth();
+        window.addEventListener('resize', updateWidth);
+
+
         document.addEventListener('mousedown', handleClickOutside);
         return () => {
             document.removeEventListener('mousedown', handleClickOutside);
+            window.removeEventListener('resize', updateWidth);
         };
     }, []);
+
+
+
+
+
 
     function handleSuggestionClick(suggestion: string) {
         setQuery(suggestion);
@@ -60,8 +78,22 @@ const SearchBarAutocomplete = (parameters: any) => {
         }
     }, 0);
     }
+    const [mobileSearchVisib, setBoolMobileSearch] = useState(false);
+
+    function mobileSearch() {
+
+        if(screenWidth !== null && screenWidth < 900) {
+            setBoolMobileSearch(true);
+            setTimeout(() => {
+                mobileSearchRef.current?.focus();
+            }, 0);
+        }
+
+    }
+    const mobileSearchRef = useRef<HTMLInputElement | null>(null);
 
     return (
+        <>
         <form ref={formRef} action="/preplan" className="w-full max-w-[500px] mt-[70px] mx-[10px]">
             <label htmlFor="default-search" className="mb-2 text-sm font-medium text-gray-900 sr-only">Search</label>
             <div className="relative">
@@ -76,7 +108,12 @@ const SearchBarAutocomplete = (parameters: any) => {
                     autoComplete='off'
                     id="default-search"
                     className="block bg-white/50 backdrop-blur-[30px] w-full font-bold text-[18px] p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-2xl focus:ring-blue-300 focus:ring-3 outline-none transition-all duration-300"
-                    placeholder={parameters.placeholder}
+                    placeholder={placeholder}
+                    onClick={() => {
+                        if (screenWidth !== null && screenWidth < 900) {
+                            mobileSearch();
+                        }
+                    }}
                     onChange={(e) => {
                         setQuery(e.target.value);
                         lastSelectedSuggestion.current = null; // Reset when typing
@@ -160,6 +197,135 @@ const SearchBarAutocomplete = (parameters: any) => {
                 </button>
             </div>
         </form>
+        {mobileSearchVisib &&  ReactDOM.createPortal(
+        
+        <div 
+        style={{ 
+            overscrollBehavior: 'none',
+            touchAction: 'none',
+         }}
+        className="fixed overflow inset-0 z-[999] bg-white flex flex-col p-4 overflow-y-auto">
+            <div className='flex flex-row gap-2'>
+            <div className="relative w-full">
+                <div className="absolute inset-y-0 z-1 start-0 flex items-center ps-3 pointer-events-none">
+                    <svg className="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                        <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                    </svg>
+                </div>
+                <input
+                    type="search"
+                    ref={mobileSearchRef}
+                    name='destination'
+                    autoComplete='off'
+                    id="default-search"
+                    className="block bg-white/50 backdrop-blur-[30px] w-full font-bold text-[18px] p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-2xl focus:ring-blue-300 focus:ring-3 outline-none transition-all duration-300"
+                    placeholder={placeholder}
+                    onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                            e.preventDefault();
+                            setBoolMobileSearch(false);
+                            setTimeout(() => {
+                                if (formRef.current) {
+                                    formRef.current.submit();
+                                }
+                            }, 0);
+                        }
+                    }}
+                    onChange={(e) => {
+                        setQuery(e.target.value);
+                        lastSelectedSuggestion.current = null; // Reset when typing
+                    }}
+                    onFocus={() => {
+                        const exactMatch = filteredSuggestions.some(s => s.search.toLowerCase() === query.toLowerCase());
+                        setBoolSuggestions(filteredSuggestions.length > 0 && !exactMatch);
+                    }}
+                    value={query}
+                    required
+                />
+
+
+            </div>
+                
+                <button
+                    className="cursor-pointer h-full w-15 flex items-center justify-center rounded-full"
+                    onClick={()=>{
+                        setBoolMobileSearch(false);
+                    }}
+                >
+
+                    <span className="material-icons text-xl">
+                        close
+                    </span>
+                </button>
+            </div>
+                {boolSuggestions && (
+                    <>
+                    <ul
+                        className="w-[100%] mt-2 overflow-y-hidden overflow-x-hidden divide-y divide-gray-200 transition-all duration-300 transform "
+                        style={{
+                            backgroundColor: 'rgb(255 255 255 / 30%)',
+                            animation: boolSuggestions
+                                ? 'fadeInScale 0.3s ease-out forwards'
+                                : 'fadeOutScale 0.2s ease-in forwards',
+                        }}
+                    >
+                        {filteredSuggestions.map((suggestion, idx) => (
+                            <li
+                                key={suggestion.search + idx}
+                                className="px-4 py-3 cursor-pointer hover:bg-white/45 hover:scale-102 transition-all duration-300 flex items-center gap-2 w-full"
+                                onMouseDown={() => handleSuggestionClick(suggestion.search)}
+                                onClick={() => handleSuggestionClick(suggestion.search)}
+                            >
+                                <svg
+                                    className="w-5 h-5 text-blue-500"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth="2"
+                                        d="M16.88 3.549a9.953 9.953 0 00-9.76 0A9.953 9.953 0 003 12c0 3.866 2.186 7.243 5.4 8.88a9.953 9.953 0 009.76 0A9.953 9.953 0 0021 12c0-3.866-2.186-7.243-5.4-8.88z"
+                                    />
+                                </svg>
+                                <div>
+                                    <p className="font-medium text-gray-900">{suggestion.search}</p>
+                                    <p className="text-sm text-left text-gray-500">{suggestion.region}</p>
+                                </div>
+                            </li>
+                        ))}
+                    </ul>
+                    <style jsx>{`
+                        @keyframes fadeInScale {
+                            0% {
+                                opacity: 0;
+                                transform: scale(0.95);
+                            }
+                            100% {
+                                opacity: 1;
+                                transform: scale(1);
+                            }
+                        }
+                        @keyframes fadeOutScale {
+                            0% {
+                                opacity: 1;
+                                transform: scale(1);
+                            }
+                            100% {
+                                opacity: 0;
+                                transform: scale(0.95);
+                            }
+                        }
+                    `}</style>
+                    </>
+                )}
+        </div>, document.body
+
+    )}
+        </>
+
     );
 };
 
