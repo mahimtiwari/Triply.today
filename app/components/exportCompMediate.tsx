@@ -491,7 +491,7 @@ const TripPdfFormat = ({tripDetails, metadata, pckList, costData, currencySymbol
                           maxWidth: '40%',
                         }}>
                           <Text>To:</Text>
-                          <Text>{place.from}</Text>
+                          <Text>{place.to}</Text>
                         </View>
                       </View> 
                       <View
