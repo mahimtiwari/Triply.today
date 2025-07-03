@@ -26,7 +26,7 @@ import ItinerarySectionComponent from '@/app/components/ItinerarySectionComponen
 import PlanSectionComponent from '@/app/components/PlanSectionComponent';
 import CostSectionComponent from '@/app/components/CostSectionComponent';
 import DraggerComponent from '@/app/components/draggerComponent';
-
+import MobileSideMenu from '@/app/components/mobileSideMenu';
 interface PageProps {
   params: Promise<{ tripId: string }>; 
 }
@@ -1289,43 +1289,16 @@ const [popShare, setPopShare] = useState<boolean>(false);
           </div>
 
           {/* Side select menu (mobile ver) */}
-            <div style={{
-              visibility: `${controlmenuOpen ? "visible" : "hidden"}`,
-              opacity: `${controlmenuOpen ? 1 : 0}`,
-              transition: 'opacity 0.3s ease-in-out, visibility 0.3s ease-in-out'
-            }}>
-              <div className='grid grid-cols-6  gap-2 mt-3'>
-                <button className={`bg-[#0000000d] col-span-2 otline-0 h-20 flex flex-col rounded-xl  items-center justify-center   ${sideSelected === "itin" ? "bg-[#001eff13] text-[#004079] scale-101" : "text-[#292929]"} transition-all duration-200 ease-in-out`}
-                  onClick={() => setSideSelected("itin")}>
-                  <span className="material-icons text-2xl">travel_explore</span>
-                  <span className='text-sm font-semibold'>Itin</span>
-                </button>
-                <button className={`bg-[#0000000d] col-span-2 otline-0 h-20 flex flex-col rounded-xl  items-center justify-center   ${sideSelected === "plan" ? "bg-[#001eff13] text-[#004079] scale-101" : "text-[#292929]"} transition-all duration-200 ease-in-out`}
-                  onClick={() => setSideSelected("plan")}>
-                  <span className="material-icons text-2xl">map</span>
-                  <span className='text-sm font-semibold'>Plan</span>
-
-                </button>
-                <button className={`bg-[#0000000d] col-span-2 otline-0 h-20 flex flex-col rounded-xl  items-center justify-center   ${sideSelected === "cost" ? "bg-[#001eff13] text-[#004079] scale-101" : "text-[#292929]"} transition-all duration-200 ease-in-out`}
-                  onClick={() => setSideSelected("cost")}>
-                  <span className="material-icons text-2xl">paid</span>
-                  <span className='text-sm font-semibold'>Cost</span>
-
-                </button>
-                <button className={`bg-[#0000000d] col-span-3 otline-0 h-20 flex flex-col rounded-xl  items-center justify-center   ${sideSelected === "export" ? "bg-[#001eff13] text-[#004079] scale-101" : "text-[#292929]"} transition-all duration-200 ease-in-out`}
-                  onClick={() => setSideSelected("export")}>
-                  <span className="material-icons text-2xl">play_circle</span>
-                  <span className='text-sm font-semibold'>Export</span>
-
-                </button>
-                <button className={`bg-[#0000000d] col-span-3 otline-0 h-20 flex flex-col rounded-xl  items-center justify-center   ${sideSelected === "bag" ? "bg-[#001eff13] text-[#004079] scale-101" : "text-[#292929]"} transition-all duration-200 ease-in-out`}
-                  onClick={() => setSideSelected("bag")}>
-                  <span className="material-icons text-2xl">luggage</span>
-                  <span className='text-sm font-semibold'>Bag</span>
-
-                </button>
-              </div>
-            </div>
+          <MobileSideMenu
+            controlmenuOpen={controlmenuOpen}
+            setControlMenuOpen={(b:boolean)=>{
+              setControlMenuOpen(b);
+            }}
+            sideSelected={sideSelected}
+            setSideSelected={(str:string)=>{
+              setSideSelected(str);
+            }}
+          />
       </div>
     </div>
     <div className='absolute w-full h-[100vh] bg-amber-400 ' 
@@ -1358,6 +1331,7 @@ const [popShare, setPopShare] = useState<boolean>(false);
             />
             )}
     </div>
+
     <div className={`sticky bg-white z-50 top-[100vh] transition-all duration-300 overflow-y-auto`}
       style={
         {height: `${bottomSheetHeight}vh`,
@@ -1385,522 +1359,51 @@ const [popShare, setPopShare] = useState<boolean>(false);
 
 
           {sideSelected === "itin" && bufSate && (
-          <div className='h-full w-full bg-white'>
-            <div>
-                <table className="w-full table-auto">
-                <thead className="">
-                  <tr>
-                  <th className="text-left px-6 py-3 font-semibold text-gray-700">
-                    <span className='flex flex-row gap-2 items-center'>
-                    <Image
-                      src={`/img/day.svg`}
-                      width={20}
-                      height={20}
-                      alt="day"
-                    />
-                    Days</span></th>
-                  <th className="text-left px-6 py-3 font-semibold text-gray-700">
-                    <span className='flex flex-row gap-2 items-center'>
-                    <Image
-                      src={`/img/mapmarker.svg`}
-                      width={20}
-                      height={20}
-                      alt="day"
-                    />
-                    Destination</span></th>
-                  <th className="text-left px-6 py-3 font-semibold text-gray-700">
-                    <span className='flex flex-row gap-2 items-center'>
-                    <Image
-                      src={`/img/cost.webp`}
-                      width={20}
-                      height={20}
-                      alt="day"
-                    />
-                    Cost</span></th>
-                  <th className="text-left px-6 py-3 font-semibold text-gray-700">
-                    <span className='flex flex-row gap-2 items-center'>
-                    <Image
-                      src={`/img/itin.svg`}
-                      width={20}
-                      height={20}
-                      alt="day"
-                    />
-                    Map</span></th>
-
-                  </tr>
-                </thead>
-                {!dataJSON && (
-                <tbody>
-                  {Array.from({ length: 5 }, (_, index) => (
-                  <tr key={index} className='border-b border-gray-300'>
-                    <td className="px-6 py-5">
-                      <div className="animate-pulse bg-gray-200 h-6 rounded"></div>
-                    </td>
-                    <td className="px-6 py-4">
-                      <div className="animate-pulse bg-gray-200 h-6 rounded"></div>
-                    </td>
-                    <td className="px-6 py-4">
-                      <div className="animate-pulse bg-gray-200 h-6 rounded"></div>
-                    </td>
-                    <td className="px-6 py-4">
-                      <div className="animate-pulse bg-gray-200 h-6 rounded"></div>
-                    </td>
-                  </tr>
-                  ))}
-                
-                </tbody>
-                )}
-                { dataJSON?.trip?.trip && (
-                <tbody>
-                  {Object.entries(dataJSON.trip.trip).map(([day, tripInfo], index) => (
-                  <tr
-                    key={day}
-                    className='border-b border-gray-300'
-                  >
-                    <td className="px-6 py-5 text-gray-800 font-medium">
-
-                    
-                      {`Day ${day.replace("day", "")}`}
-                    
-                    </td>
-                    <td className="px-6 py-4 text-gray-700">{tripInfo.destination}</td>
-                    <td className="px-6 py-4 text-green-600 font-semibold">{currencySymbol}{costDetailsRef.current?.days[day].daytotalcost}</td>
-                    <td className="p-3 select-none">
-
-
-                        <a 
-                        href={buildGmapUrl(tripInfo.places)} 
-                        target="_blank" 
-                        rel="noopener noreferrer" 
-                        className='flex cursor-pointer flex-row gap-2 text-green-600 font-semibold items-center justify-center p-3 rounded-4xl hover:bg-green-100 transition duration-200 ease-in-out border-1 border-green-400'
-                        >
-                        <Image
-                          src={`/img/gmap.png`}
-                          width={13}
-                          height={13}
-                          alt="gmap"
-                        />
-                        View
-                        </a>
-                    </td>
-                  </tr>
-
-                  ))}
-                </tbody>
-                )}
-                </table>
-            </div>
-          </div>
+            <ItinerarySectionComponent
+              dataJSON={dataJSON}
+              currencySymbol={currencySymbol || ""}
+              costDetails={costDetailsRef.current}
+            />
           
           )}
 
           {sideSelected === "plan" && bufSate && (
-            <div className='h-full w-full bg-white'>
-              { !dataJSON && (
-                <>
-                {Array.from({ length: 7 }, (_, index) => (
-                <div key={index} className="animate-pulse bg-gray-200 h-6 my-6 mx-3  rounded"></div>
-                
-              ))}
-              </>
-              )}
-
-              { dataJSON?.trip?.trip && Object.entries(dataJSON.trip.trip).map(([day, tripInfo]) => (
-                <div key={day} className="bg-white border-b-1 border-gray-300 p-4">
-                  <div className="flex items-center justify-between cursor-pointer" onClick={() => setDayExpanded(dayExpanded === day ? null : day)}>
-                    <h2 className="text-lg font-bold text-gray-700">{`Day ${day.replace("day", "")}`}<span className='font-medium ml-4'>( {tripInfo.destination} )</span></h2>
-                    <span className="text-sm font-medium text-gray-500">{dayExpanded === day ? "Hide Details" : "Show Details"}</span>
-                  </div>
-                  {dayExpanded === day && (
-                    <div className="mt-4 flex flex-col gap-4">
-                      {tripInfo.arriving && (
-                        <div className="flex flex-col bg-gray-100 rounded-lg shadow-md p-4">
-                          <div className="flex items-center justify-between">
-                          <h3 className="text-lg font-semibold text-gray-700">Arriving</h3>
-                          <span className="bg-gradient-to-r from-blue-300 to-blue-600 text-white px-3 py-1 rounded-full text-sm font-medium">
-                            {tripInfo.arriving.preffered_transport}
-                          </span>
-                          </div>
-                          <div className="mt-4">
-                          <div className="flex items-center justify-between font-semibold">
-                            <div className="flex items-center gap-2">
-                        
-                            <span className="text-sm text-gray-500">{`From: ${tripInfo.arriving.from}`}</span>
-                            </div>
-                            <div className="flex items-center gap-2">
-
-                            <span className="text-sm text-gray-500">{`To: ${tripInfo.arriving.to}`}</span>
-                            </div>
-                          </div>
-                          </div>
-
-
-
-                        </div>
-                      )}
-
-                      {tripInfo.places.map((place, index) => (
-                        <div key={index} className="flex flex-col bg-gray-100 rounded-lg shadow-md p-4">
-                          
-                          {/* Header Section */}
-                          {place.category.toLowerCase() !== "intermediate_transport" && (
-                          <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-4">
-                            <Image
-                            src={`/img/${place.category.toLowerCase()}.png`}
-                            width={40}
-                            height={40}
-                            alt="category"
-                            className="rounded-full"
-                            style={{
-                              filter:
-                              'invert(20%) sepia(50%) saturate(300%) hue-rotate(200deg) brightness(90%) contrast(85%)',
-                            }}
-                            />
-                            <div>
-                            <h3 className="text-lg font-semibold text-gray-700">{place.name}</h3>
-                            <p className="text-sm text-gray-500  font-semibold flex gap-2">                             
-                              <Image
-                              src={`/img/clock.svg`}
-                              width={15}
-                              height={15}
-                              alt="clock"
-                              className="rounded-full"
-                              style={{
-                              filter:
-                                'invert(20%) sepia(50%) saturate(300%) hue-rotate(200deg) brightness(90%) contrast(85%)',
-                              }}
-                            /> {place.time}</p>
-                            </div>
-                          </div>
-                          </div>
-                          )}
-                          <div className={`${place.category.toLowerCase() == "intermediate_transport" ? "" : "mt-4 border-t-[2px] pt-4"} border-gray-300 `}>
-                          <div className="flex items-center justify-between font-semibold">
-                            <div className="flex items-center gap-2">
-
-                            <span className="text-sm text-gray-500">{`From: ${place.from}`}</span>
-                            </div>
-                            <div className="flex items-center gap-2">
-
-                            <span className="text-sm text-gray-500">{`To: ${place.to}`}</span>
-                            </div>
-                          </div>
-                          {place.category !== "intermediate_transport" && place.description && (
-                            <div className="mt-2 text-sm text-gray-600 italic bg-gray-200 p-3 rounded-lg shadow-inner border-l-4 border-blue-300">
-                              {place.description}
-                            </div>
-                          )}
-                          </div>
-                          
-
-                        </div>
-                      ))}
-                      {tripInfo.departing && (
-                        <div className="flex flex-col bg-gray-100 rounded-lg shadow-md p-4">
-                          <div className="flex items-center justify-between">
-                          <h3 className="text-lg font-semibold text-gray-700">Departing</h3>
-                          <span className="bg-gradient-to-r from-blue-300 to-blue-600 text-white px-3 py-1 rounded-full text-sm font-medium">
-                            {tripInfo.departing.preffered_transport}
-                          </span>
-                          </div>
-                          <div className="mt-4">
-                          <div className="flex items-center justify-between font-semibold">
-                            <div className="flex items-center gap-2">
-                        
-                            <span className="text-sm text-gray-500">{`From: ${tripInfo.departing.from}`}</span>
-                            </div>
-                            <div className="flex items-center gap-2">
-
-                            <span className="text-sm text-gray-500">{`To: ${tripInfo.departing.to}`}</span>
-                            </div>
-                          </div>
-                          </div>
-
-
-                        </div>
-                      )}
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
+            <PlanSectionComponent
+              dataJSON={dataJSON}
+              dayExpanded={dayExpanded}
+              setDayExpanded={(day:string|null)=>{
+                setDayExpanded(day);
+              }}
+            />
 
 
           )}
 
           {sideSelected === "cost"  && bufSate && (
-            <div className='h-full w-full bg-white'>
+            <CostSectionComponent
 
-              <div className='w-full flex pl-4 border-b-[1px] border-gray-300'>
-              <button 
-                className={`px-6 py-3 text-sm font-semibold cursor-pointer transition-all duration-200 ease-in-out ${costType === "day" ? 'border-b-[3px] border-blue-500 text-blue-600' : 'border-b-[3px] border-transparent text-gray-500 hover:text-blue-500 hover:border-blue-300'}`} 
-                onClick={() => setCostType("day")}>
-                Day
-              </button>
-              <button 
-                className={`px-6 py-3 text-sm font-semibold cursor-pointer transition-all duration-200 ease-in-out ${costType === "misc" ? 'border-b-[3px] border-blue-500 text-blue-600' : 'border-b-[3px] border-transparent text-gray-500 hover:text-blue-500 hover:border-blue-300'}`} 
-                onClick={() => setCostType("misc")}>
-                Misc
-              </button>
-              <button 
-                className={`px-6 py-3 text-sm font-semibold cursor-pointer transition-all duration-200 ease-in-out ${costType === "total" ? 'border-b-[3px] border-blue-500 text-blue-600' : 'border-b-[3px] border-transparent text-gray-500 hover:text-blue-500 hover:border-blue-300'}`} 
-                onClick={() => setCostType("total")}>
-                Total
-              </button>
-              </div>
+              costType={costType}
+              setCostType={(type:string)=>{
+                setCostType(type);
+              }}
 
-              { !dataJSON && (
-                <>
-                {Array.from({ length: 7 }, (_, index) => (
-                <div key={index} className="animate-pulse bg-gray-200 h-6 my-6 mx-3  rounded"></div>
-              ))}
-              </>
-              )}
+              dayExpanded={dayExpanded}
+              dataJSON={dataJSON}
+              setDayExpanded={(day:string|null)=>{
+                setDayExpanded(day);
+              }}
+              graphicalCostDataRef={graphicalCostDataRef.current}
+              currencySymbol={currencySymbol || "$"}
+              costDetailsRef={costDetailsRef.current!}
+              setGraphCostRef={(data:GraphicalCostData)=>{
+                graphicalCostDataRef.current = data;
+              }}
+              setTotalCost={(total:number)=>{
+                setTotalCost(total);
+              }}
+              totalCost={totalCost}
 
-              {dataJSON?.trip?.trip && costType==="day" && Object.entries(dataJSON.trip.trip).map(([day, tripInfo]) => (
-                <div key={day} className="bg-white border-b-1 border-gray-300 p-4">
-                  <div className="flex items-center justify-between cursor-pointer" onClick={() => setDayExpanded(dayExpanded === day ? null : day)}>
-                    <h2 className="text-lg font-bold text-gray-700">{`Day ${day.replace("day", "")}`}<span className='font-medium ml-4'>( {tripInfo.destination} )</span></h2>
-                    <span className="bg-gradient-to-r mr-6 ml-auto from-green-300 via-green-500 to-green-600 text-white px-3 py-1 rounded-full text-sm font-semibold">
-                      {currencySymbol}{costDetailsRef.current!.days[day].daytotalcost}
-                    </span>
-                    <span className="text-sm font-medium text-gray-500">{dayExpanded === day ? "Hide Details" : "Show Details"}</span>
-                  </div>
-                  {dayExpanded === day && (
-                    <div className="mt-4 flex flex-col gap-4">
-                      {tripInfo.arriving && (
-                        <div className="flex flex-col bg-gray-100 rounded-lg shadow-md p-4">
-                          <div className="flex items-center justify-between">
-                          <h3 className="text-lg font-semibold text-gray-700">Arriving</h3>
-                          <span className="bg-gradient-to-r from-blue-300 to-blue-600 text-white px-3 py-1 rounded-full text-sm font-medium">
-                            {tripInfo.arriving.preffered_transport}
-                          </span>
-                          </div>
-                          <div className="mt-4">
-                          <div className="flex items-center justify-between font-semibold">
-                            <div className="flex items-center gap-2">
-                        
-                            <span className="text-sm text-gray-500">{`From: ${tripInfo.arriving.from}`}</span>
-                            </div>
-                            <div className="flex items-center gap-2">
-
-                            <span className="text-sm text-gray-500">{`To: ${tripInfo.arriving.to}`}</span>
-                            </div>
-                          </div>
-                          </div>
-
-                          <div className="mt-4 flex items-center justify-between">
-                          <span className="text-sm text-gray-500 font-medium ">{tripInfo.arriving.preffered_transport} Cost:</span>
-                          <span className="bg-gradient-to-r from-green-300 via-green-500 to-green-600 text-white px-3 py-1 rounded-full text-sm font-semibold">
-                            {currencySymbol}{getTransportationCost(dataJSON.trip.transportation, tripInfo.arriving.from, tripInfo.arriving.to, tripInfo.arriving.preffered_transport)}
-                          </span>
-                          </div>
-
-                        </div>
-                      )}
-                      {tripInfo.places.map((place, index) => (
-                        <div key={index} className="flex flex-col bg-gray-100 rounded-lg shadow-md p-4">
-                          {/* Header Section */}
-
-                          { place.category.toLowerCase() !== "intermediate_transport" && (
-                          <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-4">
-                            <Image
-                            src={`/img/${place.category.toLowerCase()}.png`}
-                            width={40}
-                            height={40}
-                            alt="category"
-                            className="rounded-full"
-                            style={{
-                              filter:
-                              'invert(20%) sepia(50%) saturate(300%) hue-rotate(200deg) brightness(90%) contrast(85%)',
-                            }}
-                            />
-                            <div>
-                            <h3 className="text-lg font-semibold text-gray-700">{place.name}</h3>
-                            <p className="text-sm text-gray-500 flex gap-2">                             
-                              <Image
-                              src={`/img/clock.svg`}
-                              width={15}
-                              height={15}
-                              alt="clock"
-                              className="rounded-full"
-                              style={{
-                              filter:
-                                'invert(20%) sepia(50%) saturate(300%) hue-rotate(200deg) brightness(90%) contrast(85%)',
-                              }}
-                            /> {place.time}</p>
-                            </div>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <span className="bg-gradient-to-r from-green-300 via-green-500 to-green-600 text-white px-3 py-1 rounded-full text-sm font-semibold">
-                            {place.cost}
-                            </span>
-                          </div>
-                          </div>
-                          )}
-
-                          {/* Transportation Section */}
-                          <div className={`${ place.category.toLowerCase() !== "intermediate_transport" ? "mt-4 border-t-[2px] border-gray-300 pt-4" : "pt-1"} `}>
-                          <div className="flex items-center justify-between font-semibold">
-                            <div className="flex items-center gap-2">
-
-                            <span className="text-sm text-gray-500">{`From: ${place.from}`}</span>
-                            </div>
-                            <div className="flex items-center gap-2">
-
-                            <span className="text-sm text-gray-500">{`To: ${place.to}`}</span>
-                            </div>
-                          </div>
-                          </div>
-                          <div className="mt-4 flex items-center justify-between">
-                          <div className="flex items-center gap-2">
-                            <span className="bg-gradient-to-r from-blue-300 to-blue-600 text-white px-3 py-1 rounded-full text-sm font-medium">
-                            {place.preffered_transport}
-                            </span>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <span className="bg-gradient-to-r from-green-300 via-green-500 to-green-600 text-white px-3 py-1 rounded-full text-sm font-semibold">
-                            {currencySymbol}{getTransportationCost(dataJSON.trip.transportation, place.from, place.to, place.preffered_transport)}
-                            </span>
-                          </div>
-                          </div>
-                        </div>
-                      ))}
-                      {tripInfo.departing && (
-                        <div className="flex flex-col bg-gray-100 rounded-lg shadow-md p-4">
-                          <div className="flex items-center justify-between">
-                          <h3 className="text-lg font-semibold text-gray-700">Departing</h3>
-                          <span className="bg-gradient-to-r from-blue-300 to-blue-600 text-white px-3 py-1 rounded-full text-sm font-medium">
-                            {tripInfo.departing.preffered_transport}
-                          </span>
-                          </div>
-                          <div className="mt-4">
-                          <div className="flex items-center justify-between font-semibold">
-                            <div className="flex items-center gap-2">
-                        
-                            <span className="text-sm text-gray-500">{`From: ${tripInfo.departing.from}`}</span>
-                            </div>
-                            <div className="flex items-center gap-2">
-
-                            <span className="text-sm text-gray-500">{`To: ${tripInfo.departing.to}`}</span>
-                            </div>
-                          </div>
-                          </div>
-
-                          <div className="mt-4 flex items-center justify-between">
-                          <span className="text-sm text-gray-500 font-medium ">{tripInfo.departing.preffered_transport} Cost:</span>
-                          <span className="bg-gradient-to-r from-green-300 via-green-500 to-green-600 text-white px-3 py-1 rounded-full text-sm font-semibold">
-                            {currencySymbol}{getTransportationCost(dataJSON.trip.transportation, tripInfo.departing.from, tripInfo.departing.to, tripInfo.departing.preffered_transport)}
-                          </span>
-                          </div>
-
-                        </div>
-                      )}
-                    </div>
-                  )}
-                </div>
-              ))}
-
-              {dataJSON?.trip?.trip && costType==="misc" && (
-                <div className='p-5 flex flex-col gap-7'>
-
-                  <MiscComponent name='Shopping' inpval={costDetailsRef.current!.shopping || 0} onChange={(value) => {
-                    costDetailsRef.current!.shopping = value;
-                    updateTotalCostDetails(costDetailsRef.current!);
-                  }} 
-                    code={currencySymbol ? currencySymbol : "$"}
-                  />
-                  <MiscComponent name='Insurance' inpval={costDetailsRef.current!.insurance || 0} onChange={(value) => {
-                    costDetailsRef.current!.insurance = value;
-                    updateTotalCostDetails(costDetailsRef.current!);
-                  }} 
-                    code={currencySymbol ? currencySymbol : "$"}
-                  />
-                  <MiscComponent name='Visa' inpval={costDetailsRef.current!.visa || 0} onChange={(value) => {
-                    costDetailsRef.current!.visa = value;
-                    updateTotalCostDetails(costDetailsRef.current!);
-                  }} 
-                    code={currencySymbol ? currencySymbol : "$"}
-                  />
-                  <MiscComponent name='Other' inpval={costDetailsRef.current!.other || 0} onChange={(value) => {
-                    costDetailsRef.current!.other = value;
-                    updateTotalCostDetails(costDetailsRef.current!);
-                  }} 
-                    code={currencySymbol ? currencySymbol : "$"}
-                  />
-
-                </div>
-              )}
-
-
-              {dataJSON?.trip?.trip && costType==="total" && (
-              
-                <div className='p-5 flex flex-col gap-1'>
-                  {Object.entries(costDetailsRef.current!.days).map(([day, costDetails]) => (
-                    <div key={day} className="bg-white p-1">
-                      <div className="flex items-center justify-between">
-                        <h2 className="text-lg font-bold text-gray-700">{`Day ${day.replace("day", "")}`}</h2>
-                      </div>
-                        <div className="">
-                          <div className="flex justify-between text-sm text-gray-500">
-                          <span>Transportation:</span>
-                          <span>{currencySymbol}{costDetails.subcosts.transportation}</span>
-                          </div>
-                          <div className="flex justify-between text-sm text-gray-500">
-                          <span>Hotel:</span>
-                          <span>{currencySymbol}{costDetails.subcosts.hotel}</span>
-                          </div>
-                          <div className="flex justify-between text-sm text-gray-500">
-                          <span>Food:</span>
-                          <span>{currencySymbol}{costDetails.subcosts.food}</span>
-                          </div>
-                          <div className="flex justify-between text-sm text-gray-500">
-                          <span>Sightseeing:</span>
-                          <span>{currencySymbol}{costDetails.subcosts.sightseeing}</span>
-                          </div>
-                          <div className="flex justify-between text-[15px] font-semibold text-gray-500">
-                          <span>Day Total:</span>
-                          <span>{currencySymbol}{costDetails.daytotalcost}</span>
-                          </div>
-                        </div>
-                    </div>
-                  ))}
-                  <div className="p-1">
-                    <h2 className="text-lg font-bold text-gray-700">Misc</h2>
-                    <div className="flex justify-between text-sm text-gray-500">
-                      <span>Shopping:</span>
-                      <span>{currencySymbol}{costDetailsRef.current!.shopping || 0}</span>
-                    </div>
-                    <div className="flex justify-between text-sm text-gray-500">
-                      <span>Insurance:</span>
-                      <span>{currencySymbol}{costDetailsRef.current!.insurance || 0}</span>
-                    </div>
-                    <div className="flex justify-between text-sm text-gray-500">
-                      <span>Visa:</span>
-                      <span>{currencySymbol}{costDetailsRef.current!.visa || 0}</span>
-                    </div>
-                    <div className="flex justify-between text-sm text-gray-500">
-                      <span>Other:</span>
-                      <span>{currencySymbol}{costDetailsRef.current!.other || 0}</span>
-                    </div>
-                    <div className="flex justify-between text-[15px] font-semibold text-gray-500">
-                      <span>Misc Total:</span>
-                      <span>{currencySymbol}{(costDetailsRef.current!.shopping || 0) + (costDetailsRef.current!.insurance || 0) + (costDetailsRef.current!.visa || 0) + (costDetailsRef.current!.other || 0)}</span>
-                    </div>
-                  </div>
-                  <div className="py-4 px-3 border-t-2 border-b-2 border-gray-400">
-                    <div className="flex justify-between text-sm font-semibold text-gray-500">
-                      <span className='text-xl text-black '>Grand Total</span>
-                      <span className='text-xl text-black'>{currencySymbol}{totalCost}</span>
-                    </div>
-                  </div>
-                </div>
-                
-              )}
-
-            </div>
+            />
 
           )}
           
