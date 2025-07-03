@@ -21,6 +21,7 @@ import BagSection from '@/app/components/bagsection';
 import  ExportComp  from '@/app/components/exportComp';
 import PlanSideBar from '../components/plansidebar';
 import PlanPageHeader from '../components/planpageheader';
+import ItinerarySectionComponent from '../components/ItinerarySectionComponent';
 const PlanTrip = () => {
 
 
@@ -948,114 +949,13 @@ async function saveTrip() {
 
 
           {sideSelected === "itin" && bufSate && (
-          <div className='h-full w-full bg-white'>
-            <div>
-                <table className="w-full table-auto">
-                <thead className="">
-                  <tr>
-                  <th className="text-left px-6 py-3 font-semibold text-gray-700">
-                    <span className='flex flex-row gap-2 items-center'>
-                    <Image
-                      src={`/img/day.svg`}
-                      width={20}
-                      height={20}
-                      alt="day"
-                    />
-                    Days</span></th>
-                  <th className="text-left px-6 py-3 font-semibold text-gray-700">
-                    <span className='flex flex-row gap-2 items-center'>
-                    <Image
-                      src={`/img/mapmarker.svg`}
-                      width={20}
-                      height={20}
-                      alt="day"
-                    />
-                    Destination</span></th>
-                  <th className="text-left px-6 py-3 font-semibold text-gray-700">
-                    <span className='flex flex-row gap-2 items-center'>
-                    <Image
-                      src={`/img/cost.webp`}
-                      width={20}
-                      height={20}
-                      alt="day"
-                    />
-                    Cost</span></th>
-                  <th className="text-left px-6 py-3 font-semibold text-gray-700">
-                    <span className='flex flex-row gap-2 items-center'>
-                    <Image
-                      src={`/img/itin.svg`}
-                      width={20}
-                      height={20}
-                      alt="day"
-                    />
-                    Map</span></th>
+            
+            <ItinerarySectionComponent
+              dataJSON={dataJSON}
+              currencySymbol={currencySymbol || ""}
+              costDetails={costDetailsRef.current}
+            />
 
-                  </tr>
-                </thead>
-                {!dataJSON && (
-                <tbody>
-                  {Array.from({ length: 5 }, (_, index) => (
-                  <tr key={index} className='border-b border-gray-300'>
-                    <td className="px-6 py-5">
-                      <div className="animate-pulse bg-gray-200 h-6 rounded"></div>
-                    </td>
-                    <td className="px-6 py-4">
-                      <div className="animate-pulse bg-gray-200 h-6 rounded"></div>
-                    </td>
-                    <td className="px-6 py-4">
-                      <div className="animate-pulse bg-gray-200 h-6 rounded"></div>
-                    </td>
-                    <td className="px-6 py-4">
-                      <div className="animate-pulse bg-gray-200 h-6 rounded"></div>
-                    </td>
-                  </tr>
-                  ))}
-                
-                </tbody>
-                )}
-                { dataJSON?.trip?.trip && (
-                <tbody>
-                  {Object.entries(dataJSON.trip.trip).map(([day, tripInfo], index) => (
-                  <tr
-                    key={day}
-                    className='border-b border-gray-300'
-                  >
-                    <td className="px-6 py-5 text-gray-800 font-medium">
-
-
-                    
-                      {`Day ${day.replace("day", "")}`}
-                    
-                    </td>
-                    <td className="px-6 py-4 text-gray-700">{tripInfo.destination}</td>
-                    <td className="px-6 py-4 text-green-600 font-semibold">{currencySymbol}{costDetailsRef.current?.days[day].daytotalcost}</td>
-                    <td className="p-3 select-none">
-
-
-                        <a 
-                        href={buildGmapUrl(tripInfo.places)} 
-                        target="_blank" 
-                        rel="noopener noreferrer" 
-                        className='flex cursor-pointer flex-row gap-2 text-green-600 font-semibold items-center justify-center p-3 rounded-4xl hover:bg-green-100 transition duration-200 ease-in-out border-1 border-green-400'
-                        >
-                        <Image
-                          src={`/img/gmap.png`}
-                          width={13}
-                          height={13}
-                          alt="gmap"
-                        />
-                        View
-                        </a>
-                    </td>
-                  </tr>
-
-                  ))}
-                </tbody>
-                )}
-                </table>
-            </div>
-          </div>
-          
           )}
 
           {sideSelected === "plan" && bufSate && (
