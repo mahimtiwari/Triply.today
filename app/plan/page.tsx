@@ -1007,6 +1007,7 @@ async function saveTrip() {
                   >
                     <td className="px-6 py-5 text-gray-800 font-medium">
 
+
                     
                       {`Day ${day.replace("day", "")}`}
                     
