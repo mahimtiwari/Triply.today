@@ -20,6 +20,7 @@ import { useRouter } from 'next/navigation';
 import Sharepopup from '@/app/components/sharepopup';
 import BagSection from '@/app/components/bagsection';
 import  ExportComp  from '@/app/components/exportComp';
+import PlanSideBar from '@/app/components/plansidebar';
 interface PageProps {
   params: Promise<{ tripId: string }>; 
 }
@@ -835,7 +836,7 @@ const [popShare, setPopShare] = useState<boolean>(false);
                   minWidth: `${leftWidthConst}px`,
                   }}>
         
-        <div className='h-full w-[90px] font-[geist] flex items-center flex-col justify-start bg-white border-r-[1px] border-gray-300'>
+        {/* <div className='h-full w-[90px] font-[geist] flex items-center flex-col justify-start bg-white border-r-[1px] border-gray-300'>
           <div className='text-3xl font-semibold mt-[20px] text-gray-400'><a href='/'>t</a></div>
           <div className='mt-auto text-gray-600 w-full mb-auto gap-5 flex flex-col font-semibold'>
             <button className='flex outline-0 justify-center py-2 w-full flex-col cursor-pointer transition-all duration-200 ease-in-out'  onClick={
@@ -940,7 +941,31 @@ const [popShare, setPopShare] = useState<boolean>(false);
                 </>
             )}
           </div>
-        </div>
+        </div> */}
+        <PlanSideBar
+          sideSelected={sideSelected}
+          setSideSelected={(str)=>{
+            setSideSelected(str);
+          }}
+          routePush={(url:string)=>{
+            router.push(url);
+          }}
+          dataJSON={dataJSON}
+          currencySymbol={currencySymbol ?? undefined}
+          costDetailsRef={costDetailsRef}
+          tripDetails={tripDetails}
+          status={status}
+          userIDpage={true}
+          shareability={shareability}
+          saveablity={saveablity}
+          setPopShare={(bool)=>{
+            setPopShare(bool);
+          }}
+          tripId={tripId}
+          visibility={visib}
+          
+        />
+        
         <div className="flex font-[geist] flex-col h-full overflow-y-auto overflow-x-hidden w-full">
           <div className='flex justify-between flex-row h-[100px] w-full bg-white border-b-[1px] border-gray-300'>
             {dataJSON?.trip?.trip && (
