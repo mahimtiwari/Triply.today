@@ -128,7 +128,9 @@ const ItinerarySectionComponent = ({ dataJSON, currencySymbol, costDetails }: It
                     />
                     Days</span>
                     
-                    
+                    <span className='deskver:hidden text-[#909090] flex items-center justify-center'>
+                      #
+                    </span>
                     </th>
                   <th className="text-left deskver:px-6 px-2 py-3 font-semibold text-gray-700">
                     <span className='flex flex-row gap-2 items-center'>
@@ -205,7 +207,7 @@ const ItinerarySectionComponent = ({ dataJSON, currencySymbol, costDetails }: It
                     </span>
 
                     <span className='mobver:block px-3 justify-center flex deskver:hidden bg-'>
-                      <span className='bg-[#909090] rounded-full w-7 h-7 flex justify-center items-center text-white'>
+                      <span className='text-[#909090] rounded-full w-7 h-7 flex justify-center items-center'>
                         {`${day.replace("day", "")}`}
                       </span>
                     </span>
