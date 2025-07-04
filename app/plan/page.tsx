@@ -984,6 +984,7 @@ async function saveTrip() {
               setDayExpanded={(day:string|null)=>{
                 setDayExpanded(day);
               }}
+              currencySymbol={currencySymbol || ""}
             />
             
 
@@ -1321,6 +1322,7 @@ async function saveTrip() {
               setDayExpanded={(day:string|null)=>{
                 setDayExpanded(day);
               }}
+              currencySymbol={currencySymbol || ""}
             />
 
 

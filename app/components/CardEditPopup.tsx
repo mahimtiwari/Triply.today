@@ -1,5 +1,6 @@
 "use client";
 import React, { useRef, useState } from 'react'
+import TimeSelector from './timeSelector';
 
 interface Place {
   category: string;
@@ -89,25 +90,24 @@ interface preData {
 }
 
 
-const CardEditPopup = ({ preData, onClose }: { preData: preData | null, onClose: () => void }) => {
+const CardEditPopup = ({ preData, onClose, currencySymbol }: { preData: preData | null, onClose: () => void, currencySymbol: string }) => {
   const bottomSheetRef = useRef<HTMLDivElement>(null);
     
   const [name, setName] = useState(preData?.place.name || '');
-  
+
+    const initialCost = preData?.place.cost ? preData.place.cost.replace(/[^\d.]/g, '') : '';
+    const [cost, setCost] = useState(initialCost);
+
   return (
     <div
     style={{
-        display: preData ? 'flex' : 'none',
-        transition: 'all 0.3s ease-in-out',
-        opacity: preData ? 1 : 0,
-        pointerEvents: preData ? 'auto' : 'none'
     }}
     className='h-screen flex font-[Poppins] w-screen absolute top-0 left-0 bg-black/30 z-100000000000'>
+        <TimeSelector/>
         <div 
         ref={bottomSheetRef}
         style={{
-            transform: preData ? 'translateY(0)' : 'translateY(100%)',
-            transition: 'transform 0.3s ease-in-out'
+
         }}
         className='bg-white deskver:p-4 p-6 mt-auto deskver:mb-auto rounded-t-2xl w-full'>
             <div className='flex items-center justify-between'>
@@ -143,6 +143,16 @@ const CardEditPopup = ({ preData, onClose }: { preData: preData | null, onClose:
                     
                 <div className='outline-none border border-gray-300 focus:border-blue-500 transition-colors py-2 px-4 rounded-lg shadow-sm text-base bg-gray-50'>
                     {preData?.place.time}
+                </div>
+                </div>
+                <div className='flex flex-col'>
+                    <span className='text-gray-600 text-sm font-medium'>
+                        Cost:
+                    </span>
+                    
+                <div className='outline-none border flex flex-row gap-2 border-gray-300 focus:border-blue-500 transition-colors py-2 px-4 rounded-lg shadow-sm text-base bg-gray-50'>
+                    {currencySymbol}
+                    <input type="number" className='outline-0 w-full' value={cost} onChange={(e) => setCost(e.target.value)} />
                 </div>
                 </div>
             </div>

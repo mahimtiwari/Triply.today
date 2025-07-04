@@ -1033,6 +1033,7 @@ const [popShare, setPopShare] = useState<boolean>(false);
               setDayExpanded={(day:string|null)=>{
                 setDayExpanded(day);
               }}
+              currencySymbol={currencySymbol || ""}
             />
 
 
@@ -1371,6 +1372,7 @@ const [popShare, setPopShare] = useState<boolean>(false);
               setDayExpanded={(day:string|null)=>{
                 setDayExpanded(day);
               }}
+              currencySymbol={currencySymbol || ""}
             />
 
 

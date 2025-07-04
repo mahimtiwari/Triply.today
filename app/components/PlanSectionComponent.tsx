@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import Image from 'next/image';
 import CardEditPopup from './CardEditPopup';
 import ReactDOM from 'react-dom';
+import { CurrencyEuroIcon } from '@heroicons/react/24/outline';
 interface Place {
   category: string;
   name: string;
@@ -88,10 +89,11 @@ interface CostDetailsType {
 interface PlanSectionComponentProps {
     dataJSON: Trip | null;
     dayExpanded: string|null;
+    currencySymbol: string;
     setDayExpanded: (day: string | null) => void;
 }
 
-const PlanSectionComponent = ({ dataJSON, dayExpanded, setDayExpanded}: PlanSectionComponentProps) => {
+const PlanSectionComponent = ({ dataJSON, dayExpanded, currencySymbol, setDayExpanded}: PlanSectionComponentProps) => {
   
 const [editPopUpData, setEditPopUpData] = useState<{
   day: string;
@@ -106,10 +108,11 @@ const [editPopUpData, setEditPopUpData] = useState<{
   return (
   <>
 
-    {ReactDOM.createPortal(
+    { editPopUpData && ReactDOM.createPortal(
       <CardEditPopup
         preData={editPopUpData}
         onClose={() => setEditPopUpData(null)}
+        currencySymbol={currencySymbol}
       />,
       document.body
     )}
