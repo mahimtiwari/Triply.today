@@ -966,8 +966,8 @@ const ExportCompMediate = ({tripDetails, metadata, pckList, costData, currencySy
   };
   
   return (
-
-<div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 p-6 gap-6">
+<>
+<div className="hidden flex-col deskver:flex items-center justify-center min-h-screen bg-gray-50 p-6 gap-6">
 
 
     <button 
@@ -985,6 +985,16 @@ const ExportCompMediate = ({tripDetails, metadata, pckList, costData, currencySy
 
 </div>
 
+<div className='deskver:hidden flex w-full h-full items-center justify-center'>
+    <button 
+    onClick={() => {exportPDF()}}
+    className="flex items-center justify-center cursor-pointer bg-white rounded-full h-14 px-6 border border-gray-300 hover:bg-gray-100 transition-colors duration-200">
+      <span className="material-icons text-2xl text-gray-700">picture_as_pdf</span>
+      <span className="ml-3 text-gray-700 text-base font-medium">Export as PDF</span>
+    </button>
+</div>
+
+</>
   );
 };
 

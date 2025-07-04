@@ -47,7 +47,6 @@ const MobileSideMenu = ({controlmenuOpen, setControlMenuOpen, sideSelected, setS
     <div style={{
         visibility: `${controlmenuOpen ? "visible" : "hidden"}`,
         opacity: `${controlmenuOpen ? 1 : 0}`,
-        transitionDelay: `${controlmenuOpen ? "0.15s" : "0s"}`,
         transition: 'opacity 0.3s ease-in-out, visibility 0.3s ease-in-out'
     }}>
         <div className='grid grid-cols-6  gap-2 mt-3'>
