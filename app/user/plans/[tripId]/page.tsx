@@ -1283,25 +1283,6 @@ const [popShare, setPopShare] = useState<boolean>(false);
 </div>
 <div className='deskver:hidden flex flex-col h-[100vh] font-[geist] overflow-y-hidden'>
     <div className='absolute top-0 z-1000 w-full p-2'>
-      <div className={`w-full bg-[#ffffff7d] backdrop-blur-[9px] rounded-2xl p-3  z-1000`}
-      style={{
-        height: `${controlmenuOpen ? "255px" : "75px"}`,
-        transition: 'height 0.3s ease-in-out',
-      }}
-      >
-          <div className='flex flex-row items-center h-[50px]' onClick={()=>setControlMenuOpen(!controlmenuOpen)}>
-            <button  className='rounded-full flex justify-center items-center h-[20px] p-5 w-[20px] bg-green-300 '>
-                <span className="material-icons text-white">menu</span>
-            </button>
-            {tripDetails.destination && (
-            <span className='ml-3 h-fit flex flex-col'>
-                <h1 className='animated-text-gradient w-fit leading-tight font-bold text-xl'>{tripDetails.destination.split(",")[0]}</h1>
-              <span className='text-sm text-gray-700 font-semibold leading-tight'>{`${tripDetails.startDate.split("-")[2]} ${monthNames[parseInt(tripDetails.startDate.split("-")[1])]} - ${tripDetails.endDate.split("-")[2]} ${monthNames[parseInt(tripDetails.endDate.split("-")[1])]}`}</span>
-            </span>
-            )}
-          </div>
-
-          {/* Side select menu (mobile ver) */}
           <MobileSideMenu
             controlmenuOpen={controlmenuOpen}
             setControlMenuOpen={(b:boolean)=>{
@@ -1311,8 +1292,8 @@ const [popShare, setPopShare] = useState<boolean>(false);
             setSideSelected={(str:string)=>{
               setSideSelected(str);
             }}
+            tripDetails={tripDetails}
           />
-      </div>
     </div>
     <div className='absolute w-full h-[100vh] bg-amber-400 ' 
     onTouchMove={() => setControlMenuOpen(false)}

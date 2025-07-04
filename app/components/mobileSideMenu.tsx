@@ -5,13 +5,49 @@ interface MobileSideMenuProps {
     setControlMenuOpen: (open: boolean) => void;
     sideSelected: string;
     setSideSelected: (selected: string) => void;
+    tripDetails: any;
 }
 
-const MobileSideMenu = ({controlmenuOpen, setControlMenuOpen, sideSelected, setSideSelected}:MobileSideMenuProps) => {
-  return (
+const MobileSideMenu = ({controlmenuOpen, setControlMenuOpen, sideSelected, setSideSelected, tripDetails}:MobileSideMenuProps) => {
+ const monthNames = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
+];
+ 
+    return (
+
+      <div className={`w-full bg-[#ffffff7d] backdrop-blur-[9px] rounded-2xl p-3  z-1000`}
+      style={{
+        height: `${controlmenuOpen ? "255px" : "75px"}`,
+        transition: 'height 0.3s ease-in-out',
+      }}
+      >
+          <div className='flex flex-row items-center h-[50px]' onClick={()=>setControlMenuOpen(!controlmenuOpen)}>
+            <button  className='rounded-full flex justify-center items-center h-[20px] p-5 w-[20px] bg-green-300 '>
+                <span className="material-icons text-white">menu</span>
+            </button>
+            {tripDetails.destination && (
+            <span className='ml-3 h-fit flex flex-col'>
+                <h1 className='animated-text-gradient w-fit leading-tight font-bold text-xl'>{tripDetails.destination.split(",")[0]}</h1>
+              <span className='text-sm text-gray-700 font-semibold leading-tight'>{`${tripDetails.startDate.split("-")[2]} ${monthNames[parseInt(tripDetails.startDate.split("-")[1])]} - ${tripDetails.endDate.split("-")[2]} ${monthNames[parseInt(tripDetails.endDate.split("-")[1])]}`}</span>
+            </span>
+            )}
+          </div>
+
     <div style={{
         visibility: `${controlmenuOpen ? "visible" : "hidden"}`,
         opacity: `${controlmenuOpen ? 1 : 0}`,
+        transitionDelay: `${controlmenuOpen ? "0.15s" : "0s"}`,
         transition: 'opacity 0.3s ease-in-out, visibility 0.3s ease-in-out'
     }}>
         <div className='grid grid-cols-6  gap-2 mt-3'>
@@ -45,6 +81,7 @@ const MobileSideMenu = ({controlmenuOpen, setControlMenuOpen, sideSelected, setS
 
         </button>
         </div>
+    </div>
     </div>
   )
 }
