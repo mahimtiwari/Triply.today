@@ -13,7 +13,7 @@ import { off } from 'process';
 import BufferComponent from '@/app/components/planpageLoader';
 import "@/public/css/plan.css"
 import { Gentium_Book_Plus } from 'next/font/google';
-import { da } from 'date-fns/locale';
+import { da, tr } from 'date-fns/locale';
 import { useSession } from 'next-auth/react';
 import { time } from 'console';
 import { useRouter } from 'next/navigation';
@@ -658,11 +658,24 @@ function bottomSheetHeightStartChange(e: React.TouchEvent) {
 }
 
 function bottomSheetHeightChange(e: React.TouchEvent) {
+
   if (!sureHeightChangeBottomSheet && Math.abs(bottomsheetYintial.current - e.touches[0].clientY) > 50) {
     setSureHeightChangeBottomSheet(true);
   };
 
-  if (e.touches.length > 0 && sureHeightChangeBottomSheet) {
+    let uiChecks = false;
+// 20,50,100
+  if (bottomSheetRestrictedHeight !== BottomSheetHeightVariations[2]) {
+    
+    uiChecks =true;
+
+  }else if (bottomSheetRef.current?.scrollTop === 0) {
+
+    uiChecks = true;
+
+  }
+
+  if (e.touches.length > 0 && sureHeightChangeBottomSheet && uiChecks) {
     
     const touch = e.touches[0] ;
     const newHeight = 100 - ((touch.clientY+bottomSheetDiff) /window.innerHeight)*100;
@@ -1332,12 +1345,14 @@ const [popShare, setPopShare] = useState<boolean>(false);
             )}
     </div>
 
-    <div className={`sticky bg-white z-50 top-[100vh] transition-all duration-300 overflow-y-auto`}
+    <div className={`sticky bg-white z-50 top-[100vh] transition-all duration-300`}
       style={
         {height: `${bottomSheetHeight}vh`,
       transitionTimingFunction: 'cubic-bezier(0.2, 0.56, 0.16, 0.98)',
       borderRadius: bottomSheetRestrictedHeight !== BottomSheetHeightVariations[2] ? '30px 30px 0 0':"",
-      }} onTouchMove={(e) =>bottomSheetHeightChange(e)} 
+        overflowY: bottomSheetRestrictedHeight === BottomSheetHeightVariations[2] ? "auto" : "hidden",
+    }}
+    onTouchMove={(e) =>bottomSheetHeightChange(e)} 
       onTouchEnd={(e)=> bottomSheetHeightRestrictedEndChange(e)}
       onTouchStart={(e) => bottomSheetHeightStartChange(e)}
       ref={bottomSheetRef}>

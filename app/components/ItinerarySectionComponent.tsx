@@ -117,16 +117,20 @@ const ItinerarySectionComponent = ({ dataJSON, currencySymbol, costDetails }: It
                 <table className="w-full table-auto">
                 <thead className="">
                   <tr>
-                  <th className="text-left px-6 py-3 font-semibold text-gray-700">
-                    <span className='flex flex-row gap-2 items-center'>
+                  <th className="text-left deskver:px-6 px-3 py-3 font-semibold text-gray-700">
+
+                    <span className='flex-row gap-2 items-center deskver:flex hidden'>
                     <Image
                       src={`/img/day.svg`}
                       width={20}
                       height={20}
                       alt="day"
                     />
-                    Days</span></th>
-                  <th className="text-left px-6 py-3 font-semibold text-gray-700">
+                    Days</span>
+                    
+                    
+                    </th>
+                  <th className="text-left deskver:px-6 px-2 py-3 font-semibold text-gray-700">
                     <span className='flex flex-row gap-2 items-center'>
                     <Image
                       src={`/img/mapmarker.svg`}
@@ -134,8 +138,16 @@ const ItinerarySectionComponent = ({ dataJSON, currencySymbol, costDetails }: It
                       height={20}
                       alt="day"
                     />
-                    Destination</span></th>
-                  <th className="text-left px-6 py-3 font-semibold text-gray-700">
+                    
+                    <span className='deskver:block hidden'>
+                      Destination
+                    </span>
+                    <span className='deskver:hidden block'>
+                      Dest
+                    </span>
+                    </span>
+                  </th>
+                  <th className="text-left deskver:px-6 px-2 py-3 font-semibold text-gray-700">
                     <span className='flex flex-row gap-2 items-center'>
                     <Image
                       src={`/img/cost.webp`}
@@ -143,7 +155,9 @@ const ItinerarySectionComponent = ({ dataJSON, currencySymbol, costDetails }: It
                       height={20}
                       alt="day"
                     />
-                    Cost</span></th>
+                    Cost
+                    </span>
+                  </th>
                   <th className="text-left px-6 py-3 font-semibold text-gray-700">
                     <span className='flex flex-row gap-2 items-center'>
                     <Image
@@ -184,13 +198,23 @@ const ItinerarySectionComponent = ({ dataJSON, currencySymbol, costDetails }: It
                     key={day}
                     className='border-b border-gray-300'
                   >
-                    <td className="px-6 py-5 text-gray-800 font-medium">
+                    <td className="py-5 text-gray-800 font-medium">
 
-                    
+                    <span className='deskver:block px-6  hidden'>
                       {`Day ${day.replace("day", "")}`}
-                    
+                    </span>
+
+                    <span className='mobver:block px-3 justify-center flex deskver:hidden bg-'>
+                      <span className='bg-[#909090] rounded-full w-7 h-7 flex justify-center items-center text-white'>
+                        {`${day.replace("day", "")}`}
+                      </span>
+                    </span>
+
                     </td>
-                    <td className="px-6 py-4 text-gray-700">{tripInfo.destination}</td>
+                    
+                    <td className="deskver:px-6 px-2 py-4 text-gray-700">
+                      {tripInfo.destination}
+                    </td>
                     <td className="px-6 py-4 text-green-600 font-semibold">{currencySymbol}{costDetails?.days[day].daytotalcost}</td>
                     <td className="p-3 select-none">
 
