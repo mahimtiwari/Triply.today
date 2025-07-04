@@ -658,31 +658,8 @@ function bottomSheetHeightStartChange(e: React.TouchEvent) {
 }
 
 function bottomSheetHeightChange(e: React.TouchEvent) {
+  console.log("Bottom Sheet Height Change", e.touches[0].clientY);
 
-  if (!sureHeightChangeBottomSheet && Math.abs(bottomsheetYintial.current - e.touches[0].clientY) > 50) {
-    setSureHeightChangeBottomSheet(true);
-  };
-
-    let uiChecks = false;
-// 20,50,100
-  if (bottomSheetRestrictedHeight !== BottomSheetHeightVariations[2]) {
-    
-    uiChecks =true;
-
-  }else if (bottomSheetRef.current?.scrollTop === 0) {
-
-    uiChecks = true;
-
-  }
-
-  if (e.touches.length > 0 && sureHeightChangeBottomSheet && uiChecks) {
-    
-    const touch = e.touches[0] ;
-    const newHeight = 100 - ((touch.clientY+bottomSheetDiff) /window.innerHeight)*100;
-    if (sureHeightChangeBottomSheet){
-      setBottomSheetHeight(newHeight);
-    }
-  }
 }
 
 function bottomSheetHeightRestrictedEndChange(e: React.TouchEvent) {

@@ -646,6 +646,7 @@ function bottomSheetHeightStartChange(e: React.TouchEvent) {
 }
 
 function bottomSheetHeightChange(e: React.TouchEvent) {
+  console.log("Bottom Sheet Height Change", e.touches[0].clientY);
   if (!sureHeightChangeBottomSheet && Math.abs(bottomsheetYintial.current - e.touches[0].clientY) > 50) {
     setSureHeightChangeBottomSheet(true);
   };
@@ -1230,9 +1231,7 @@ async function saveTrip() {
             progressProp={progressNum}
             defaultTime={dayTimeBufferT.find((day) => day.days <= tripDayLen)?.time || 60000} dataStatus={bufferBool}/>
 </div>
-<div 
-
-className='deskver:hidden flex flex-col h-[100vh] font-[geist] overflow-y-hidden'>
+<div className='deskver:hidden flex flex-col h-[100vh] font-[geist] overflow-y-hidden'>
     <div className='absolute top-0 z-1000 w-full p-2'>
           <MobileSideMenu
             controlmenuOpen={controlmenuOpen}
