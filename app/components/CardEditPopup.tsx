@@ -94,16 +94,26 @@ const CardEditPopup = ({ preData, onClose, currencySymbol }: { preData: preData 
   const bottomSheetRef = useRef<HTMLDivElement>(null);
     
   const [name, setName] = useState(preData?.place.name || '');
-
+  const [time, setTime] = useState(preData?.place.time || '');
     const initialCost = preData?.place.cost ? preData.place.cost.replace(/[^\d.]/g, '') : '';
     const [cost, setCost] = useState(initialCost);
-
+  const [timeShown, setTimeShown] = useState(false);
   return (
     <div
     style={{
     }}
     className='h-screen flex font-[Poppins] w-screen absolute top-0 left-0 bg-black/30 z-100000000000'>
-        <TimeSelector/>
+        {timeShown && (
+          <TimeSelector defTime={preData?.place.time || ''} 
+          timeSaved={(hour:string, minute:string, ampm:string) => {
+            setTime(`${hour}:${minute} ${ampm.toUpperCase()}`);
+          }}
+          close={() => {
+            setTimeShown(false);
+          }}
+          />
+        )}
+
         <div 
         ref={bottomSheetRef}
         style={{
@@ -136,13 +146,18 @@ const CardEditPopup = ({ preData, onClose, currencySymbol }: { preData: preData 
                         autoComplete="off"
                     />
                 </div>
-                <div className='flex flex-col'>
+                <div className='flex flex-col' onClick={
+                  () => {
+                    setTimeShown(true);
+                  }
+                }
+                >
                     <span className='text-gray-600 text-sm font-medium'>
                         Time:
                     </span>
                     
                 <div className='outline-none border border-gray-300 focus:border-blue-500 transition-colors py-2 px-4 rounded-lg shadow-sm text-base bg-gray-50'>
-                    {preData?.place.time}
+                    {time}
                 </div>
                 </div>
                 <div className='flex flex-col'>
