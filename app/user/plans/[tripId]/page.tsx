@@ -361,7 +361,6 @@ const [currencySymbol, setCurrencySymbol] = useState<string | null>(null);
   }, [tripId]);
 
 
-
   const leftWidthConst = 600;
   const [leftWidth, setLeftWidth] = useState(50); // in percentage
   const [drag_direction, setDragDirection] = useState<string | null>(null);
@@ -729,107 +728,20 @@ useEffect(() => {
 }, [dayExpanded])
 
 
-
-
-  const buttonRef = useRef<HTMLButtonElement>(null);
-  const gradientRef = useRef<HTMLDivElement>(null);
-  const gradientBgRefLoader = useRef<HTMLDivElement>(null);
-  const [genAiPackLoad, setGenAiPackLoad] = useState<boolean>(false);
-
-  const aiGlowEffect = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    const button = buttonRef.current;
-    if (!button) return;
-    gradientRef.current!.style.opacity = "100";
-    const rect = button.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-
-    button.style.setProperty("--x", `${x}px`);
-    button.style.setProperty("--y", `${y}px`);
-  };
-
-function aiGeneratePackingList() {
-  setGenAiPackLoad(true);
-  gradientBgRefLoader.current!.style.display = "block";
-  fetch(`/api/packlist?destination=${tripDetails.destination}`)
-    .then((response) => response.json())
-    .then((packListData) => {
-      // packingCardContRef.current!.innerHTML = "";
-      pckList.current = packListData;
-      setSumCards(pckList.current);
-      gradientBgRefLoader.current!.style.display = "none";
-      setGenAiPackLoad(false);
-    })
-    .catch((error) => {
-      console.error('Error fetching packing list:', error);
-    });
-}
-
   const { data: session, status } = useSession();
   const router = useRouter();
-  const saveButton = useRef<HTMLButtonElement>(null);
-  const saveText = useRef<HTMLSpanElement>(null);
-async function saveTrip() {
 
 
-  if ( status === 'authenticated') {
-    saveButton.current!.disabled = true;
-    saveText.current!.innerText = "cached";
-    saveText.current!.classList.add("animate-spin");
-
-    try {
-      const res = await fetch('/api/user/operations/plan/save', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          destination: tripDetails.destination,
-          visibility: visib,
-          metadata: tripDetails,
-          plan: dataJSON,
-          idT: tripId,
-          costO: costDetailsRef.current,
-        }),
-      });
-
-      const responseJSON = await res.json();  // properly await JSON
-
-      if (res.ok) {
-    saveButton.current!.disabled = false;
-    saveText.current!.innerText = "save";
-    saveText.current!.classList.remove("animate-spin");
-        
-
-      } else {
-        saveButton.current!.disabled = false;
-        saveText.current!.innerText = "save";
-        saveButton.current!.style.backgroundColor = "red";
-        setTimeout(() => {
-          saveButton.current!.style.backgroundColor = "white";
-        }, 2000);
-        alert(`Failed to save trip: ${responseJSON.error || "Unknown error"}`);
-      }
-    } catch (error) {
-      console.error("Error saving trip:", error);
-      alert("Something went wrong while saving the trip.");
-    }
-  } else{
-    router.push('/user/signin');
+  function updateCosts(data: Trip | null) {
+    if (!data) return;
+    costDetailsRef.current = costProcessor(data);
+    setTotalCost(costDetailsRef.current.totalcost);
+    updateGraphicalCostData(costDetailsRef.current);
   }
-}
 
-function shareTrip() {
-    if ( status === 'authenticated') {
-
-  } else{
-    router.push('/user/signin');
-  }
-}
+  
 
 const [popShare, setPopShare] = useState<boolean>(false);
-
-
   return (
     <>
   <Sharepopup id={tripId} open={popShare} val={visib} shEmails={shareSelectedEmails} onClose={() => {
@@ -1029,13 +941,16 @@ const [popShare, setPopShare] = useState<boolean>(false);
           {sideSelected === "plan" && bufSate && (
             <PlanSectionComponent
               dataJSON={dataJSON}
+              changeData={(data: Trip | null) => {
+                setDataJSON(data);
+                updateCosts(data);
+              }}
               dayExpanded={dayExpanded}
               setDayExpanded={(day:string|null)=>{
                 setDayExpanded(day);
               }}
               currencySymbol={currencySymbol || ""}
             />
-
 
           )}
 
@@ -1062,7 +977,10 @@ const [popShare, setPopShare] = useState<boolean>(false);
                 setTotalCost(total);
               }}
               totalCost={totalCost}
-
+              changeData={(data: Trip | null) => {
+                setDataJSON(data);
+                updateCosts(data);
+              }}
             />
 
           )}
@@ -1368,6 +1286,10 @@ const [popShare, setPopShare] = useState<boolean>(false);
           {sideSelected === "plan" && bufSate && (
             <PlanSectionComponent
               dataJSON={dataJSON}
+              changeData={(data: Trip | null) => {
+                setDataJSON(data);
+                updateCosts(data);
+              }}
               dayExpanded={dayExpanded}
               setDayExpanded={(day:string|null)=>{
                 setDayExpanded(day);
@@ -1402,6 +1324,11 @@ const [popShare, setPopShare] = useState<boolean>(false);
               }}
               totalCost={totalCost}
 
+              changeData={(data: Trip | null) => {
+                setDataJSON(data);
+                updateCosts(data);
+
+              }}
             />
 
           )}

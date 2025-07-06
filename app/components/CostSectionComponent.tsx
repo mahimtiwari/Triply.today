@@ -2,6 +2,8 @@
 import React, { useState } from 'react'
 import Image from 'next/image';
 import MiscComponent from '@/app/components/miscComponent';
+import ReactDOM from 'react-dom';
+import CardEditPopup from './CardEditPopup';
 interface Place {
   category: string;
   name: string;
@@ -102,11 +104,12 @@ interface CostSectionComponentProps{
     setGraphCostRef: (data: GraphicalCostData) => void;
     setTotalCost: (cost: number) => void;
     totalCost?: number;
+    changeData: (data: Trip | null) => void;
 }
 
 
 
-const CostSectionComponent = ({ costType, setCostType, dayExpanded, setDayExpanded, dataJSON, currencySymbol, costDetailsRef, graphicalCostDataRef, setGraphCostRef, setTotalCost, totalCost }:CostSectionComponentProps) => {
+const CostSectionComponent = ({ costType, setCostType, dayExpanded, setDayExpanded, dataJSON, currencySymbol, costDetailsRef, graphicalCostDataRef, setGraphCostRef, setTotalCost, totalCost, changeData }:CostSectionComponentProps) => {
 
 
     const getTransportationCost = (transportation: Transportation[], from:string, to:string, prefOption:string): number => {
@@ -167,7 +170,36 @@ const CostSectionComponent = ({ costType, setCostType, dayExpanded, setDayExpand
     setTotalCost(costDetails.totalcost);
     }
 
+
+    const [editPopUpData, setEditPopUpData] = useState<{
+    day: string;
+    place: Place;
+    placeIndex: number;
+    prereviousPlaceName: string;
+    } | null>(null);
+
+
+    function editPopUp(day: string, place: Place, placeIndex: number, prereviousPlaceName:string) {
+        setEditPopUpData({ day, place, placeIndex, prereviousPlaceName });
+    }
+
+    
   return (
+<>
+
+    { editPopUpData && ReactDOM.createPortal(
+      <CardEditPopup
+        preData={editPopUpData}
+        onClose={() => setEditPopUpData(null)}
+        currencySymbol={currencySymbol}
+        onSave={(newDataJSON) => {
+          changeData(newDataJSON);
+        }}
+        dataJSON={dataJSON}
+      />,
+      document.body
+    )}
+
     <div className='h-full w-full bg-white'>
         <div className='w-full flex pl-4 border-b-[1px] border-gray-300'>
         <button 
@@ -237,8 +269,12 @@ const CostSectionComponent = ({ costType, setCostType, dayExpanded, setDayExpand
                 </div>
                 )}
                 {tripInfo.places.map((place, index) => (
-                <div key={index} className="flex flex-col bg-gray-100 rounded-lg shadow-md p-4">
-                    {/* Header Section */}
+                <div 
+                    onClick={()=>{
+                        editPopUp(day, place, index, place.from);
+                    }}
+                    key={index} 
+                    className="flex flex-col bg-gray-100 rounded-lg shadow-md p-4">
 
                     { place.category.toLowerCase() !== "intermediate_transport" && (
                     <div className="flex items-center justify-between">
@@ -439,7 +475,7 @@ const CostSectionComponent = ({ costType, setCostType, dayExpanded, setDayExpand
         )}
 
     </div>
-
+</>
   )
 }
 

@@ -91,18 +91,25 @@ interface PlanSectionComponentProps {
     dayExpanded: string|null;
     currencySymbol: string;
     setDayExpanded: (day: string | null) => void;
-}
+    changeData: (data: Trip | null) => void;
+  }
 
-const PlanSectionComponent = ({ dataJSON, dayExpanded, currencySymbol, setDayExpanded}: PlanSectionComponentProps) => {
+const PlanSectionComponent = ({ dataJSON, dayExpanded, currencySymbol, setDayExpanded, changeData}: PlanSectionComponentProps) => {
   
 const [editPopUpData, setEditPopUpData] = useState<{
   day: string;
   place: Place;
   placeIndex: number;
+  prereviousPlaceName: string;
 } | null>(null);
 
-  function editPopUp(day: string, place: Place, placeIndex: number) {
-    setEditPopUpData({ day, place, placeIndex });
+
+  function editPopUp(day: string, place: Place, placeIndex: number, prereviousPlaceName:string) {
+  
+
+    setEditPopUpData({ day, place, placeIndex, prereviousPlaceName });
+  
+
   }
 
   return (
@@ -113,6 +120,10 @@ const [editPopUpData, setEditPopUpData] = useState<{
         preData={editPopUpData}
         onClose={() => setEditPopUpData(null)}
         currencySymbol={currencySymbol}
+        onSave={(newDataJSON) => {
+          changeData(newDataJSON);
+        }}
+        dataJSON={dataJSON}
       />,
       document.body
     )}
@@ -171,8 +182,9 @@ const [editPopUpData, setEditPopUpData] = useState<{
               {tripInfo.places.map((place, index) => (
                 <div 
                 onClick={()=>{
-                  editPopUp(day, place, index);
+                  editPopUp(day, place, index, place.from);
                 }}
+
                 key={index} className="flex flex-col bg-gray-100 rounded-lg shadow-md p-4"
                   
                 >
