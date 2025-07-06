@@ -179,7 +179,16 @@ const CardEditPopup = ({ preData, onClose, currencySymbol, onSave, dataJSON }: {
           ]
         })
       }
+
+      if (name !== preData.place.name) {
+        newDataJSON.trip.trip[preData.day || ""].places[preData.placeIndex-1 || 0].to = name;
+        newDataJSON.trip.trip[preData.day || ""].places[preData.placeIndex+1 || 0].from = name;
+      }
     }
+
+
+
+
     onSave(newDataJSON);
     
     onClose();
