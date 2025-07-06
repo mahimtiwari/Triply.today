@@ -1,7 +1,6 @@
 "use client";
 import React, { useRef, useState, useEffect } from 'react'
 import TimeSelector from './timeSelector';
-import { get } from 'http';
 
 interface Place {
   category: string;
@@ -108,7 +107,7 @@ interface preData {
     };
     
 
-const CardEditPopup = ({ preData, onClose, currencySymbol, onSave, dataJSON }: { preData: preData | null, onClose: () => void, currencySymbol: string, onSave: (newDataJSON: Trip | null) => void, dataJSON: Trip | null }) => {
+const CardEditPopup = ({ preData, onClose, currencySymbol, onSave, dataJSON, newPlace }: { preData: preData | null, onClose: () => void, currencySymbol: string, onSave: (newDataJSON: Trip | null) => void, dataJSON: Trip | null, newPlace:boolean }) => {
   const bottomSheetRef = useRef<HTMLDivElement>(null);
 
   const [name, setName] = useState(preData?.place.name || '');
@@ -119,19 +118,18 @@ const CardEditPopup = ({ preData, onClose, currencySymbol, onSave, dataJSON }: {
   const [transportationCost, setTransportationCost] = useState(getTransportationCost(dataJSON?.trip.transportation || [], preData?.place.from || '', preData?.place.to || "", preData?.place.preffered_transport || '').toString() || '');
   const [transportationType, setTransportationType] = useState(preData?.place.preffered_transport || '');
   const [description, setDescription] = useState(preData?.place.description || '');
-  
+  const [category, setCategory] = useState(preData?.place.category || '');
   useEffect(()=>{
     setTransportationCost(getTransportationCost(dataJSON?.trip.transportation || [], preData?.place.from || '', name, transportationType).toString() || '');
   },[name, transportationType])
 
 
   function updateTripData(){
-    alert('Updating trip data...');
     var newDataJSON: Trip|null = dataJSON;
     
     if (preData && newDataJSON) {
       newDataJSON.trip.trip[preData.day || ""].places[preData.placeIndex || 0] = {
-        category: preData.place.category,
+        category: category,
         name: name,
         cost: `${currencySymbol}${cost}`,
         time: time,
@@ -179,13 +177,10 @@ const CardEditPopup = ({ preData, onClose, currencySymbol, onSave, dataJSON }: {
           ]
         })
       }
-
       if (name !== preData.place.name) {
-        newDataJSON.trip.trip[preData.day || ""].places[preData.placeIndex-1 || 0].to = name;
         newDataJSON.trip.trip[preData.day || ""].places[preData.placeIndex+1 || 0].from = name;
       }
     }
-
 
 
 
@@ -193,7 +188,48 @@ const CardEditPopup = ({ preData, onClose, currencySymbol, onSave, dataJSON }: {
     
     onClose();
   }
-  
+
+  useEffect(() => {
+    if (newPlace && preData) {
+      setName(preData.place.name);
+      setTime(preData.place.time);
+      setCost(preData.place.cost.replace(/[^\d.]/g, ''));
+      setTransportationType(preData.place.preffered_transport);
+      setDescription(preData.place.description || '');
+      setCategory(preData.place.category || 'sightseeing');
+    }
+  }, [newPlace]);
+
+  const [done, setDone] = useState(false);
+  useEffect(()=>{
+  if (name !== "" && category !== "" && name && category){
+    setDone(true);
+  }
+  else{
+    setDone(false);
+  }
+
+  }, [name, category])
+
+  function newTripPlace(){
+    if (dataJSON) {
+      const newPlace: Place = {
+        category: category,
+        name: name,
+        cost: cost,
+        time: time,
+        from: preData?.prereviousPlaceName || '',
+        to: name,
+        preffered_transport: transportationType,
+        description: description,
+      };
+      const day = Object.keys(dataJSON.trip.trip)[0]; // Get the first day
+      dataJSON.trip.trip[day].places.splice(preData?.placeIndex || 0, 0, newPlace);
+      onSave(dataJSON);
+      onClose();
+    }
+  }
+
   return (
 
     <div
@@ -246,6 +282,47 @@ const CardEditPopup = ({ preData, onClose, currencySymbol, onSave, dataJSON }: {
                         autoComplete="off"
                     />
                 </div>
+
+                <div className='flex flex-col'>
+                    <span className='text-gray-600 text-sm font-medium'>
+                        Category:
+                    </span>
+
+                    <div className='flex mt-2 flex-row gap-2'>
+                      <button
+                        className='border-2 w-[100%] cursor-pointer font-semibold rounded-full py-1 px-4'
+                        style={{
+                          borderColor: category === 'hotel' ? 'var(--color-blue-800)' : '#999',
+                          color: category === 'hotel' ? 'var(--color-blue-800)' : '#555',
+                          backgroundColor: category === 'hotel' ? 'var(--color-blue-50)' : 'transparent',
+                          transition: 'all 0.15s ease',
+                        }}
+                        onClick={() => setCategory('hotel')}
+                      >Hotel</button>
+                      <button
+                        className='border-2 w-[100%] cursor-pointer font-semibold rounded-full py-1 px-4'
+                        style={{
+                          borderColor: category === 'sightseeing' ? 'var(--color-blue-800)' : '#999',
+                          color: category === 'sightseeing' ? 'var(--color-blue-800)' : '#555',
+                          backgroundColor: category === 'sightseeing' ? 'var(--color-blue-50)' : 'transparent',
+                          transition: 'all 0.15s ease',
+                        }}
+                        onClick={() => setCategory('sightseeing')}
+                      >Sightseeing</button>
+                      <button
+                        className='border-2 w-[100%] cursor-pointer font-semibold rounded-full py-1 px-4'
+                        style={{
+                          borderColor: category === 'restaurant' ? 'var(--color-blue-800)' : '#999',
+                          color: category === 'restaurant' ? 'var(--color-blue-800)' : '#555',
+                          backgroundColor: category === 'restaurant' ? 'var(--color-blue-50)' : 'transparent',
+                          transition: 'all 0.15s ease',
+                        }}
+                        onClick={() => setCategory('restaurant')}
+                      >Food</button>
+                    </div>
+
+                </div>
+
                 <div className='flex flex-col' onClick={
                   () => {
                     setTimeShown(true);
@@ -257,7 +334,7 @@ const CardEditPopup = ({ preData, onClose, currencySymbol, onSave, dataJSON }: {
                     </span>
                     
                 <div className='outline-none cursor-pointer border border-gray-300 focus:border-blue-500 transition-colors py-2 px-4 rounded-lg shadow-sm text-base bg-gray-50'>
-                    {time}
+                    {time || "Select time"}
                 </div>
                 </div>
 
@@ -314,16 +391,21 @@ const CardEditPopup = ({ preData, onClose, currencySymbol, onSave, dataJSON }: {
 
 
             </div>
-
+  
             </div>
             <button
             onClick={()=>{
-              updateTripData();
+              if(newPlace){
+                newTripPlace();
+              }else{
+                updateTripData();
+              }
+
             }}
-            className='bg-blue-800 mt-3 text-white py-2 px-4 rounded-3xl cursor-pointer hover:bg-blue-600'
+            disabled={!done}
+            className={`${done ? "bg-blue-800" : "bg-gray-400"} mt-3 text-white py-2 px-4 rounded-3xl cursor-pointer ${ done ? "hover:bg-blue-600" : "" }`}
             style={{
               transition: 'all 0.15s ease',
-
             }}
             >Done</button>
         </div>

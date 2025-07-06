@@ -112,18 +112,51 @@ const [editPopUpData, setEditPopUpData] = useState<{
 
   }
 
+
+  const [newPlace, setNewPlace] = useState< {
+    day: string;
+    place: Place;
+    placeIndex: number;
+    prereviousPlaceName: string;
+  } | null >(null);
+
+  function addPlace(day:string, placeIndex:number){
+    
+    setNewPlace({
+      day,
+      place: {
+        category: "",
+        name: "",
+        cost: "",
+        time: "",
+        from: "",
+        to: "",
+        preffered_transport: "",
+      },
+      placeIndex,
+      prereviousPlaceName: dataJSON?.trip.trip[day].places[placeIndex].name || ""
+    });
+  }
+
+
+
   return (
   <>
 
-    { editPopUpData && ReactDOM.createPortal(
+    { (editPopUpData || newPlace ) && ReactDOM.createPortal(
       <CardEditPopup
-        preData={editPopUpData}
-        onClose={() => setEditPopUpData(null)}
+        preData={newPlace ? newPlace : editPopUpData}
+        onClose={() => {
+          setEditPopUpData(null);
+          setNewPlace(null);
+        }}
         currencySymbol={currencySymbol}
         onSave={(newDataJSON) => {
           changeData(newDataJSON);
         }}
         dataJSON={dataJSON}
+        newPlace={newPlace !== null}
+
       />,
       document.body
     )}
@@ -145,16 +178,14 @@ const [editPopUpData, setEditPopUpData] = useState<{
             
             setDayExpanded(dayExpanded === day ? null : day);
 
-
-
             }}>
             <h2 className="text-lg font-bold text-gray-700">{`Day ${day.replace("day", "")}`}<span className='font-medium ml-4'>( {tripInfo.destination} )</span></h2>
             <span className="text-sm font-medium text-gray-500">{dayExpanded === day ? "Hide Details" : "Show Details"}</span>
           </div>
           {dayExpanded === day && (
-            <div className="mt-4 flex flex-col gap-4">
+            <div className="mt-4 flex flex-col">
               {tripInfo.arriving && (
-                <div className="flex flex-col bg-gray-100 rounded-lg shadow-md p-4">
+                <div className="flex flex-col bg-gray-100 rounded-lg shadow-md p-4 mb-4">
                   <div className="flex items-center justify-between">
                   <h3 className="text-lg font-semibold text-gray-700">Arriving</h3>
                   <span className="bg-gradient-to-r from-blue-300 to-blue-600 text-white px-3 py-1 rounded-full text-sm font-medium">
@@ -173,13 +204,11 @@ const [editPopUpData, setEditPopUpData] = useState<{
                     </div>
                   </div>
                   </div>
-
-
-
                 </div>
               )}
 
               {tripInfo.places.map((place, index) => (
+                <React.Fragment key={index}>
                 <div 
                 onClick={()=>{
                   editPopUp(day, place, index, place.from);
@@ -242,7 +271,37 @@ const [editPopUpData, setEditPopUpData] = useState<{
                   
 
                 </div>
+
+                <div className='h-[20px] w-full flex items-center opacity-0 hover:opacity-100 my-1 py-2 px-3'
+                  style={{
+                    transition: 'opacity 300ms ease-in-out',
+                    cursor: 'pointer',
+                  }}
+                >
+                  <button 
+                  onClick={()=>{
+
+                    addPlace(day, index);
+
+                  }}
+                  className='h-[3px] rounded-full w-full bg-[#0099ff] flex items-center justify-center cursor-pointer'>
+                    <div className='h-5 w-5 rounded-full bg-[#0099ff] flex items-center justify-center'>
+                      <span 
+                        className="material-symbols-outlined"
+                        style={{
+                          fontSize: 16,
+                          color: 'white',
+                        }}
+                      >add</span>
+                    </div>
+                  </button>
+
+                </div>
+
+                </React.Fragment>
+                
               ))}
+
               {tripInfo.departing && (
                 <div className="flex flex-col bg-gray-100 rounded-lg shadow-md p-4">
                   <div className="flex items-center justify-between">
