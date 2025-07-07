@@ -88,6 +88,7 @@ interface preData {
     place: Place;
     placeIndex: number;
     prereviousPlaceName: string;
+    
 }
 
 

@@ -8,11 +8,12 @@ interface ChatShareProps {
   onClose: () => void;
   chatID?: string;
   visibility?: string;
+  changeVisibility: (newVis: Visibility) => void;
 }
 
-const ChatShare = ({onClose, chatID, visibility}:ChatShareProps) => {
+const ChatShare = ({onClose, chatID, visibility, changeVisibility}:ChatShareProps) => {
 
-    const [shareSelected, setShareSelected] = useState( visibility || "");
+    const shareSelected = visibility || "";
     const shareRef = useRef<HTMLDivElement>(null);
     
     useEffect(() => {
@@ -57,7 +58,7 @@ const ChatShare = ({onClose, chatID, visibility}:ChatShareProps) => {
             <div className='mt-4 flex flex-col gap-4'>
 
             <button 
-            onClick={() => setShareSelected("PRIVATE")}
+            onClick={() => changeVisibility(Visibility.PRIVATE)}
             style={{
                 border: shareSelected === "PRIVATE" ? "1px solid rgb(0 111 172 / 34%)" : "1px solid transparent",
                 backgroundColor: shareSelected === "PRIVATE" ? "rgb(0 111 172 / 10%)" : "",
@@ -77,7 +78,7 @@ const ChatShare = ({onClose, chatID, visibility}:ChatShareProps) => {
                 backgroundColor: shareSelected === "GLOBAL" ? "rgb(0 111 172 / 10%)" : "",
                 transition: "all 0.15s ease-in-out"
             }}
-            onClick={() => setShareSelected("GLOBAL")}
+            onClick={() => changeVisibility(Visibility.GLOBAL)}
             className='flex flex-col w-full bg-[#444] px-6 py-6 rounded-xl cursor-pointer'>
                 <div className='flex flex-col items-start'>
                 <div className='flex flex-col items-start'>

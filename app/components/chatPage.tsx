@@ -285,11 +285,35 @@ const ChatPage = ({chatId, sessionObj, share}:{chatId?:string, sessionObj:Sessio
 
     const sideMenu = useRef<HTMLDivElement>(null);
     const [sideMenuOpen, setSideMenuOpen] = useState<boolean>(true);
+    const sideMenuScreenOverlay = useRef<HTMLDivElement>(null);
+    
+    useEffect(()=>{
+        if (window.innerWidth < 900) {
+            if (sideMenu.current) {
+                sideMenu.current.style.display = "none";
+            }
+            setSideMenuOpen(false);
+        }
+    }, [])
+    
     function toggleSideMenu() {
         if (sideMenu.current) {
             if (sideMenuOpen) {
+                if(window.innerWidth < 900){
+                    sideMenu.current.style.display = "none";
+                    if (sideMenuScreenOverlay.current) {
+                        sideMenuScreenOverlay.current.style.display = "none";
+                    }
+                }
+                
                 sideMenu.current.style.width = "fit-content";
             } else {
+                if(window.innerWidth < 900){
+                    sideMenu.current.style.display = "block"
+                    if (sideMenuScreenOverlay.current) {
+                        sideMenuScreenOverlay.current.style.display = "block";
+                    }
+                }
                 sideMenu.current.style.width = "270px";
             }
             setSideMenuOpen(!sideMenuOpen);
@@ -299,8 +323,6 @@ const ChatPage = ({chatId, sessionObj, share}:{chatId?:string, sessionObj:Sessio
 
     const [searchOpen, setSearchOpen] = useState<boolean>(false);
     const [shareOpen, setShareOpen] = useState<boolean>(false);
-    
-
 
   return (
     <>
@@ -324,6 +346,9 @@ const ChatPage = ({chatId, sessionObj, share}:{chatId?:string, sessionObj:Sessio
             onClose={() => setShareOpen(false)}
             chatID={chatId}
             visibility={visib}
+            changeVisibility={(newVis) => {
+                setVisib(newVis);
+            }}
         />
     )}
 
@@ -363,10 +388,19 @@ const ChatPage = ({chatId, sessionObj, share}:{chatId?:string, sessionObj:Sessio
         </div>
     */}
 
-    
+    <div 
+    className='absolute hidden bg-black/30 h-screen w-screen z-99 backdrop-blur-md'
+    ref={sideMenuScreenOverlay}
+    onClick={() => {
+        toggleSideMenu();
+    }}
+    >
+
+    </div>
+
     <div className='flex flex-row h-screen w-screen text-white overflow-hidden font-[Poppins] bg-[#212121]'>
         {share &&  (
-            <div ref={sideMenu} className='w-[270px] bg-black overflow-y-auto'
+            <div ref={sideMenu} className='w-[270px] bg-black overflow-y-auto deskver:static absolute left-0 h-screen z-100 deskver:block hidden'
                 style={{
                     scrollbarColor: "#444 #000",
                     
@@ -470,8 +504,17 @@ const ChatPage = ({chatId, sessionObj, share}:{chatId?:string, sessionObj:Sessio
             <div className='w-full h-[65px] sticky top-0 bg-[inherit] justify-between flex items-center px-4 py-2'>
                 
                 <div className='flex flex-row gap-1'>
+                    <button 
+                    className='p-2 deskver:hidden rounded-xl cursor-pointer flex items-center hover:bg-[#333333] transition-colors duration-300'
+                    onClick={() => toggleSideMenu()}
+                    >
+                        <span className="material-symbols-outlined text-gray-200 ">
+                            dual_screen
+                        </span>
+                    </button>
                     {chatId && (
                         <>
+                        
                             <button 
                             onClick={()=>{
                                 setShareOpen(true);
@@ -493,8 +536,23 @@ const ChatPage = ({chatId, sessionObj, share}:{chatId?:string, sessionObj:Sessio
                                     </button>
 
                                     {showPopup && (
-                                            <div className="absolute top-full left-0 bg-[#353535] rounded-xl p-1.25 z-10">
-                                                <button className="flex flex-row items-center cursor-pointer rounded-lg text-red-400 hover:bg-red-500/10 text-sm gap-2 px-3 py-1.75"
+
+                                            <div className="absolute top-full left-0 bg-[#353535] rounded-xl py-2 px-1.5 z-10 w-fit gap-1.5 flex flex-col">
+                                                <button className="w-full flex flex-row items-center cursor-pointer rounded-lg text-white hover:bg-white/10 text-sm gap-2 px-3 py-1.75"
+                                                    onClick={() => {
+                                                        setShareOpen(true);
+                                                    }}
+                                                >
+                                                    <span className="material-symbols-outlined"
+                                                        style={{
+                                                            fontSize: 20,
+                                                        }}
+                                                    >
+                                                        ios_share
+                                                    </span>
+                                                    <span>Share</span>
+                                                </button>
+                                                <button className="w-full flex flex-row items-center cursor-pointer rounded-lg text-red-400 hover:bg-red-500/10 text-sm gap-2 px-3 py-1.75"
                                                     onClick={() => {
                                                         deleteConv();
                                                     }}
@@ -517,6 +575,7 @@ const ChatPage = ({chatId, sessionObj, share}:{chatId?:string, sessionObj:Sessio
                 
                 
                 <a href="/user">
+
                     <Image
                     src={sessionObj?.user?.image || ''}
                     alt="User Profile"

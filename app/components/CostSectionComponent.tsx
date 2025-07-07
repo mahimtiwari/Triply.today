@@ -204,7 +204,7 @@ const CostSectionComponent = ({ costType, setCostType, dayExpanded, setDayExpand
         preffered_transport: "",
       },
       placeIndex,
-      prereviousPlaceName: dataJSON?.trip.trip[day].places[placeIndex].name || ""
+      prereviousPlaceName: !(placeIndex === 0 && day.toLowerCase().replace("day", "").trim() == "1") ? (dataJSON?.trip.trip[day].places[placeIndex].name || "") : dataJSON?.trip.trip["day1"].arriving?.to || "",
     });
   }
 
