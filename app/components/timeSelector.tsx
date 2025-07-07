@@ -15,6 +15,8 @@ const TimeSelector = ({timeSaved, defTime, close}:{timeSaved: (hour:string, minu
         hour: true,
         minute: false,
     });
+
+
     useEffect(() => {
         setFocusDict({ hour: true, minute: false });
 
@@ -39,6 +41,15 @@ const TimeSelector = ({timeSaved, defTime, close}:{timeSaved: (hour:string, minu
         }
     }, [focusDict]);
 
+    const [disb, setDisb] = useState(true);
+    useEffect(() => {
+        if (hourState.length !== 0 && minuteState.length !== 0) {
+            setDisb(false);
+        } else {
+            setDisb(true);
+        }
+    }, [hourState, minuteState]);
+
 function changeAngle(x:number, y:number) {
     if (!clockRef.current) return;
 
@@ -50,7 +61,22 @@ function changeAngle(x:number, y:number) {
     setAngle(normalizedAngle);
 
 }
+useEffect(() => {
+    if (defTime) {
 
+        const [h, m] = defTime.split(':');
+        const hour = h.replace('AM', '').replace('PM', '').trim();
+        const minute = m.replace('AM', '').replace('PM', '').trim();
+        if (hour.length === 2) {
+            setFocusDict({ hour: false, minute: true });
+        } else {
+            setFocusDict({ hour: true, minute: false });
+        }
+    }
+    else {
+        setFocusDict({ hour: true, minute: false });
+    }
+}, []);
   return (
     <div className="absolute flex items-center justify-center bg-black/20 h-screen w-screen">
         <div className='deskver:bg-transparent flex deskver:items-center items-start justify-center bg-white h-full w-full '>
@@ -165,8 +191,10 @@ function changeAngle(x:number, y:number) {
                     <button
                         className='rounded-4xl py-2 px-3 border-1 w-full border-gray-500 font-medium hover:bg-gray-200 cursor-pointer'
                         style={{
+                            opacity: disb ? 0.5 : 1,
                             transition: 'background-color 0.3s ease',
                         }}
+                        disabled={disb}
                         onClick={()=>{
                             timeSaved(hourState, minuteState, ampm);
                             close();

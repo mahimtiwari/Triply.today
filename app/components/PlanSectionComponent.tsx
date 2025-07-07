@@ -139,6 +139,13 @@ const [editPopUpData, setEditPopUpData] = useState<{
   }
 
 
+  function getTimeFraction(time: string): number {
+    if ("12:00am" == time.toLowerCase().trim()) return 0;
+    if ("12:00pm" == time.toLowerCase().trim()) return 0.5;
+    const minSince12 = parseInt(time.split(":")[0].trim())*60+(parseInt(time.split(":")[1].trim().toLowerCase().replace("am","").replace("pm", "")) || 0) + (time.toLowerCase().includes("pm") ? 12 : 0)*60;
+    return minSince12 / (60*24);
+  }
+
 
   return (
   <>
@@ -183,9 +190,9 @@ const [editPopUpData, setEditPopUpData] = useState<{
             <span className="text-sm font-medium text-gray-500">{dayExpanded === day ? "Hide Details" : "Show Details"}</span>
           </div>
           {dayExpanded === day && (
-            <div className="mt-4 flex flex-col">
+            <div className="mt-4 flex flex-col gap-1">
               {tripInfo.arriving && (
-                <div className="flex flex-col bg-gray-100 rounded-lg shadow-md p-4 mb-4">
+                <div className="flex flex-col bg-gray-100 rounded-lg shadow-md p-4">
                   <div className="flex items-center justify-between">
                   <h3 className="text-lg font-semibold text-gray-700">Arriving</h3>
                   <span className="bg-gradient-to-r from-blue-300 to-blue-600 text-white px-3 py-1 rounded-full text-sm font-medium">
@@ -206,6 +213,31 @@ const [editPopUpData, setEditPopUpData] = useState<{
                   </div>
                 </div>
               )}
+              <div className='h-[20px] w-full flex items-center deskver:opacity-50 opacity-100 deskver:hover:opacity-100 my-1 py-2 px-3'
+                style={{
+                  transition: 'opacity 300ms ease-in-out',
+                  cursor: 'pointer',
+                }}
+              >
+                <button 
+                onClick={()=>{
+
+                  addPlace(day, 0);
+
+                }}
+                className='h-[3px] rounded-full w-full bg-[#0099ff] flex items-center justify-center cursor-pointer'>
+                  <div className='h-5 w-5 rounded-full bg-[#0099ff] flex items-center justify-center'>
+                    <span 
+                      className="material-symbols-outlined"
+                      style={{
+                        fontSize: 16,
+                        color: 'white',
+                      }}
+                    >add</span>
+                  </div>
+                </button>
+
+              </div>
 
               {tripInfo.places.map((place, index) => (
                 <React.Fragment key={index}>
@@ -251,7 +283,16 @@ const [editPopUpData, setEditPopUpData] = useState<{
                   </div>
                   </div>
                   )}
-                  <div className={` ${place.category.toLowerCase() == "intermediate_transport" ? "" : "mt-4 border-t-[2px] pt-4"} border-gray-300 `}>
+                  <div className='w-full h-[2px] my-4 bg-gray-300 rounded-full'>
+                    <div 
+                    style={{
+                      width: `${getTimeFraction(place.time) * 100}%`,
+                    }}
+                    className='h-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500'>
+
+                    </div>
+                  </div>
+                  <div>
                   <div className="flex items-center justify-between font-semibold">
                     <div className="flex items-center gap-2">
 
@@ -272,7 +313,7 @@ const [editPopUpData, setEditPopUpData] = useState<{
 
                 </div>
 
-                <div className='h-[20px] w-full flex items-center opacity-0 hover:opacity-100 my-1 py-2 px-3'
+                <div className='h-[20px] w-full flex items-center deskver:opacity-50 opacity-100 deskver:hover:opacity-100 my-1 py-2 px-3'
                   style={{
                     transition: 'opacity 300ms ease-in-out',
                     cursor: 'pointer',
@@ -299,7 +340,6 @@ const [editPopUpData, setEditPopUpData] = useState<{
                 </div>
 
                 </React.Fragment>
-                
               ))}
 
               {tripInfo.departing && (

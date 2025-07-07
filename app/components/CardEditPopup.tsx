@@ -120,7 +120,9 @@ const CardEditPopup = ({ preData, onClose, currencySymbol, onSave, dataJSON, new
   const [description, setDescription] = useState(preData?.place.description || '');
   const [category, setCategory] = useState(preData?.place.category || '');
   useEffect(()=>{
-    setTransportationCost(getTransportationCost(dataJSON?.trip.transportation || [], preData?.place.from || '', name, transportationType).toString() || '');
+    const tPrice = getTransportationCost(dataJSON?.trip.transportation || [], preData?.place.from || '', name, transportationType).toString();
+    setTransportationCost(tPrice || '');
+    
   },[name, transportationType])
 
 
@@ -196,27 +198,28 @@ const CardEditPopup = ({ preData, onClose, currencySymbol, onSave, dataJSON, new
       setCost(preData.place.cost.replace(/[^\d.]/g, ''));
       setTransportationType(preData.place.preffered_transport);
       setDescription(preData.place.description || '');
-      setCategory(preData.place.category || 'sightseeing');
+      setCategory(preData.place.category || '');
     }
   }, [newPlace]);
 
   const [done, setDone] = useState(false);
   useEffect(()=>{
-  if (name !== "" && category !== "" && name && category){
+  if (name !== "" && category !== "" && time !== "" && transportationType !== "" && name && category && time){
     setDone(true);
   }
+
   else{
     setDone(false);
   }
 
-  }, [name, category])
+  }, [name, category, time, transportationType])
 
   function newTripPlace(){
     if (dataJSON) {
       const newPlace: Place = {
         category: category,
         name: name,
-        cost: cost,
+        cost: `${currencySymbol}${cost}`,
         time: time,
         from: preData?.prereviousPlaceName || '',
         to: name,
@@ -225,6 +228,16 @@ const CardEditPopup = ({ preData, onClose, currencySymbol, onSave, dataJSON, new
       };
       const day = Object.keys(dataJSON.trip.trip)[0]; // Get the first day
       dataJSON.trip.trip[day].places.splice(preData?.placeIndex || 0, 0, newPlace);
+      dataJSON.trip.transportation.push({
+        from: preData?.prereviousPlaceName || '',
+        to: name,
+        options: [
+          {
+            type: transportationType,
+            cost: `${currencySymbol}${transportationCost}`
+          }
+        ]
+      });
       onSave(dataJSON);
       onClose();
     }
@@ -256,7 +269,7 @@ const CardEditPopup = ({ preData, onClose, currencySymbol, onSave, dataJSON, new
             <div className='flex flex-col gap-4'>
 
             <div className='flex items-center justify-between'>
-                <span className='font-medium text-2xl'>Edit Trip</span>
+                <span className='font-medium text-2xl'>{!newPlace ? 'Edit' : 'New'} Place</span>
                 <button 
                 onClick={()=>{
                     onClose();
