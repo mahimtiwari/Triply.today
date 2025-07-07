@@ -302,7 +302,7 @@ const CostSectionComponent = ({ costType, setCostType, dayExpanded, setDayExpand
                 </div>
                 )}
 
-                <div className='h-[20px] w-full flex items-center deskver:opacity-50 opacity-100 deskver:hover:opacity-100 my-1 py-2 px-3'
+                <div className='h-[20px] w-full flex items-center opacity-100 deskver:hover:opacity-100 my-1 py-2 px-3'
                   style={{
                     transition: 'opacity 300ms ease-in-out',
                     cursor: 'pointer',
@@ -314,8 +314,8 @@ const CostSectionComponent = ({ costType, setCostType, dayExpanded, setDayExpand
                     addPlace(day, 0);
 
                   }}
-                  className='h-[3px] rounded-full w-full bg-[#0099ff] flex items-center justify-center cursor-pointer'>
-                    <div className='h-5 w-5 rounded-full bg-[#0099ff] flex items-center justify-center'>
+                  className='h-[3px] rounded-full w-full bg-transparent flex items-center justify-center cursor-pointer'>
+                    <div className='h-5 w-5 rounded-full bg-[#74c7ff] hover:bg-[#0099ff] flex items-center justify-center'>
                       <span 
                         className="material-symbols-outlined"
                         style={{
@@ -402,7 +402,7 @@ const CostSectionComponent = ({ costType, setCostType, dayExpanded, setDayExpand
                     </div>
                 </div>
 
-                <div className='h-[20px] w-full flex items-center deskver:opacity-50 opacity-100 deskver:hover:opacity-100 my-1 py-2 px-3'
+                <div className='h-[20px] w-full flex items-center opacity-100 deskver:hover:opacity-100 my-1 py-2 px-3'
                   style={{
                     transition: 'opacity 300ms ease-in-out',
                     cursor: 'pointer',
@@ -414,8 +414,8 @@ const CostSectionComponent = ({ costType, setCostType, dayExpanded, setDayExpand
                     addPlace(day, index);
 
                   }}
-                  className='h-[3px] rounded-full w-full bg-[#0099ff] flex items-center justify-center cursor-pointer'>
-                    <div className='h-5 w-5 rounded-full bg-[#0099ff] flex items-center justify-center'>
+                  className='h-[3px] rounded-full w-full bg-transparent flex items-center justify-center cursor-pointer'>
+                    <div className='h-5 w-5 rounded-full bg-[#74c7ff] hover:bg-[#0099ff] flex items-center justify-center'>
                       <span 
                         className="material-symbols-outlined"
                         style={{
