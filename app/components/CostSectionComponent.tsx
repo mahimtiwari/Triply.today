@@ -315,12 +315,11 @@ const CostSectionComponent = ({ costType, setCostType, dayExpanded, setDayExpand
 
                   }}
                   className='h-[3px] rounded-full w-full bg-transparent flex items-center justify-center cursor-pointer'>
-                    <div className='h-5 w-5 rounded-full bg-[#74c7ff] hover:bg-[#0099ff] flex items-center justify-center'>
+                    <div className='h-5 w-5 rounded-full bg-[transparent] hover:bg-[#0099ff] flex items-center justify-center'>
                       <span 
-                        className="material-symbols-outlined"
+                        className="material-symbols-outlined hover:text-white text-gray-400"
                         style={{
                           fontSize: 16,
-                          color: 'white',
                         }}
                       >add</span>
                     </div>
@@ -415,12 +414,11 @@ const CostSectionComponent = ({ costType, setCostType, dayExpanded, setDayExpand
 
                   }}
                   className='h-[3px] rounded-full w-full bg-transparent flex items-center justify-center cursor-pointer'>
-                    <div className='h-5 w-5 rounded-full bg-[#74c7ff] hover:bg-[#0099ff] flex items-center justify-center'>
+                    <div className='h-5 w-5 rounded-full bg-[transparent] hover:bg-[#0099ff] flex items-center justify-center'>
                       <span 
-                        className="material-symbols-outlined"
+                        className="material-symbols-outlined hover:text-white text-gray-400"
                         style={{
                           fontSize: 16,
-                          color: 'white',
                         }}
                       >add</span>
                     </div>
