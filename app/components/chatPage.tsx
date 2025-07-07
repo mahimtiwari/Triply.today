@@ -209,7 +209,7 @@ const ChatPage = ({chatId, sessionObj, share}:{chatId?:string, sessionObj:Sessio
                 conversationId: chatId,
                 message: msg,
                 tool: chatType,
-                
+
             }),
         })
         
@@ -297,6 +297,7 @@ const ChatPage = ({chatId, sessionObj, share}:{chatId?:string, sessionObj:Sessio
             setSideMenuOpen(false);
         }
     }, [])
+    
     
     function toggleSideMenu() {
         if (sideMenu.current) {

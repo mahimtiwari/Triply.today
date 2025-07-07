@@ -139,12 +139,14 @@ const [editPopUpData, setEditPopUpData] = useState<{
   }
 
 
+  
   function getTimeFraction(time: string): number {
-    if ("12:00am" == time.toLowerCase().trim()) return 0;
-    if ("12:00pm" == time.toLowerCase().trim()) return 0.5;
+    if ("12:00am" == time.toLowerCase().trim().replace(" ", "")) return 0;
+    if ("12:00pm" == time.toLowerCase().trim().replace(" ", "")) return 0.5;
     const minSince12 = parseInt(time.split(":")[0].trim())*60+(parseInt(time.split(":")[1].trim().toLowerCase().replace("am","").replace("pm", "")) || 0) + (time.toLowerCase().includes("pm") ? 12 : 0)*60;
     return minSince12 / (60*24);
   }
+
 
 
   return (
@@ -281,10 +283,17 @@ const [editPopUpData, setEditPopUpData] = useState<{
                   </div>
                   </div>
                   )}
-                  <div className='w-full h-[2px] my-4 bg-gray-300 rounded-full'>
+                  <div className='w-full flex flex-row h-[2px] my-4 bg-gray-300 rounded-full'>
                     <div 
                     style={{
-                      width: `${getTimeFraction(place.time) * 100}%`,
+                      width: `${index !== 0 ? (getTimeFraction(tripInfo.places[index-1].time) * 100) : 0}%`,
+                    }}
+                    className='h-full bg-transparent'>
+
+                    </div>
+                    <div 
+                    style={{
+                      width: `${(index !== tripInfo.places.length - 1 ? (getTimeFraction(place.time) * 100) : 100) - (index !== 0 ? (getTimeFraction(tripInfo.places[index-1].time) * 100) : 0)}%`,
                     }}
                     className='h-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500'>
 
