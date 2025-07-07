@@ -208,6 +208,8 @@ const ChatPage = ({chatId, sessionObj, share}:{chatId?:string, sessionObj:Sessio
             body: JSON.stringify({
                 conversationId: chatId,
                 message: msg,
+                tool: chatType,
+                
             }),
         })
         
@@ -415,11 +417,24 @@ const ChatPage = ({chatId, sessionObj, share}:{chatId?:string, sessionObj:Sessio
                             </a>
                         )}
                         <button 
-                        className='p-2 rounded-xl cursor-pointer flex items-center hover:bg-[#333333] transition-colors duration-300'
+                        className='p-2 deskver:flex hidden rounded-xl cursor-pointer  items-center hover:bg-[#333333] transition-colors duration-300'
                         onClick={() => toggleSideMenu()}
                         >
                             <span className="material-symbols-outlined text-gray-200 ">
                                 dual_screen
+                            </span>
+                        </button>
+                        <button 
+                        className='p-2 deskver:hidden flex rounded-xl cursor-pointer  items-center hover:bg-[#333333] transition-colors duration-300'
+                        onClick={() => toggleSideMenu()}
+                        >
+                            <span 
+                            style={{
+                                fontSize: 19,
+
+                            }}
+                            className="material-symbols-outlined text-gray-200 ">
+                                close
                             </span>
                         </button>
                     </div>
@@ -505,21 +520,19 @@ const ChatPage = ({chatId, sessionObj, share}:{chatId?:string, sessionObj:Sessio
                 
                 <div className='flex flex-row gap-1'>
                     <button 
-                    className='p-2 deskver:hidden rounded-xl cursor-pointer flex items-center hover:bg-[#333333] transition-colors duration-300'
-                    onClick={() => toggleSideMenu()}
-                    >
+                    className='flex deskver:hidden items-center justify-center cursor-pointer gap-2 h-[40px] w-[40px] p-2 rounded-xl hover:bg-[#333333] transition-colors duration-300'
+                    onClick={() => toggleSideMenu()}>
                         <span className="material-symbols-outlined text-gray-200 ">
                             dual_screen
                         </span>
                     </button>
                     {chatId && (
                         <>
-                        
                             <button 
                             onClick={()=>{
                                 setShareOpen(true);
                             }}
-                            className='flex items-center cursor-pointer gap-2 p-2 rounded-xl hover:bg-[#333333] transition-colors duration-300'>
+                            className='flex items-center justify-center cursor-pointer gap-2 h-[40px] w-[40px] p-2 rounded-xl hover:bg-[#333333] transition-colors duration-300'>
                                 <span className="material-symbols-outlined"
                                 style={{
                                     fontSize:20,
@@ -529,9 +542,8 @@ const ChatPage = ({chatId, sessionObj, share}:{chatId?:string, sessionObj:Sessio
                                 </span>
                             </button>
 
-
                             <div className="relative inline-block"> 
-                                    <button onClick={() => setShowPopup(!showPopup)} className='flex items-center cursor-pointer gap-2 p-2 rounded-xl hover:bg-[#333333] transition-colors duration-300'>
+                                    <button onClick={() => setShowPopup(!showPopup)} className='flex items-center justify-center cursor-pointer gap-2 h-[40px] w-[40px] p-2 rounded-xl hover:bg-[#333333] transition-colors duration-300'>
                                         <span className='material-icons'>more_horiz</span>
                                     </button>
 
@@ -595,10 +607,16 @@ alignItems: chatDisplay.length === 0 && !chatId ? "center" : "initial"
                 }}
             >
                 {chatDisplay.length === 0 && !chatId ? (
-                <div className='flex flex-col mb-10 items-center justify-center text-4xl text-center'>
-                    <span className='text-[#999a9d]'>Good to See You!</span>
-                    <span className='bg-gradient-to-r bg-clip-text text-transparent from-[#b2b2b4] via-[white] to-[#b2b2b4]'>Your perfect trip starts here.</span>
-                </div>
+                <>
+                    <div className=' deskver:flex hidden flex-col mb-10 items-center justify-center text-4xl text-center'>
+                        <span className='text-[#999a9d]'>Good to See You!</span>
+                        <span className='bg-gradient-to-r bg-clip-text text-transparent from-[#b2b2b4] via-[white] to-[#b2b2b4]'>Your perfect trip starts here.</span>
+                    </div>
+                    <div className='deskver:hidden flex flex-col w-full h-full mb-20 items-center justify-center'>
+                        <span className='text-3xl'>Triply.today</span>
+
+                    </div>
+                </>
                 ) : (
                 <div className="space-y-2 mb-[calc(15px+100px)] flex flex-col gap-2" ref={chatLogs}>
                     {chatDisplay.map((msg, index) => (
@@ -616,9 +634,10 @@ alignItems: chatDisplay.length === 0 && !chatId ? "center" : "initial"
                 </div>
                 )}
                 {share && (
-                    <div className='w-full rounded-3xl bg-[#303030] p-4  '
+                    <>
+                    <div className='w-full deskver:block hidden rounded-3xl bg-[#303030] p-4'
                         style={{
-                            position: chatDisplay.length === 0 && !chatId  ? "initial": "sticky",
+                            position: chatDisplay.length === 0 && !chatId ? "initial": "sticky",
                             bottom: "15px",
                             marginTop: chatDisplay.length === 0 && !chatId ? "0": "auto",
                         }}
@@ -705,6 +724,96 @@ alignItems: chatDisplay.length === 0 && !chatId ? "center" : "initial"
 
                         </div>
                     </div>
+                    <div className='w-full deskver:hidden block rounded-3xl bg-[#303030] p-4  '
+                        style={{
+                            position: "sticky",
+                            bottom: "15px",
+                            marginTop: "auto",
+                        }}
+                    >
+
+                        <input 
+                            className='text-white resize-none ml-2 overflow-hidden w-full outline-0'
+                            placeholder='Ask Anything...'
+                            value={prompt}
+                            onKeyDown={(e) => {
+                                if (e.key === "Enter" && !isLoading) {
+                                    msgSend();
+                                }
+                            }}
+                            onChange={(e) => setPrompt(e.target.value)}
+                        />
+                        <div className=' flex flex-row justify-between items-center  mt-4'>
+                            <div className='flex flex-row gap-2'>
+                                <button className='gap-2 min-h-10 min-w-10 flex items-center justify-center border-[#d3d3d3] rounded-full hover:bg-[#50505039] cursor-pointer transition-colors shadow-lg'
+                                    onClick={() => {
+                                        if (chatType === "Build") {
+                                            setChatType("");
+                                            return;
+                                        }
+                                        setChatType("Build");
+                                    }}
+                                    style={{
+                                        border: chatType === "Build" ? "2px solid #007bff" : "2px solid transparent",
+                                        color: chatType === "Build" ? "#007bff" : "#d3d3d3",
+                                        paddingLeft: chatType === "Build" ? "16px" : "0",
+                                        paddingRight: chatType === "Build" ? "16px" : "0",
+                                    }}
+                                >
+                                    <span className='material-icons' style={{ fontSize: 20 }}>build</span>
+                                        {chatType === "Build" && (
+                                        <span className='text-[14px] font-medium'>Build</span>
+        )}
+                                </button>
+                                <button className='gap-2 min-h-10 min-w-10 flex items-center justify-center border-[#d3d3d3] rounded-full hover:bg-[#50505039] cursor-pointer transition-colors shadow-lg'
+                                    onClick={() => {
+                                        if (chatType === "Edit") {
+                                            setChatType("");
+                                            return;
+                                        }
+                                        setChatType("Edit");
+                                    }}
+                                    style={{
+                                        border: chatType === "Edit" ? "2px solid #007bff" : "2px solid transparent",
+                                        color: chatType === "Edit" ? "#007bff" : "#d3d3d3",
+                                        paddingLeft: chatType === "Edit" ? "16px" : "0",
+                                        paddingRight: chatType === "Edit" ? "16px" : "0",
+                                    }}
+                                >
+                                    <span className='material-icons' style={{ fontSize: 20 }}>edit</span>
+                                        {chatType === "Edit" && (
+                                        <span className='text-[14px] font-medium'>Edit</span>
+        )}
+                                </button>
+                                <button className='gap-2 min-h-10 min-w-10 flex items-center justify-center border-[#d3d3d3] rounded-full hover:bg-[#50505039] cursor-pointer transition-colors shadow-lg'
+                                    onClick={() => {
+                                        if (chatType === "Analyze") {
+                                            setChatType("");
+                                            return;
+                                        }
+                                        setChatType("Analyze");
+                                    }}
+                                    style={{
+                                        border: chatType === "Analyze" ? "2px solid #007bff" : "2px solid transparent",
+                                        color: chatType === "Analyze" ? "#007bff" : "#d3d3d3",
+                                        paddingLeft: chatType === "Analyze" ? "16px" : "0",
+                                        paddingRight: chatType === "Analyze" ? "16px" : "0",
+                                    }}
+                                >
+                                    <span className='material-icons' style={{ fontSize: 20 }}>bar_chart</span>
+                                        {chatType === "Analyze" && (
+                                        <span className='text-[14px] font-medium'>Analyze</span>
+        )}
+                                </button>
+                            </div>
+                            <button 
+                            onClick={() => msgSend()}
+                            ref={sendBtn}
+                            className='material-icons bg-white text-black rounded-full p-1.5 hover:bg-gray-100 transition-colors duration-300 cursor-pointer'>arrow_upward</button>
+
+                        </div>
+                    </div>
+                    </>
                 )}
 
             </div>
