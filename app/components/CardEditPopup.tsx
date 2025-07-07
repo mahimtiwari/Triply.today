@@ -226,8 +226,8 @@ const CardEditPopup = ({ preData, onClose, currencySymbol, onSave, dataJSON, new
         preffered_transport: transportationType,
         description: description,
       };
-      const day = Object.keys(dataJSON.trip.trip)[0]; // Get the first day
-      dataJSON.trip.trip[day].places.splice(preData?.placeIndex || 0, 0, newPlace);
+      const day = Object.keys(dataJSON.trip.trip)[parseInt((preData?.day || '0').replace('day', '')) - 1];
+      dataJSON.trip.trip[day].places.splice((preData?.placeIndex ?? 0) === 0 ? 0 : (preData?.placeIndex ?? 0)+1, 0, newPlace);
       dataJSON.trip.transportation.push({
         from: preData?.prereviousPlaceName || '',
         to: name,
