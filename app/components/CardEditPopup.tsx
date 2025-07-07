@@ -263,9 +263,10 @@ const CardEditPopup = ({ preData, onClose, currencySymbol, onSave, dataJSON, new
         <div 
         ref={bottomSheetRef}
         style={{
-          
+          scrollbarWidth: 'thin',
+          scrollbarColor: '#888 transparent',
         }}
-        className='bg-white overflow-y-auto flex flex-col  deskver:p-4 p-6 deskver:mb-auto deskver:rounded-2xl deskver:max-w-[600px] deskver:h-fit h-full w-full'>
+        className='bg-white max-h-[calc(100vh)] overflow-y-auto flex flex-col  deskver:p-4 p-6 deskver:mb-auto deskver:rounded-2xl deskver:max-w-[600px] deskver:h-fit h-full w-full'>
             <div className='flex flex-col gap-4'>
 
             <div className='flex items-center justify-between'>
