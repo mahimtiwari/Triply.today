@@ -35,9 +35,7 @@ const ChatShare = ({onClose, chatID, visibility, changeVisibility}:ChatShareProp
   return (
     <div className='absolute top-0 left-0 w-full h-full bg-black/50 z-50 flex items-center justify-center'>
         <div 
-        
-        className='backdrop-blur-xl font-[Poppins] text-white bg-[#2f2f2f] p-5 w-[50%] min-w-[500px] max-w-[700px] rounded-3xl '>
-
+        className='backdrop-blur-xl font-[Poppins] text-white bg-[#2f2f2f] p-5 deskver:w-[50%] deskver:min-w-[500px] deskver:max-w-[700px] deskver:rounded-3xl w-full deskver:h-fit h-full'>
             <div className='flex flex-row items-center justify-between'>
                 <span className='text-lg'>Share Your Chat</span>
                 <button 
