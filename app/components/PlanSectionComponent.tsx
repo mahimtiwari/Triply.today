@@ -186,7 +186,8 @@ const [editPopUpData, setEditPopUpData] = useState<{
             <div className="flex items-center justify-between cursor-pointer" onClick={(e) => {
             
             setDayExpanded(dayExpanded === day ? null : day);
-
+            
+            
             }}>
             <h2 className="text-lg font-bold text-gray-700">{`Day ${day.replace("day", "")}`}<span className='font-medium ml-4'>( {tripInfo.destination} )</span></h2>
             <span className="text-sm font-medium text-gray-500">{dayExpanded === day ? "Hide Details" : "Show Details"}</span>
