@@ -141,13 +141,21 @@ const [editPopUpData, setEditPopUpData] = useState<{
 
 
   
-  function getTimeFraction(time: string): number {
+  function getTimeHr(time: string): number {
     if ("12:00am" == time.toLowerCase().trim().replace(" ", "")) return 0;
-    if ("12:00pm" == time.toLowerCase().trim().replace(" ", "")) return 0.5;
-    const minSince12 = parseInt(time.split(":")[0].trim())*60+(parseInt(time.split(":")[1].trim().toLowerCase().replace("am","").replace("pm", "")) || 0) + (time.toLowerCase().includes("pm") ? 12 : 0)*60;
-    return minSince12 / (60*24);
+    if ("12:00pm" == time.toLowerCase().trim().replace(" ", "")) return 12;
+    const hrSince12 = parseInt(time.split(":")[0].trim())+(parseInt(time.split(":")[1].trim().toLowerCase().replace("am","").replace("pm", "")) || 0) + (time.toLowerCase().includes("pm") ? 12 : 0);
+    return hrSince12;
   }
 
+  function getTimeFraction(time: string, startTime:string): number{
+    const minusHr = getTimeHr(startTime);
+    const hr = getTimeHr(time);
+    const totalHr = 24 - minusHr;
+    const timeFraction = (hr - minusHr) / totalHr;
+    console.log("Time Fraction:", hr - minusHr, "h:", hr, "minusHr:", minusHr,"for time:", time, "and startTime:", startTime);
+    return timeFraction * 100;
+  }
 
 
   return (
@@ -289,14 +297,13 @@ const [editPopUpData, setEditPopUpData] = useState<{
                   <div className='w-full flex flex-row h-[2px] my-4 bg-gray-300 rounded-full'>
                     <div 
                     style={{
-                      width: `${index !== 0 ? (getTimeFraction(tripInfo.places[index-1].time) * 100) : 0}%`,
+                      width: `${index !== 0 ? (getTimeFraction(tripInfo.places[index].time, tripInfo.places[0].time)): 0 }%`,
                     }}
                     className='h-full bg-transparent'>
-
                     </div>
                     <div 
                     style={{
-                      width: `${(index !== tripInfo.places.length - 1 ? (getTimeFraction(place.time) * 100) : 100) - (index !== 0 ? (getTimeFraction(tripInfo.places[index-1].time) * 100) : 0)}%`,
+                      width: `${(index !== tripInfo.places.length - 1 ? getTimeFraction(tripInfo.places[index+1].time, tripInfo.places[0].time): 100)-getTimeFraction(tripInfo.places[index].time, tripInfo.places[0].time)}%`,
                     }}
                     className='h-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500'>
 
