@@ -729,6 +729,9 @@ useEffect(() => {
   
   }
   
+  const [ExpandAllDaysState, setExpandAllDaysState] = useState<boolean>(false);
+
+
   return (
     <>
 
@@ -872,6 +875,11 @@ useEffect(() => {
             dataJSON={dataJSON}
             totalCost={totalCost}
             currencySymbol={currencySymbol || ""}
+            sideSelected={sideSelected}
+            setAllExpand={()=>{
+              setExpandAllDaysState(!ExpandAllDaysState);
+            }}
+            allExpand={ExpandAllDaysState}
           />
 
 
@@ -914,6 +922,7 @@ useEffect(() => {
                 setDayExpanded(day);
               }}
               currencySymbol={currencySymbol || ""}
+              expandAllDays={ExpandAllDaysState}
             />
             
 
@@ -946,6 +955,7 @@ useEffect(() => {
                 setDataJSON(data);
                 updateCosts(data);
               }}
+              expandAllDays={ExpandAllDaysState}
             />
 
           )}
@@ -1259,6 +1269,7 @@ useEffect(() => {
                 setDayExpanded(day);
               }}
               currencySymbol={currencySymbol || ""}
+              expandAllDays={ExpandAllDaysState}
             />
 
 
@@ -1291,6 +1302,7 @@ useEffect(() => {
                 setDataJSON(data);
                 updateCosts(data);
               }}
+              expandAllDays={ExpandAllDaysState}
             />
 
           )}

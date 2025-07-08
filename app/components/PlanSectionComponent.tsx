@@ -92,9 +92,10 @@ interface PlanSectionComponentProps {
     currencySymbol: string;
     setDayExpanded: (day: string | null) => void;
     changeData: (data: Trip | null) => void;
+    expandAllDays: boolean;
   }
 
-const PlanSectionComponent = ({ dataJSON, dayExpanded, currencySymbol, setDayExpanded, changeData}: PlanSectionComponentProps) => {
+const PlanSectionComponent = ({ dataJSON, dayExpanded, currencySymbol, setDayExpanded, changeData, expandAllDays}: PlanSectionComponentProps) => {
   
 const [editPopUpData, setEditPopUpData] = useState<{
   day: string;
@@ -182,17 +183,18 @@ const [editPopUpData, setEditPopUpData] = useState<{
       )}
 
       { dataJSON?.trip?.trip && Object.entries(dataJSON.trip.trip).map(([day, tripInfo]) => (
-        <div key={day} className="bg-white border-b-1 border-gray-300 p-4" id={`${day}-plan`}>
+        <div 
+        key={day} className="bg-white border-b-1 border-gray-300 p-4" id={`${day}-plan`}>
             <div className="flex items-center justify-between cursor-pointer" onClick={(e) => {
-            
             setDayExpanded(dayExpanded === day ? null : day);
-            
-            
-            }}>
+            // console.log("Clicked Day:", day);
+            // document.getElementById(`${day}-plan`)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+}}>
             <h2 className="text-lg font-bold text-gray-700">{`Day ${day.replace("day", "")}`}<span className='font-medium ml-4'>( {tripInfo.destination} )</span></h2>
             <span className="text-sm font-medium text-gray-500">{dayExpanded === day ? "Hide Details" : "Show Details"}</span>
           </div>
-          {dayExpanded === day && (
+          {(expandAllDays ? true : dayExpanded === day) && (
             <div className="mt-4 flex flex-col gap-1">
               {tripInfo.arriving && (
                 <div className="flex flex-col bg-gray-100 rounded-lg shadow-md p-4">

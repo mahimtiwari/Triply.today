@@ -105,11 +105,12 @@ interface CostSectionComponentProps{
     setTotalCost: (cost: number) => void;
     totalCost?: number;
     changeData: (data: Trip | null) => void;
+    expandAllDays: boolean;
 }
 
 
 
-const CostSectionComponent = ({ costType, setCostType, dayExpanded, setDayExpanded, dataJSON, currencySymbol, costDetailsRef, graphicalCostDataRef, setGraphCostRef, setTotalCost, totalCost, changeData }:CostSectionComponentProps) => {
+const CostSectionComponent = ({ costType, setCostType, dayExpanded, setDayExpanded, dataJSON, currencySymbol, costDetailsRef, graphicalCostDataRef, setGraphCostRef, setTotalCost, totalCost, changeData, expandAllDays }:CostSectionComponentProps) => {
 
 
     const getTransportationCost = (transportation: Transportation[], from:string, to:string, prefOption:string): number => {
@@ -269,7 +270,7 @@ const CostSectionComponent = ({ costType, setCostType, dayExpanded, setDayExpand
             </span>
             <span className="text-sm font-medium text-gray-500">{dayExpanded === day ? "Hide Details" : "Show Details"}</span>
             </div>
-            {dayExpanded === day && (
+            {(expandAllDays ? true : dayExpanded === day) && (
             <div className="mt-4 flex flex-col gap-1">
                 {tripInfo.arriving && (
                 <div className="flex flex-col bg-gray-100 rounded-lg shadow-md p-4">

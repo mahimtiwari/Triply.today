@@ -741,7 +741,11 @@ useEffect(() => {
 
   
 
-const [popShare, setPopShare] = useState<boolean>(false);
+  const [popShare, setPopShare] = useState<boolean>(false);
+  const [ExpandAllDaysState, setExpandAllDaysState] = useState<boolean>(false);
+
+
+
   return (
     <>
   <Sharepopup id={tripId} open={popShare} val={visib} shEmails={shareSelectedEmails} onClose={() => {
@@ -906,6 +910,11 @@ const [popShare, setPopShare] = useState<boolean>(false);
             dataJSON={dataJSON}
             totalCost={totalCost}
             currencySymbol={currencySymbol || ""}
+            sideSelected={sideSelected}
+            setAllExpand={()=>{
+              setExpandAllDaysState(!ExpandAllDaysState);
+            }}
+            allExpand={ExpandAllDaysState}
           />
           
 
@@ -950,6 +959,7 @@ const [popShare, setPopShare] = useState<boolean>(false);
                 setDayExpanded(day);
               }}
               currencySymbol={currencySymbol || ""}
+              expandAllDays={ExpandAllDaysState}
             />
 
           )}
@@ -981,6 +991,7 @@ const [popShare, setPopShare] = useState<boolean>(false);
                 setDataJSON(data);
                 updateCosts(data);
               }}
+              expandAllDays={ExpandAllDaysState}
             />
 
           )}
@@ -1295,6 +1306,7 @@ const [popShare, setPopShare] = useState<boolean>(false);
                 setDayExpanded(day);
               }}
               currencySymbol={currencySymbol || ""}
+              expandAllDays={ExpandAllDaysState}
             />
 
 
@@ -1329,6 +1341,7 @@ const [popShare, setPopShare] = useState<boolean>(false);
                 updateCosts(data);
 
               }}
+              expandAllDays={ExpandAllDaysState}
             />
 
           )}
