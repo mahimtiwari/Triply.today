@@ -7,13 +7,14 @@ import { useConversationHistoryStore } from '../store/chatHistoryStore';
 import Image from 'next/image';
 import ChatSearch from './chatSearch';
 import ChatShare from './chatShare';
-import { set } from 'date-fns';
+import ReactMarkdown from 'react-markdown';
+
+
+
 interface ChatHistoryProps {
     msg: string;
     sender: string;
 }
-
-
 
 const ChatPage = ({chatId, sessionObj, share}:{chatId?:string, sessionObj:Session, share:boolean}) => {
 
@@ -28,7 +29,7 @@ const ChatPage = ({chatId, sessionObj, share}:{chatId?:string, sessionObj:Sessio
     const [chatDisplay, setChatDisplay] = useState<ChatHistoryProps[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const processedRef = useRef(false);
-
+    const [isResponseBeingGenerated, setIsResponseBeingGenerated] = useState<boolean>(false);
 
     useEffect(() => {
         if (pendingMessage && chatId && !processedRef.current) {
@@ -200,6 +201,7 @@ const ChatPage = ({chatId, sessionObj, share}:{chatId?:string, sessionObj:Sessio
         setChatDisplay([...chatDisplay, {msg: msg, sender: "user"}]);
 
         if (msg !== "") {
+        setIsResponseBeingGenerated(true);
         const convStreamFetch = await fetch("/api/conversation/messages/send", {
             method: "POST",
             headers: {
@@ -230,6 +232,7 @@ const ChatPage = ({chatId, sessionObj, share}:{chatId?:string, sessionObj:Sessio
 
             if (done) {
                 changeSendBtnSatus(true);
+                setIsResponseBeingGenerated(false);
                 break;
             }
             const text = decoder.decode(value, { stream: true });
@@ -310,7 +313,8 @@ const ChatPage = ({chatId, sessionObj, share}:{chatId?:string, sessionObj:Sessio
                 }
                 
                 sideMenu.current.style.width = "fit-content";
-            } else {
+            }
+            else {
                 if(window.innerWidth < 900){
                     sideMenu.current.style.display = "block"
                     if (sideMenuScreenOverlay.current) {
@@ -319,6 +323,7 @@ const ChatPage = ({chatId, sessionObj, share}:{chatId?:string, sessionObj:Sessio
                 }
                 sideMenu.current.style.width = "270px";
             }
+            
             setSideMenuOpen(!sideMenuOpen);
         }
     }
@@ -623,13 +628,50 @@ alignItems: chatDisplay.length === 0 && !chatId ? "center" : "initial"
                     {chatDisplay.map((msg, index) => (
                         <div key={index} className='w-fit' style={{
                             maxWidth: msg.sender === "user" ? "500px" : "intial",
-                            backgroundColor: msg.sender === "user" ? "#444" : "initial",
+                            backgroundColor: msg.sender === "user" ? "#444" : isResponseBeingGenerated && index === chatDisplay.length - 1 ? "#2f2f2f" : "initial",
+                            animation: msg.sender !== "user" && isResponseBeingGenerated && index === chatDisplay.length - 1 ? "pulse 5s infinite" : "none",
                             borderRadius: "30px",
-
                             padding: "10px 15px",
                             marginLeft: msg.sender === "user" ? "auto" : "0",
                         }}>
-                            {msg.msg}
+                            <div 
+                            style={{
+                            }}
+                            className='[&>p:nth-last-of-type(1)]:inline'>
+                            <ReactMarkdown>
+                                {msg.msg}
+                            </ReactMarkdown>
+
+                            {msg.sender !== "user" && (
+                                <span
+                                    className="inline-block align-middle animate-blink"
+                                    style={{
+                                        display: msg.sender === "user" ? "none" : isResponseBeingGenerated && index === chatDisplay.length - 1 ? "inline-block" : "none",
+                                        marginLeft: "3px",
+                                        borderRadius: "2px",
+                                        width: "8px",
+                                        height: "18px",
+                                        background: isResponseBeingGenerated && index === chatDisplay.length - 1
+                                            ? "linear-gradient(135deg, #fff 60%, #b2b2b4 100%)"
+                                            : "#e0e0e0",
+                                        opacity: isResponseBeingGenerated && index === chatDisplay.length - 1 ? 1 : 0.7,
+                                        boxShadow: isResponseBeingGenerated && index === chatDisplay.length - 1
+                                            ? "0 0 8px 2px #fff8"
+                                            : "none",
+                                        transition: "background 0.3s, box-shadow 0.3s, opacity 0.3s",
+                                    }}
+                                ></span>
+                            )}
+                            </div>
+                            <style jsx>{`
+                                @keyframes blink {
+                                    0%, 100% { opacity: 1; }
+                                    50% { opacity: 0.3; }
+                                }
+                                .animate-blink {
+                                    animation: blink 1s infinite;
+                                }
+                            `}</style>
                         </div>
                     ))}
                 </div>

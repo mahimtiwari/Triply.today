@@ -153,7 +153,6 @@ const [editPopUpData, setEditPopUpData] = useState<{
     const hr = getTimeHr(time);
     const totalHr = 24 - minusHr;
     const timeFraction = (hr - minusHr) / totalHr;
-    console.log("Time Fraction:", hr - minusHr, "h:", hr, "minusHr:", minusHr,"for time:", time, "and startTime:", startTime);
     return timeFraction * 100;
   }
 
