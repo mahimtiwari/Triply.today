@@ -109,6 +109,8 @@ You are allowed to use tools at any time if it helps improve your response.
 Currently available tools:
 - **getAllTripPlans**: Retrieves all of the user's saved trip plans.    
 never ever ASK FOR PERMISSION TO USE TOOLS, JUST USE THEM WHEN YOU THINK IT WILL HELP.
+in the response field you can only put markdown no useless code language or any other text.
+nad remeber if a tool is used then isToolOutput should be true.
 `;
     const cHistory = await prisma.messages.findMany({
         where: {
@@ -123,12 +125,6 @@ never ever ASK FOR PERMISSION TO USE TOOLS, JUST USE THEM WHEN YOU THINK IT WILL
     role: msg.sender === senders.USER ? "user" : "model",
     parts: [{ text: msg.message_text }],
     }));
-
-
-    function chunkToText(){
-        
-    }
-
 
     registerMessage(requestParams.conversationId, requestParams.message, senders.USER)
     let resp = "";
@@ -178,6 +174,34 @@ never ever ASK FOR PERMISSION TO USE TOOLS, JUST USE THEM WHEN YOU THINK IT WILL
                 console.log("Tool call ID:", respJSON.toolCallId);
                 console.log("----------------------------------------------------------");
                 if (respJSON.toolCallId.includes("getAllTripPlans")) {
+                    const funcResp = getAllTripPlans();
+                    console.log("Tool output:", funcResp);
+                    const toolResponse = await chat.sendMessageStream({
+                        message: `System: Here is the output of the tool call: ${JSON.stringify(funcResp)}`,
+                    });
+                    let resp = "";
+                    let respText = "";
+                    controller.enqueue(encd.encode(" "));
+
+                    for await (const chunk of toolResponse) {
+                        resp+= chunk.text;
+                        console.log("Received chunk:", chunk.text);
+
+                        try {
+                            const respSplit = resp.split('"response": "')[1].split('",')[0];
+                            console.log("Response so far:", respSplit);
+                            respText = respSplit;
+                        } catch (error) {
+                            console.error("Error parsing response:", error);
+                        }
+
+                        const encodedStringChunk = respText.slice(prevRespText.length);
+
+                        controller.enqueue(encd.encode(encodedStringChunk));
+                        prevRespText = respText;
+                        await new Promise(resolve => setTimeout(resolve, 500));
+        
+                    }
 
                 }
             }
