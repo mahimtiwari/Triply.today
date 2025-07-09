@@ -1,5 +1,5 @@
 "use client";
-import React, { useRef, useState, useEffect } from 'react'
+import React, { useRef, useState, useEffect, use } from 'react'
 import { Session } from "next-auth";
 import { useRouter } from 'next/navigation';
 import { useMsgStore } from '@/app/store/chatMsgStore';
@@ -185,6 +185,38 @@ const ChatPage = ({chatId, sessionObj, share}:{chatId?:string, sessionObj:Sessio
 
     }
 
+    const [userScroll, setUserScroll] = useState<boolean>(false);
+
+
+    useEffect(() => {
+        if(!userScroll) {
+            chatLogsScrollRef.current?.scrollTo({
+                top: chatLogsScrollRef.current.scrollHeight,
+                behavior: "instant",
+            });
+        }
+    }, [chatDisplay, chatId]);
+
+    useEffect(() => {
+        const chatElem = chatLogsScrollRef.current;
+        if (!chatElem) return;
+
+        const handleScroll = () => {
+            const isAtBottom =
+            Math.abs(chatElem.scrollTop + chatElem.clientHeight - chatElem.scrollHeight) < 10;
+            console.log("isAtBottom:", isAtBottom);
+            if (!isAtBottom) {
+            setUserScroll(true); 
+            } else {
+            setUserScroll(false); 
+            }
+        };
+
+        chatElem.addEventListener("scroll", handleScroll);
+        return () => chatElem.removeEventListener("scroll", handleScroll);
+    
+    }, []);
+
 
     async function  msgSend(nIdPrompt?: string) {
         const msg = nIdPrompt || prompt;
@@ -237,12 +269,13 @@ const ChatPage = ({chatId, sessionObj, share}:{chatId?:string, sessionObj:Sessio
             }
             const text = decoder.decode(value, { stream: true });
             fMsg+=text;
-            
+
             setChatDisplay((prev) => { 
                 const newChat = [...prev];
                 newChat[newChat.length - 1].msg = fMsg;
                 return newChat;
             });
+
 
         }
         
@@ -331,6 +364,9 @@ const ChatPage = ({chatId, sessionObj, share}:{chatId?:string, sessionObj:Sessio
 
     const [searchOpen, setSearchOpen] = useState<boolean>(false);
     const [shareOpen, setShareOpen] = useState<boolean>(false);
+
+    const chatLogsScrollRef = useRef<HTMLDivElement>(null);
+
 
   return (
     <>
@@ -520,6 +556,7 @@ const ChatPage = ({chatId, sessionObj, share}:{chatId?:string, sessionObj:Sessio
         style={{
             scrollbarColor: "#444 #000",
         }}
+        ref={chatLogsScrollRef}
         >
             { share && (
             <div className='w-full h-[65px] sticky top-0 bg-[inherit] justify-between flex items-center px-4 py-2'>
@@ -678,6 +715,7 @@ alignItems: chatDisplay.length === 0 && !chatId ? "center" : "initial"
                 )}
                 {share && (
                     <>
+
                     <div className='w-full deskver:block hidden rounded-3xl bg-[#303030] p-4'
                         style={{
                             position: chatDisplay.length === 0 && !chatId ? "initial": "sticky",
