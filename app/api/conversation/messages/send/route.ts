@@ -42,6 +42,29 @@ export async function POST(request: NextRequest){
     const requestParams: RequestParams = await request.json();
     
 
+const responseSchema = {
+    type: Type.OBJECT,
+    properties: {
+        response: {
+            type: Type.STRING,
+        },
+        isToolOutput: {
+            type: Type.BOOLEAN,
+        },
+        toolCallId: {
+            type: Type.ARRAY,
+            items: {
+                type: Type.STRING,
+                enum: ["getAllTripPlans"],
+            },
+        },
+
+    },
+    propertyOrdering: ["response", "isToolOutput", "toolCallId"],
+    required: ["response", "isToolOutput", "toolCallId"],
+};
+
+
     const conv = prisma.conversations.findUnique({
         where: {
             userId: session.user.id,
@@ -66,12 +89,27 @@ export async function POST(request: NextRequest){
             last_interaction: new Date(),
         },
     });
-    
+ 
+
+    function getAllTripPlans(){
+        console.log("Updating trip plan...");
+        console.log("Trip plan updated successfully.");
+        const tripPlan = {
+            destination: "Paris",
+            startDate: "2024-05-01",
+            endDate: "2024-05-10",
+            cost: "1500HKD",
+        };
+        return tripPlan;
+    }
+
     const system_instructions = `
-    You are a helpful assistant.
-    `;
-
-
+    You are an intelligent, helpful AI assistant that helps users with travel-related questions and trip planning. You have access to external tools, which you can use whenever needed to provide accurate and personalized responses.
+You are allowed to use tools at any time if it helps improve your response.
+Currently available tools:
+- **getAllTripPlans**: Retrieves all of the user's saved trip plans.    
+never ever ASK FOR PERMISSION TO USE TOOLS, JUST USE THEM WHEN YOU THINK IT WILL HELP.
+`;
     const cHistory = await prisma.messages.findMany({
         where: {
             conversation_id: requestParams.conversationId,
@@ -81,29 +119,69 @@ export async function POST(request: NextRequest){
         },
     });
 
-const messages = cHistory.map((msg) => ({
-  role: msg.sender === senders.USER ? "user" : "model",
-  parts: [{ text: msg.message_text }],
-}));
+    const messages = cHistory.map((msg) => ({
+    role: msg.sender === senders.USER ? "user" : "model",
+    parts: [{ text: msg.message_text }],
+    }));
+
+
+    function chunkToText(){
+        
+    }
 
 
     registerMessage(requestParams.conversationId, requestParams.message, senders.USER)
     let resp = "";
+    let respText = "";
     const stream = new ReadableStream({
         async start(controller) {
             const chat = await ai.chats.create({
                 model: "gemini-2.0-flash",
                 history: messages,
+                config: {
+                    systemInstruction: system_instructions,
+                    responseSchema: responseSchema,
+                    responseMimeType: "application/json",
+                }
             });
 
             const response = await chat.sendMessageStream({
                 message: requestParams.message,
             });
+
+            let prevRespText = "";
+            
             for await (const chunk of response) {
-                controller.enqueue(encd.encode(chunk.text));
                 resp+= chunk.text;
+                console.log("Received chunk:", chunk.text);
+
+                try {
+                    const respSplit = resp.split('"response": "')[1].split('",')[0];
+                    console.log("Response so far:", respSplit);
+                    respText = respSplit;
+                } catch (error) {
+                    console.error("Error parsing response:", error);
+                }
+
+                const encodedStringChunk = respText.slice(prevRespText.length);
+
+                controller.enqueue(encd.encode(encodedStringChunk));
+                prevRespText = respText;
                 await new Promise(resolve => setTimeout(resolve, 500));
             }
+
+            const respJSON = JSON.parse(resp);
+            console.log("Final response JSON:", respJSON);
+            if (respJSON.isToolOutput){
+                console.log("----------------------------------------------------------");
+                console.log("Tool output detected, executing tool...");
+                console.log("Tool call ID:", respJSON.toolCallId);
+                console.log("----------------------------------------------------------");
+                if (respJSON.toolCallId.includes("getAllTripPlans")) {
+
+                }
+            }
+
             controller.close();
             registerMessage(requestParams.conversationId, resp, senders.MODEL);
 
