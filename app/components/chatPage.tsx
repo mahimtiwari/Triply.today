@@ -674,11 +674,11 @@ alignItems: chatDisplay.length === 0 && !chatId ? "center" : "initial"
                             <div 
                             style={{
                             }}
-                            className='[&>p:nth-last-of-type(1)]:inline'>
+                            className='[&>p:nth-last-of-type(1)]:inline'>    
                             <ReactMarkdown>
                                 {msg.msg}
                             </ReactMarkdown>
-
+                            
                             {msg.sender !== "user" && (
                                 <span
                                     className="inline-block align-middle animate-blink"

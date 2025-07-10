@@ -55,7 +55,15 @@ const responseSchema = {
             type: Type.ARRAY,
             items: {
                 type: Type.STRING,
-                enum: ["getAllTripPlans"],
+                enum: ["getAllTripPlans", "getTripDetails"],
+            },
+        },
+        toolParams: {
+            type: Type.OBJECT,
+            properties: {
+                tripId: {
+                    type: Type.STRING,
+                },
             },
         },
 
@@ -91,27 +99,57 @@ const responseSchema = {
     });
  
 
-    function getAllTripPlans(){
-        console.log("Updating trip plan...");
-        console.log("Trip plan updated successfully.");
-        const tripPlan = {
-            destination: "Paris",
-            startDate: "2024-05-01",
-            endDate: "2024-05-10",
-            cost: "1500HKD",
-        };
-        return tripPlan;
+    async function getAllTripPlans(){
+        const allTripPlans = await prisma.trip.findMany({
+            where:{
+                    ownerId: session.user.id,
+            },
+            select:{
+                id: true,
+                destination: true,
+                metadata: true,
+                currencyCode: true,
+                costObj: true,
+            }
+        });
+
+        console.log("=======================================================================");
+        console.log("All trip plans retrieved:", allTripPlans);
+        console.log("Number of trip plans:", allTripPlans.length);
+        console.log("=======================================================================");
+        return allTripPlans;
+    
+    }
+    async function getTripDetails(tripId: string) {
+        const tripDetails = await prisma.trip.findUnique({
+            where: {
+                id: tripId,
+            },
+        });
+
+        if (!tripDetails) {
+            throw new Error("Trip not found " + tripId);
+        }
+
+        return tripDetails;
     }
 
     const system_instructions = `
-    You are an intelligent, helpful AI assistant that helps users with travel-related questions and trip planning. You have access to external tools, which you can use whenever needed to provide accurate and personalized responses.
-You are allowed to use tools at any time if it helps improve your response.
-Currently available tools:
-- **getAllTripPlans**: Retrieves all of the user's saved trip plans.    
-never ever ASK FOR PERMISSION TO USE TOOLS, JUST USE THEM WHEN YOU THINK IT WILL HELP.
-in the response field you can only put markdown no useless code language or any other text.
-nad remeber if a tool is used then isToolOutput should be true.
-`;
+    You are a smart and helpful AI assistant who specializes in travel questions and trip planning. You have access to tools that can help you fetch a user’s saved trips or get the details of a specific trip.
+    You can use these tools at any time without asking for permission and without mentioning that you're using a tool.
+    Here are the tools available:
+    getAllTripPlans: Shows all of the user’s saved trip plans.
+    getTripDetails: Gives full details about a specific trip plan when you provide its ID using toolParams.
+    Important rules to follow:
+    Never ask if you should use a tool — just use it.
+    Never say you are using a tool — just show the result as if it were part of your answer.
+    If you use a tool, make sure to set isToolOutput to true.
+    Your answer must only be in markdown — don’t return any code blocks or mention things like tool_code or JSON.
+    Stay helpful, direct, and friendly.
+    and never ever mention the trip id in the chat.
+    ***NEVER MENTION ANY ID IN THE CHAT***
+    `;
+
     const cHistory = await prisma.messages.findMany({
         where: {
             conversation_id: requestParams.conversationId,
@@ -129,6 +167,7 @@ nad remeber if a tool is used then isToolOutput should be true.
     registerMessage(requestParams.conversationId, requestParams.message, senders.USER)
     let resp = "";
     let respText = "";
+    let registerMSG = "";
     const stream = new ReadableStream({
         async start(controller) {
             const chat = await ai.chats.create({
@@ -156,7 +195,6 @@ nad remeber if a tool is used then isToolOutput should be true.
                     console.log("Response so far:", respSplit);
                     respText = respSplit;
                 } catch (error) {
-                    console.error("Error parsing response:", error);
                 }
 
                 const encodedStringChunk = respText.slice(prevRespText.length);
@@ -167,18 +205,36 @@ nad remeber if a tool is used then isToolOutput should be true.
             }
 
             const respJSON = JSON.parse(resp);
+            registerMSG += respJSON.response;
             console.log("Final response JSON:", respJSON);
             if (respJSON.isToolOutput){
                 console.log("----------------------------------------------------------");
                 console.log("Tool output detected, executing tool...");
                 console.log("Tool call ID:", respJSON.toolCallId);
                 console.log("----------------------------------------------------------");
-                if (respJSON.toolCallId.includes("getAllTripPlans")) {
-                    const funcResp = getAllTripPlans();
-                    console.log("Tool output:", funcResp);
+                let alltrips:any = await getAllTripPlans();;
+                let funcResp:any;
+                
+                    if (respJSON.toolCallId.includes("getAllTripPlans")) {
+                        funcResp = alltrips;
+                    }
+                    else if (respJSON.toolCallId.includes("getTripDetails")) {
+                        if (!respJSON.toolParams || !respJSON.toolParams.tripId) {
+                            console.error("Tool parameters missing for getTripDetails");
+                            controller.close();
+                            return;
+                        }
+                        funcResp = await getTripDetails(respJSON.toolParams.tripId);
+                    }
+                        console.log("Tool output:", funcResp);
                     const toolResponse = await chat.sendMessageStream({
-                        message: `System: Here is the output of the tool call: ${JSON.stringify(funcResp)}`,
+                        message: `
+                        System: Here is the output of the tool call: ${JSON.stringify(funcResp)}
+                        
+                        And here are all the trip plas with their ids: ${JSON.stringify(alltrips)}`,
                     });
+
+
                     let resp = "";
                     let respText = "";
                     controller.enqueue(encd.encode(" "));
@@ -202,12 +258,14 @@ nad remeber if a tool is used then isToolOutput should be true.
                         await new Promise(resolve => setTimeout(resolve, 500));
         
                     }
+                    const toolRespJSON = JSON.parse(resp);
+                    registerMSG += toolRespJSON.response;
 
-                }
+                
             }
 
             controller.close();
-            registerMessage(requestParams.conversationId, resp, senders.MODEL);
+            registerMessage(requestParams.conversationId, registerMSG, senders.MODEL);
 
         }
     });
@@ -220,5 +278,4 @@ nad remeber if a tool is used then isToolOutput should be true.
             "Content-Type": "application/json",
         },
     });
-
 }
