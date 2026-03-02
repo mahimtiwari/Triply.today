@@ -24,7 +24,7 @@ export async function GET(request: NextRequest) {
     const prompt = `Make a packing list for a trip to ${plan.destination}. None of the items should be checked.`;
 
     const response = await ai.models.generateContent({
-        model: "gemini-2.0-flash",
+        model: "gemini-2.5-flash",
         contents: prompt,
         config: {
             responseMimeType: "application/json",
